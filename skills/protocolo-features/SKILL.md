@@ -1,6 +1,6 @@
 ---
 name: protocolo-features
-description: "Protocolo de desarrollo de features nuevos: pre-implementación (spec → inventario de reuso → diseño → UX → dependencias), secuencia estricta de implementación por capas, validación incremental y checklists post-implementación. Activar ANTES de implementar cualquier feature nuevo, página, módulo o endpoint. Para modificar algo que ya existe, usar protocolo-cambios."
+description: "Protocolo de desarrollo de features nuevos: pre-implementación (spec → inventario de reuso → diseño → UX → dependencias), secuencia estricta de implementación por capas, validación incremental y checklists post-implementación. Comprueba Zonas Prohibidas antes de escribir código y manda al ADR las decisiones difíciles de revertir. Activar ANTES de implementar cualquier feature nuevo, página, módulo o endpoint. Para modificar algo que ya existe, usar protocolo-cambios."
 ---
 
 ## Cuándo activar
@@ -23,6 +23,12 @@ Antes de escribir código, confirmar que la spec tiene:
 - [ ] Alcance explícito: qué incluye y **qué no incluye**
 - [ ] Dependencias: qué módulos usa y qué módulos **no debe tocar**
 
+Si el proyecto declara **Zonas Prohibidas** —rutas que no se modifican sin
+aprobación explícita: migraciones, infraestructura, secretos—, comprobar acá si
+el feature entra en alguna. Se resuelve antes de escribir código, pidiendo la
+aprobación o replanteando el enfoque. Descubrirlo a mitad de la implementación
+obliga a deshacer trabajo ya hecho.
+
 Sin spec, la AI inventa requerimientos. Si no existe, generarla y validarla con quien decide el producto **antes** de implementar.
 
 ### Paso 2 — Inventario de reuso y lógica compartida
@@ -44,6 +50,11 @@ Si la lógica nueva tiene relación con otro módulo — actual o del backlog �
 Toda pieza marcada **"Nueva local"** justifica por qué no se pudo reusar ni conviene compartir. Sin esta tabla, el plan está incompleto.
 
 > Unificar después siempre cuesta más que diseñar compartido al inicio. La duplicación no duele el día que se escribe — duele el día que las dos copias divergen.
+
+Si alguna fila de esa tabla es una decisión **difícil de revertir** —un paquete
+compartido nuevo, un límite entre capas, una dependencia de producción que entra—,
+no basta con justificarla en el plan: el plan se archiva y la justificación se
+pierde. Va como fila en `ADR.md`, con lo que se descartó. Ver `protocolo-cierre`.
 
 ### Paso 3 — Leer la documentación de diseño (features con interfaz)
 

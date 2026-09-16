@@ -1,6 +1,6 @@
 ---
 name: protocolo-cambios
-description: "Protocolo para modificar features ya implementados: clasificación del cambio (corrección / ajuste / requerimiento / prioridad), flujo corto (1-2 archivos) vs. flujo completo (3+ archivos o cambio de schema), documento CHG-XXX obligatorio antes de tocar código, análisis de impacto, implementación por pasos en sesión limpia y cierre en el CHANGE_LOG. Activar cuando algo que YA funciona necesita cambiar."
+description: "Protocolo para modificar features ya implementados: clasificación del cambio (corrección / ajuste / requerimiento / prioridad), flujo corto (1-2 archivos) vs. flujo completo (3+ archivos o cambio de schema), documento CHG-XXX obligatorio antes de tocar código, análisis de impacto, implementación por pasos en sesión limpia y cierre en el CHANGE_LOG. Distingue el cambio, que se archiva, de la decisión arquitectónica, que va al ADR y sobrevive. Activar cuando algo que YA funciona necesita cambiar."
 ---
 
 ## Cuándo activar
@@ -27,6 +27,15 @@ description: "Protocolo para modificar features ya implementados: clasificación
 
 - 1-2 archivos, sin cambio de schema → **flujo corto**
 - 3+ archivos, cambia el schema, o cambian flujos de navegación → **flujo completo**
+
+**Y una pregunta aparte del flujo:** ¿este cambio es además una decisión
+arquitectónica —difícil de revertir, con alternativas reales que se descartaron—?
+Si lo es, va también como fila en `ADR.md`. No es duplicar: el `CHG-XXX` documenta
+*qué* cambió y cómo revertirlo, y se archiva al cerrarse; el ADR documenta *por qué*
+se eligió esto y sobrevive al cambio. Seis meses después nadie relee un CHG cerrado.
+
+Si el cambio toca una **Zona Prohibida** del proyecto, se pide aprobación antes de
+escribir el documento, no después.
 
 ---
 

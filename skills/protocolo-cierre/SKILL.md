@@ -1,6 +1,6 @@
 ---
 name: protocolo-cierre
-description: "Ejecuta la Fase A del protocolo de cierre de sesión: actualiza el SESSION_LOG, actualiza los docs afectados y enruta los aprendizajes al destino correcto según el árbol de decisión del AGENTS.md. Activar al terminar cualquier sesión de implementación, antes de hacer commit. Las Fases B (verificar) y C (commit) las hace el humano."
+description: "Ejecuta la Fase A del protocolo de cierre de sesión: actualiza el SESSION_LOG, actualiza los docs afectados y enruta los aprendizajes al destino correcto según el árbol de decisión del AGENTS.md, incluida la fila del ADR cuando la sesión tomó una decisión arquitectónica. Activar al terminar cualquier sesión de implementación, antes de hacer commit. Las Fases B (verificar) y C (commit) las hace el humano."
 ---
 
 ## Propósito
@@ -85,6 +85,7 @@ Reglas:
 | Documento | Actualizar si… |
 |-----------|---------------|
 | `AGENTS.md` | Cambió una regla arquitectónica activa, un comando o la estructura del repo |
+| `ADR.md` | Se tomó una decisión arquitectónica: difícil de revertir, con alternativas reales descartadas. Fila nueva, nunca editar una vieja |
 | Guía de diseño | Se crearon patrones visuales nuevos o cambió uno existente |
 | Inventario de componentes | Se creó, modificó, deprecó o renombró un componente compartido (gate obligatorio) |
 | Documento de arquitectura | Se agregó un módulo, cambió un pilar o cambió el stack |
@@ -99,9 +100,16 @@ Si en la sesión apareció un error, un gotcha o una decisión no obvia, tiene q
 | Tipo de aprendizaje | Destino |
 |------|---------|
 | Invariante arquitectónico **activo** | `AGENTS.md`, sección «Qué NO hacer» |
+| **Por qué** se eligió algo, y qué se descartó | `ADR.md`, fila nueva |
 | Cicatriz de stack: fix de una librería o versión | `TECH_NOTES.md`, por stack |
 | Regla visual, microinteracción o UX | Guía de diseño, sección «Gotchas» |
 | Decisión de un módulo específico | La spec de ese módulo |
+
+> **`AGENTS.md` y `ADR.md` no compiten: guardan cosas distintas de la misma
+> decisión.** En el primero va la regla en presente —«el dominio no importa de
+> infraestructura»—; en el segundo, por qué esa regla existe y qué se consideró
+> antes. Si la decisión cambia, la regla se reescribe y el ADR **no**: se agrega
+> uno nuevo que lo supera. Esa asimetría es el punto.
 
 **Filtro antes de agregar algo al AGENTS.md:**
 
@@ -128,6 +136,7 @@ Si amerita bump, ejecutar `version-bump` (que pedirá confirmación). Si no, ind
   (si no hubo otros: "No se actualizaron otros docs — la sesión no los afectó")
 ✓ Versión: 0.X.X → 0.Y.Z (MINOR)  |  "sin cambio (solo fixes/docs)"
 ✓ Schema: sin cambios  |  "schema + migración presentes"  |  "⚠ schema modificado SIN migración"
+✓ ADR: sin decisiones esta sesión  |  "ADR-00N agregado"  |  "⚠ hubo decisión y no se registró"
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FASE B — Tu turno (no delegable):
