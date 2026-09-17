@@ -1,7 +1,7 @@
 # Falcux AI-First — paquete
 
 El material de la metodología [Blueprint AI-First](https://ai-first.falcux.com),
-listo para llevar a un proyecto: 8 templates de documentos, 8 skills ejecutables
+listo para llevar a un proyecto: 13 templates de documentos, 8 skills ejecutables
 y el detector de entropía documental.
 
 > **Estado: proyectado, no publicado.** Ni `npx @falcux/ai-first` ni su alias
@@ -12,7 +12,7 @@ y el detector de entropía documental.
 
 | | Dónde | Estado |
 |---|---|---|
-| 8 templates de documentos (AGENTS.md, PRD, guía de diseño, protocolos) | `templates/` | publicados |
+| 13 templates de documentos (AGENTS.md, PRD, guía de diseño, arquitectura, protocolos, documentos vivos) | `templates/` | 8 publicados; los 5 de la 0.2.0 en `dev` |
 | 8 skills para agentes de código (Claude Code, Codex, Cursor, OpenCode, Kimi Code) | `skills/` | publicadas — [cómo instalarlas](skills/README.md) |
 | Detector de entropía (`ai-first audit`) | `src/` | escrito, sin publicar |
 | `ai-first init` mínimo: escanea y escribe `AI-FIRST.md` + `ADR.md` | `src/init.ts` | escrito, sin publicar |

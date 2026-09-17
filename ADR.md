@@ -292,3 +292,60 @@ carpeta («references/», «checks/»); los `SKILL.md` no se mueven, así que lo
 enlaces del sitio siguen vivos. Los templates dejan de pedir estructura, stack
 y comandos: un `AGENTS.md` generado desde ellos es más corto y envejece más
 despacio.
+
+## ADR-009 — Cinco documentos ganan template: cicatrices, inventario de componentes, arquitectura, documento de cambio y spec por módulo
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada. Parte 2 del lote de actualización de templates y
+  skills (`HANDOFF.md`); sale en la 0.2.0.
+
+**Contexto.** Los 8 templates se subieron el 2026-04-01 y no cambiaron desde
+entonces. En el proyecto real donde nació la metodología, los documentos que
+más se editaron en los cinco meses siguientes no tenían molde: el catálogo de
+cicatrices técnicas (150 commits), el inventario de componentes (163), el
+documento de arquitectura (31), una carpeta de cambios que llegó a 385
+documentos numerados y una de specs con 26. La metodología ya daba por hecho
+que existían: el protocolo de cierre enruta aprendizajes a TECH_NOTES, a la
+spec del módulo y al inventario; el protocolo de cambios exige el documento
+`CHG-XXX` antes de tocar código; el check 5 del detector lee el inventario
+contra el directorio de componentes, y el check 3 lee «Archivos» o «Alcance»
+de una spec. Quien adoptaba el paquete tenía que inventar el formato de cinco
+documentos que las skills y el detector ya asumían.
+
+**Decisión.** Cinco templates nuevos en `templates/`, con el patrón de nombre
+existente: `TECH_NOTES_TEMPLATE.md`, `COMPONENT_LIBRARY_TEMPLATE.md`,
+`ARQUITECTURA_TEMPLATE.md`, `CHG_TEMPLATE.md` y `SPEC_MODULO_TEMPLATE.md`.
+Cada uno generaliza el documento real sin nombrarlo, cita sus cifras como «un
+proyecto real», y trae la anatomía que el detector lee: encabezado por
+componente en el inventario, sección «Archivos afectados» en el CHG y
+«Archivos del módulo» en la spec. El criterio de entrada fue doble: que las
+skills o el detector ya lo asumieran, **y** que en el proyecto real hubiera
+tenido edición sostenida. Quedaron fuera por no cumplir uno de los dos: la
+matriz de permisos (40 commits, pero es del producto y no de la metodología;
+la colisión está en `SPEC-PAQUETE.md` §4), el log de sesiones y el registro
+de cambios (su formato ya está en los protocolos y es trivial), y los runbooks
+de despliegue (demasiado atados a la infraestructura de cada proyecto).
+
+**Alternativas.** *Dejarlos como prosa en el manual*: el manual ya los
+describía y el proyecto real igual tardó meses en converger a un formato; la
+prosa dice qué guardar, no cómo, y el detector necesita el cómo. *Un solo
+template «docs» genérico*: cinco documentos con cinco ciclos de vida
+distintos —uno se agrega arriba, otro se sobreescribe, otro se elimina al
+cerrar— no caben en una anatomía; un template genérico habría sido un índice
+con cinco secciones, que es lo que ya hace el `AGENTS.md`. *Meter la anatomía
+dentro de los protocolos existentes*: el protocolo de cambios ya lleva una
+anatomía corta del CHG en su §2.2, y eso es justo lo que no escaló; el
+protocolo dice cuándo y el template dice qué, y se descargan por separado.
+
+**Consecuencias.** El paquete pasa de 8 a 13 templates; el sitio cambia la
+cuenta en la landing, el volcado para LLMs y el apéndice, que gana el grupo
+«Documentos vivos» y suma CHG y SPEC junto a sus protocolos. La cadena de
+artefactos del manual y el template de `AGENTS.md` nombran
+`docs/SPECS_POR_MODULO.md` como archivo único; la spec por módulo lo
+reemplaza por la carpeta `docs/specs/` con un README índice, que es lo que el
+proyecto real terminó haciendo. El template ya lo dice desde ADR-008; el
+capítulo lo cambia el sitio. La anatomía del CHG queda en tres sitios —protocolo,
+skill y template— hasta que el protocolo se edite para apuntar al template;
+esa edición toca un template publicado y va en su propio lote. Nada de esto
+mueve rutas que el sitio enlaza. El `init` futuro puede ofrecer estos cinco
+archivos además de `AI-FIRST.md` y `ADR.md`.

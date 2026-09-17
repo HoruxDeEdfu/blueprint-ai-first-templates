@@ -1,6 +1,6 @@
 # Handoff — `@falcux/ai-first`
 
-El paquete: los 8 templates, las 8 skills y el detector de
+El paquete: los 13 templates, las 8 skills y el detector de
 entropía documental. El sitio de la metodología tiene su propio handoff en el
 repo `falcux-ai-first-docs-web`; acá sólo lo que es del paquete y lo que los
 dos comparten. Este repo se llama `falcux-ai-first-package` desde el
@@ -46,7 +46,8 @@ código (001), el nombre en npm y el alias (002), init mínimo antes que complet
 (004), el nombre del repo (005), `skills/` como fuente de verdad en vez de
 copia del sitio (006), `prod` como rama publicada (007), y la instalación de
 las skills en «.agents/skills/» con enlace para Claude Code más el principio
-editorial en los templates (008).
+editorial en los templates (008), y cinco templates nuevos para los
+documentos que las skills y el detector ya asumían (009).
 
 **Las skills cambiaron de dueño el 2026-09-17** (ADR-006). El sitio borró su
 `skills/` y el workflow que la empujaba acá con `rsync --delete`, tras
@@ -189,6 +190,16 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
    las skills: sin nombrar el proyecto de origen. Cambian la cadena de
    artefactos del manual y las tarjetas del apéndice: coordinar con `redirects`
    antes del merge a `prod`. Sale en `0.2.0`.
+   **Escrita el 2026-09-17 (ADR-009)**: `templates/TECH_NOTES_TEMPLATE.md`,
+   `templates/COMPONENT_LIBRARY_TEMPLATE.md`, `templates/ARQUITECTURA_TEMPLATE.md`,
+   `templates/CHG_TEMPLATE.md` y `templates/SPEC_MODULO_TEMPLATE.md`. El sitio
+   ya tiene los nombres y agrupa: «Documentos vivos» para los tres primeros,
+   CHG y SPEC junto a sus protocolos; escribe las tarjetas cuando lea el
+   contenido en `origin/dev` y publica cuando los archivos existan en `prod`.
+   El template de `AGENTS.md` ya apunta a `docs/specs/{modulo}.md` desde la
+   parte 1; el capítulo del manual todavía dice `docs/SPECS_POR_MODULO.md` y lo
+   cambia el sitio. Queda para un lote posterior: el protocolo de cambios lleva su propia
+   anatomía corta del CHG en §2.2 y debería apuntar al template.
 3. **Parte 3 — `lote-3`. Después.** Reestructurar `GUIA_DISENO_TEMPLATE.md`
    contra la GUIA_DISENO de Compliance (3009 líneas, 71 commits: tokens,
    layout en niveles, móvil, formularios) y evaluar, una por una y con criterio,
