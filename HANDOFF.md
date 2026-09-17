@@ -13,13 +13,14 @@ comparten.
 
 ## Estado al 2026-09-17
 
-**Lo que existe y corre**, en `dev`, con 60 pruebas en verde y `audit:self` en 0:
+**Lo que existe y corre**, en `dev`, con 65 pruebas en verde y `audit:self` en 0:
 
 | Comando | Estado |
 |---|---|
 | `ai-first audit` | Los cinco checks de la spec, el puntaje y los exit codes. Dos modos: árbol de trabajo (hook local) y `--base <ref>` (CI). |
 | `ai-first init` | Mínimo: escanea, sugiere y escribe `AI-FIRST.md` + `ADR.md`. No toca skills ni AGENTS.md. Nunca sobreescribe (ADR-003). |
 | `sync`, `adr`, `handoff` | Mapeados abajo, sin escribir. El CLI lo dice con exit 2. |
+| `ai-first` sin scope | El alias de ADR-002, en `alias/`: shim que importa `@falcux/ai-first/cli`, miembro del workspace pnpm, `workspace:*` que `pnpm pack` vuelve versión exacta. Cinco pruebas lo atan al raíz. |
 
 **Lo que la spec dejó abierto y cómo se resolvió** — si la spec cambia, alinear
 esto o el código:
@@ -42,14 +43,37 @@ código (001), el nombre en npm y el alias (002), init mínimo antes que complet
 
 ### Lo que sigue, en orden
 
-Para el `npx` ya no falta código; falta lo de alrededor:
+Para el `npx` ya no falta código: el alias (ADR-002) quedó escrito el
+2026-09-17. Todo lo que falta son decisiones o pasos manuales de Charlie, en
+este orden porque cada uno alimenta al siguiente:
 
-1. Crear la organización `@falcux` en npm.
-2. Decidir el renombre de los repos (bloqueador nº4, abajo). Arrastra los raw
-   links de cuatro capítulos del sitio.
-3. El alias `ai-first` sin scope, funcional, como segundo paquete (ADR-002).
-4. Quitar `private: true`, primer publish con `--access public`, con
-   provenance desde CI.
+1. **Crear la organización `@falcux` en npm.** En npmjs.com, «Add Organization»,
+   nombre `falcux`, plan gratuito (alcanza para paquetes públicos). La cuenta
+   que publique necesita 2FA. Sin esto, `@falcux/ai-first` no se puede publicar.
+2. **Decidir el renombre del repo** (bloqueador nº4, abajo). Va antes del
+   publish porque el `package.json` del raíz todavía no declara `repository` ni
+   `homepage`: se agregan con el nombre definitivo, de una vez, para no publicar
+   una URL que GitHub redirija. Arrastra los raw links de cuatro capítulos del
+   sitio y las 8 tarjetas de templates.
+3. **Quitar `private: true`** en los dos `package.json` —raíz y `alias/`— en el
+   mismo commit. La prueba `test/alias.test.ts` exige que coincidan, así que un
+   solo cambio falla la suite. Subir la versión de `0.0.0` a `0.1.0` en los dos.
+4. **Primer publish, con provenance.** Después de mergear `dev` a `main`:
+   `pnpm publish` se niega desde otra rama o con el árbol sucio, y eso está
+   bien. Desde GitHub Actions con `permissions: id-token: write` y
+   `provenance=true` en el `.npmrc` del job, dos comandos en este orden:
+   `pnpm publish --access public` en la raíz y luego
+   `pnpm --filter ai-first publish --access public`. Son dos porque `pnpm -r`
+   excluye la raíz del workspace por defecto; el alias va segundo porque su
+   `package.json` empaquetado ya pide la versión exacta del raíz. Hacerlo a mano
+   desde la máquina pierde la provenance; se puede, pero es peor. Nada de esto
+   se corre sin que Charlie lo pida: es el único paso irreversible.
+5. **Verificar en una carpeta vacía:** `npx @falcux/ai-first --help` y
+   `npx ai-first --help` deben dar la misma ayuda.
+
+Nota menor: el tarball del alias lleva `bin/`, `package.json` y `README.md`, no
+`LICENSE`; el campo `license: Apache-2.0` sí viaja. Copiar el archivo sería
+duplicarlo. Si npm lo reclama en la página del paquete, se copia en el `prepack`.
 
 **El merge de `dev` a `main` tiene su propia lista**, porque `main` sirve
 enlaces publicados. El 2026-09-17 los 8 templates pasaron de la raíz a

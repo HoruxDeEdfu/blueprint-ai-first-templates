@@ -13,6 +13,9 @@
   "bin": {
     "ai-first": "dist/src/cli.js"
   },
+  "exports": {
+    "./cli": "./dist/src/cli.js"
+  },
   "files": [
     "dist/src",
     "skills",
