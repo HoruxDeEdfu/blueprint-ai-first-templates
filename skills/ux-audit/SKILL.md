@@ -33,7 +33,14 @@ Las capas 3 y 4 son opcionales si el scope es solo revisión de código, sin ent
 
 ## Capa 1 — Análisis estático
 
-Lo que se puede detectar con un `grep` no debería consumir juicio de nadie. Esta capa es un script.
+Lo que se puede detectar con un `grep` no debería consumir juicio de nadie. Esta capa son dos scripts, en `checks/`:
+
+```bash
+bash checks/estatico.sh [ruta]                 # S-01 a S-09, con grep. Sale 1 si hay críticos
+node checks/fidelidad-skeletons.mjs [ruta]     # S-11. Sale 1 si hay deriva
+```
+
+Los dos traen un bloque de configuración al principio (rutas exentas, librería de iconos, nombres de componentes) y están escritos para React + Tailwind + Next.js App Router. Cambiar el stack es cambiar ese bloque, no la estructura.
 
 | ID | Detecta | Severidad |
 |----|---------|-----------|
@@ -52,7 +59,9 @@ Lo que se puede detectar con un `grep` no debería consumir juicio de nadie. Est
 
 **Documenta las excepciones reales.** Toda regla estática tiene excepciones legítimas (paneles decorativos de marca, componentes que usan color fijo por diseño). Si no se documentan, el script cría alarmas que el equipo aprende a ignorar — y un check ignorado no existe.
 
-**S-11 merece su propio script.** Es el único de la lista que no se detecta con una expresión regular: requiere comparar las columnas declaradas en el skeleton contra las de la tabla real.
+**S-11 tiene su propio script** (`checks/fidelidad-skeletons.mjs`). Es el único de la lista que no se detecta con una expresión regular: compara las columnas que el skeleton declara contra las cabeceras reales de la tabla, exige la clase de retraso en los skeletons ad-hoc y avisa si el ancho no coincide con el de la página. Las columnas condicionales dan un rango, no un número: marcar deriva ahí sería ruido, y un check ruidoso se deja de correr.
+
+**S-10 y S-12 siguen siendo lectura.** Rutas sin guard y componentes duplicados dependen de cómo está armado cada proyecto; se verifican en la Capa 2.
 
 ---
 
@@ -217,9 +226,14 @@ Reporta: [critical | warning | suggestion] con una acción concreta.
 
 ## Adaptación a tu proyecto
 
-1. **La Capa 1 es la que más rinde y la única que debes escribir tú:** traduce la tabla de checks a expresiones regulares sobre tu stack. Empieza por S-01 (colores) y S-06 (i18n) — suelen ser el 70% de los hallazgos.
+1. **La Capa 1 es la que más rinde.** Los dos scripts de `checks/` ya la implementan para React + Tailwind + Next.js; si ese es tu stack, sólo rellena el bloque de configuración (rutas exentas con su razón, librería de iconos, nombres de los componentes de tabla y skeleton). Si no lo es, traduce las expresiones regulares y conserva la estructura. Empieza por S-01 (colores) y S-06 (i18n) — suelen ser el 70% de los hallazgos.
 2. La Capa 2 se hereda casi tal cual; ajusta los nombres de componentes.
 3. Si no tienes navegador headless disponible, elimina la Capa 3 en vez de fingirla.
 4. La Capa 4 necesita un agente separado. Sin él, este skill sigue siendo útil — pero no sustituyas el juicio subjetivo por más checklist.
 
-Skills relacionados: `protocolo-ux` (el comportamiento que esta auditoría verifica), `ux-writer` (el texto), `i18n` (la mecánica de idiomas).
+## Referencias
+
+- `checks/estatico.sh` — Capa 1, S-01 a S-09. Configuración al inicio del archivo.
+- `checks/fidelidad-skeletons.mjs` — Capa 1, S-11. Configuración en `CONFIG`.
+
+Skills relacionadas: `protocolo-ux` (el comportamiento que esta auditoría verifica), `ux-writer` (el texto), `i18n` (la mecánica de idiomas).
