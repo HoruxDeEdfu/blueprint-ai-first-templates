@@ -2,7 +2,7 @@
 
 Las skills de Blueprint AI-First, listas para copiar a un proyecto nuevo.
 
-Un **protocolo** es un documento que explica un procedimiento; una **skill** es ese mismo procedimiento en un formato que la AI carga sola cuando corresponde. Este paquete contiene ambas cosas: los cuatro protocolos de la Parte III convertidos a skills, más cuatro skills que nacieron en proyectos reales y resultaron ser transferibles.
+Un **protocolo** es un documento que explica un procedimiento; una **skill** es ese mismo procedimiento en un formato que la AI carga sola cuando corresponde. Este paquete contiene ambas cosas: los cuatro protocolos de la Parte III convertidos a skills, más seis skills que nacieron en proyectos reales y resultaron ser transferibles.
 
 ## Instalación
 
@@ -62,12 +62,14 @@ Luego **adapta cada skill a tu proyecto**. Todas traen una sección «Adaptació
 | `ux-audit` | Auditoría de 4 capas con reporte y severidades | 2 scripts de la Capa 1: análisis estático y fidelidad de skeletons | Antes de mergear frontend |
 | `i18n` | Las 3 capas de internacionalización | 3 referencias, una por capa | Al agregar textos, plantillas o catálogos |
 | `version-bump` | SemVer desde el historial de commits | — | Al cerrar una sesión de implementación |
+| `information-architecture` | Qué es una cosa, cómo se llama en cada capa y dónde vive: naming, navegación vs. configuración, modelo de contenido, relaciones | — | Al crear, mover o renombrar un módulo, ruta, pestaña o ítem de navegación; antes de `protocolo-ux` |
+| `test-fix` | Correr los tests del alcance tocado, clasificar cada falla en mecánica o de negocio, corregir lo mínimo en máximo dos rondas | — | Después de implementar o cambiar algo; E2E sólo bajo decisión explícita |
 
 Los archivos de apoyo viven dentro de la carpeta de cada skill (`references/`, `checks/`) y se cargan sólo cuando la skill los pide: el `SKILL.md` es lo que la herramienta lee siempre; lo demás, bajo demanda.
 
 ## Lo que estas skills asumen del proyecto
 
-Tres de las ocho dan por hecho que el proyecto tiene los instrumentos del
+Tres de las diez dan por hecho que el proyecto tiene los instrumentos del
 capítulo «Gobierno del contexto» (Parte II del manual). Ninguna falla sin ellos,
 pero rinden menos:
 
@@ -81,12 +83,12 @@ registro de decisiones que arranca en el mes seis nace con seis meses de huecos.
 
 ## Orden de adopción sugerido
 
-No instales las ocho el primer día. La progresión que funciona:
+No instales las diez el primer día. La progresión que funciona:
 
 0. **Declara tus Zonas Prohibidas y abre un `ADR.md` vacío.** No es una skill, son
    diez minutos, y es lo que hace que los cuatro protocolos tengan dónde escribir.
-1. **`protocolo-ux`** — es la que más errores evita y no depende de nada más.
-2. **`protocolo-features`** y **`protocolo-cambios`** — cuando el proyecto tenga features que mantener.
+1. **`protocolo-ux`** — es la que más errores evita y no depende de nada más. **`information-architecture`** va con ella en cuanto el producto tenga más de un módulo: decide la estructura sobre la que `protocolo-ux` define el comportamiento.
+2. **`protocolo-features`** y **`protocolo-cambios`** — cuando el proyecto tenga features que mantener. **`test-fix`** entra con ellas: es el paso de verificación que las dos invocan.
 3. **`protocolo-cierre`** — cuando las sesiones empiecen a perder contexto entre una y otra.
 4. **`ux-writer`** e **`i18n`** — antes de que el copy acumule deriva. Retrofitearlas es caro.
 5. **`ux-audit`** y **`version-bump`** — cuando ya haya volumen que auditar y releases que versionar.
@@ -94,8 +96,11 @@ No instales las ocho el primer día. La progresión que funciona:
 ## Dependencias entre skills
 
 ```
-protocolo-features ──┬──> protocolo-ux ──> ux-audit
-                     └──> ux-writer ────> i18n
+information-architecture ──> protocolo-ux ──> ux-audit
+                              ▲
+protocolo-features ──┬────────┘
+                     ├──> ux-writer ────> i18n
+                     └──> test-fix
 protocolo-cambios ───┘
 protocolo-cierre ────────> version-bump
 ```

@@ -217,11 +217,12 @@ Esta tabla también gobierna el cierre de sesión: los aprendizajes se enrutan s
 > coincide con su descripción; no hace falta pedirlas.
 
 **Protocolos de trabajo:** `protocolo-features`, `protocolo-cambios`, `protocolo-cierre`;
-`version-bump` al final de cada sesión, después de `protocolo-cierre`.
+`test-fix` después de implementar o cambiar (E2E sólo si se pide); `version-bump` al final de
+cada sesión, después de `protocolo-cierre`.
 
-**Diseño y UX** (en este orden): `protocolo-ux` (comportamiento) → `ux-writer` (texto: obligatoria
-al escribir CUALQUIER string visible) → `i18n` (dónde vive cada string) → `ux-audit` (antes de
-mergear frontend).
+**Diseño y UX** (en este orden): `information-architecture` (qué es, cómo se llama, dónde vive) →
+`protocolo-ux` (comportamiento) → `ux-writer` (texto: obligatoria al escribir CUALQUIER string
+visible) → `i18n` (dónde vive cada string) → `ux-audit` (antes de mergear frontend).
 
 **Del dominio:** `{dominio-1}` — {qué cubre} · `{dominio-2}` — {qué cubre}
 

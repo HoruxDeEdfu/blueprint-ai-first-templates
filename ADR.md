@@ -428,11 +428,11 @@ dominio, PDFs); el template quedaría inutilizable para un sitio.
 
 **Consecuencias.** El paquete pasa de 8 a **10 skills**; «las 8» que el sitio
 documenta y enlaza cambia, y se avisa a la sesión del sitio antes de que `dev`
-llegue a `prod`. `skills/README.md` necesita las dos filas, el orden de
-adopción y el grafo de dependencias actualizados; lo escribe la parte 1 o
-quien cierre el lote, porque ese archivo es suyo en este lote. `protocolo-ux`
-podría nombrar a `information-architecture` como eslabón previo en su
-«Complemento»; no se toca en esta parte. Esta parte sale en la 0.2.0 o
+llegue a `prod`. `skills/README.md` gana las dos filas, el orden de
+adopción y el grafo de dependencias; el índice de skills del template de
+`AGENTS.md` nombra las dos nuevas; y `protocolo-ux` nombra a
+`information-architecture` como eslabón previo en su «Complemento», una
+línea que no toca su comportamiento y que se avisó al sitio. Esta parte sale en la 0.2.0 o
 después. Hallazgo colateral: el template de protocolo de patrones UX de
 `templates/` es, en contenido, el precursor de `protocolo-ux` y no una
 plantilla de `ux-patterns`; queda anotado en `HANDOFF.md`, sin mover ni

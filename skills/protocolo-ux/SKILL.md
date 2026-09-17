@@ -10,7 +10,7 @@ description: "Reglas de comportamiento e interacción: cuándo modal vs. página
 - Al definir dónde vive un feature (navegación principal vs. configuración)
 - Al diseñar flujos de creación, detalle o edición
 
-**Complemento:** este skill define el *qué* (comportamiento del usuario). Para el *cómo* (componentes concretos de tu stack), crea un skill `ux-patterns` propio del proyecto.
+**Complemento:** este skill define el *qué* (comportamiento del usuario). Antes de él, `information-architecture` decide qué es la cosa, cómo se llama y dónde vive; después, para el *cómo* (componentes concretos de tu stack), crea un skill `ux-patterns` propio del proyecto.
 
 ---
 

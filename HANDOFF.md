@@ -220,19 +220,17 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
    escriba la suya) ni `clean-architecture` (prescribe una arquitectura que el
    manual no enseña). Veredictos y alternativas en ADR-010.
 
+   **Lo que arrastró, hecho en el mismo lote tras el merge de la parte 1:**
+   `skills/README.md` (dos filas, orden de adopción, grafo), el índice de
+   skills de `templates/AGENTS_MD_TEMPLATE.md`, y una línea en el
+   «Complemento» de `protocolo-ux` que nombra a `information-architecture`
+   como eslabón previo.
+
    **Pendientes que deja, en orden:**
-   1. `skills/README.md`: dos filas en «Skills de oficio», el orden de
-      adopción (`information-architecture` va junto a `protocolo-ux`; `test-fix`
-      junto a `protocolo-features`) y el grafo de dependencias
-      (`protocolo-features` → `test-fix`; `information-architecture` →
-      `protocolo-ux`). El índice de skills de `templates/AGENTS_MD_TEMPLATE.md`
-      nombra las 8: le faltan las dos nuevas.
-   2. `protocolo-ux` podría nombrar a `information-architecture` en su
-      «Complemento» como eslabón previo. No se tocó: es de las 8.
-   3. Avisar al sitio: «las 8 skills» pasan a 10; enlaces nuevos a
+   1. Avisar al sitio: «las 8 skills» pasan a 10; enlaces nuevos a
       `prod/skills/information-architecture/SKILL.md` y
       `prod/skills/test-fix/SKILL.md` cuando `dev` llegue a `prod`.
-   4. **Hallazgo colateral, sin resolver:** `templates/UX_PATTERNS_PROTOCOL.md`
+   2. **Hallazgo colateral, sin resolver:** `templates/UX_PATTERNS_PROTOCOL.md`
       (2026-04-01) es, en contenido, el precursor de la skill `protocolo-ux`
       —capas, tablas, formularios, modales, 4 estados— y no una plantilla de
       `ux-patterns`, aunque su frontmatter dice `name: ux-patterns` y pide
