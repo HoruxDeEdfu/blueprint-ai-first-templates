@@ -1,11 +1,12 @@
-# AGENTS.md Template — Metodología AI-Assisted Development
+# AGENTS.md Template — Metodología AI-First
 
 > Este template define la estructura recomendada para el archivo AGENTS.md (o equivalente).
 > El CLAUDE.md debe contener únicamente: `@AGENTS.md`
 >
-> **Principio:** Máximo ~150 líneas en este archivo. Todo conocimiento especializado
-> va en skills (.claude/skills/) o documentación referenciada. Cada línea aquí debe
-> responder a: "¿La AI cometería un error sin esta instrucción?"
+> **Principio:** AGENTS.md contiene **solo reglas activas del proyecto**. Techo: **200 líneas**.
+> Cada línea responde a una pregunta: *«¿Quitar esto haría que la AI —o un humano— cometa un
+> error ahora mismo?»* Si la respuesta no es inmediata, no entra. Lo que no cabe va a skills
+> (cargadas bajo demanda) o a documentos referenciados.
 
 ---
 
@@ -15,226 +16,281 @@
 2. Crear `CLAUDE.md` con solo: `@AGENTS.md`
 3. Reemplazar los placeholders `{...}` con información del proyecto
 4. Eliminar las secciones marcadas como `[OPCIONAL]` si no aplican
-5. Mover conocimiento extenso a skills o docs referenciados
+5. **No agregar** estructura de carpetas, tech stack ni lista de comandos: se derivan de `ls`
+   y del manifiesto del paquete (`package.json` o equivalente). Ver §Notas al final.
+6. Instalar las skills en `.agents/skills/` con el enlace para Claude Code (ver árbol)
 
-### Convención de archivos
+### Árbol multi-herramienta
 
 ```
-CLAUDE.md          → Solo referencia: @AGENTS.md (Claude Code)
-AGENTS.md          → Fuente de verdad cross-tool (este archivo)
+raíz/
+├── AGENTS.md              → Fuente de verdad del contexto (este archivo). La leen todas.
+├── CLAUDE.md              → Solo `@AGENTS.md`. Claude Code.
+├── .agents/skills/        → Fuente única de las skills (estándar Agent Skills):
+│                            Codex, Cursor, OpenCode y Kimi Code la leen nativamente.
+├── .claude/skills         → Enlace simbólico a ../.agents/skills. Claude Code.
+└── docs/                  → Lo que AGENTS.md referencia y no contiene.
 ```
 
-Para herramientas que no soportan AGENTS.md (Antigravity, Lovable, etc.),
-copiar el contenido relevante en el campo de contexto del proyecto.
+Para herramientas que no leen AGENTS.md (Lovable, algunos IDE), copiar el contenido en su
+campo de contexto del proyecto. Nada de lo que sigue vive en un archivo por herramienta.
 
 ---
 
 # {Nombre del Proyecto}
 
 > {Descripción en 1-2 líneas: qué es, para quién, qué problema resuelve.}
+> {Nomenclatura, si hay términos de negocio que el código nombra distinto: «el módulo X se
+> llama Y en la interfaz (técnico: `z`). Los identificadores no cambian.»}
 
-**Dominio:** {URLs de producción si existen}
+**Dominio:** {URLs de producción y QA si existen} · **Stack con versiones:** `docs/ARQUITECTURA.md` §1
 
-## Estructura del Monorepo
+---
 
-```
-{nombre}/
-├── apps/
-│   ├── web/                → {Framework frontend}
-│   └── api/                → {Framework backend}
-├── packages/
-│   ├── ui/                 → {Librería de componentes}
-│   ├── shared/             → {Schemas, types, constantes}
-│   └── prisma/             → {ORM schema, migraciones}
-├── docs/                   → {Documentación del proyecto}
-│   ├── PRD.md
-│   ├── GUIA_DISENO.md
-│   ├── ARQUITECTURA.md
-│   └── changes/            → Protocolo de gestión de cambios
-│       ├── CHANGE_LOG.md
-│       └── pending/
-└── CLAUDE.md               → @AGENTS.md
-```
+## Principio editorial de este archivo
 
-## Tech Stack
+AGENTS.md contiene **solo reglas activas del proyecto**. Antes de agregar cualquier línea,
+aplicar el filtro: *«¿Quitar esto haría que la AI cometa un error ahora mismo?»*
 
-**Frontend:** {Framework, form library, validación, UI library, CSS, i18n, iconos, testing}
-**Backend:** {Framework, ORM, validación, auth strategy, scheduling, docs API, testing}
-**Auth:** {Proveedor → mecanismo → estrategia en backend}
-**Servicios:** {Email, billing, monitoring, etc.}
-**Infra:** {Hosting frontend, hosting backend, DB, Auth provider}
-**Monorepo:** {Package manager, orchestrator, TS config}
+### Árbol de decisión de documentación
 
-## Comandos
+| Tipo de contenido | Destino |
+|---|---|
+| Invariante arquitectónico o convención **vigente** del proyecto | **`AGENTS.md`** (este archivo) |
+| Límite que no se cruza sin aprobación (migraciones, infra, secretos) | **§Zonas Prohibidas** de este archivo |
+| Decisión difícil de revertir, con las alternativas descartadas y por qué | `docs/ADR.md` |
+| Fix histórico, post-mortem, cicatriz de una librería o del stack | `docs/TECH_NOTES.md` |
+| Estado de fase, progreso, lo completado y lo pendiente | `docs/SESSION_LOG.md` |
+| Cambio formal con diseño y rollback | `docs/changes/pending/CHG-XXX.md` → `CHANGE_LOG.md` |
+| Reglas de diseño, UX, microinteracciones | `docs/GUIA_DISENO.md` o skill `protocolo-ux` |
+| Detalles de un módulo (modelo, endpoints, reglas de negocio) | `docs/specs/{modulo}.md` |
+| Arquitectura, pilares, stack con versiones | `docs/ARQUITECTURA.md` |
+| Procedimiento que la AI debe seguir en cierto tipo de tarea | skill en `.agents/skills/{nombre}/` |
+| Estructura de carpetas, comandos estándar, dependencias | **No entra.** Derivable de `ls` y del manifiesto; si necesita prosa, `ARQUITECTURA.md` §3 y aquí solo la referencia |
+
+### Umbrales duros
+
+- **Techo:** 200 líneas. Al rebasarlo, depurar antes de seguir agregando.
+- **Frescura:** una regla que menciona una fase, un sprint o un prompt concreto («Fase 0»,
+  «Prompt 1b») es sospechosa: probablemente es historia, no regla. Historia → `SESSION_LOG.md`.
+- **Duplicación prohibida:** si la información ya vive en `ARQUITECTURA.md`, `GUIA_DISENO.md`
+  o una spec, aquí va la referencia, no el contenido. Dos copias divergen en la primera edición.
+
+Esta tabla también gobierna el cierre de sesión: los aprendizajes se enrutan según ella,
+**no por defecto a AGENTS.md**.
+
+---
+
+## Estructura y comandos
+
+- Estructura del repo: `docs/ARQUITECTURA.md` §3. Comandos: sus §3.1 (fuente de verdad: los
+  `scripts` del manifiesto raíz). No se repiten aquí.
+- Los únicos comandos que sí van aquí son los **no derivables** del manifiesto:
 
 ```bash
-# Desarrollo
-{comando dev}                    # {descripción}
-{comando build}                  # {descripción}
-{comando lint}                   # {descripción}
-{comando typecheck}              # {descripción}
-
-# Testing
-{comando test frontend}         # {descripción}
-{comando test backend}          # {descripción}
-
-# Base de datos
-{comando migraciones}           # {descripción}
-{comando seed}                  # {descripción}
-{comando studio/GUI}            # {descripción}
-
-# UI Components [si aplica]
-{comando agregar componente}    # {descripción + notas}
+# Ejemplo: correr un solo test, que ningún script declara
+{comando de test} -- ruta/al/archivo.spec.ts
+{comando de test} -- -t "nombre del test"
 ```
 
-## Reglas Críticas
+## Reglas críticas
 
-> Solo incluir reglas que la AI violaría sin esta instrucción.
-> Para reglas extensas, crear un skill en .claude/skills/
+> Solo reglas que la AI violaría sin esta instrucción. Detalle y fundamentos, en el documento
+> que la tabla de arriba indique; aquí, la regla y la referencia.
 
 ### Arquitectura
-- {Regla 1 — patrón arquitectónico principal y qué NUNCA violar}
-- {Regla 2 — dependencias permitidas entre capas}
-- {Regla 3 — dónde va la lógica de negocio}
+- {Patrón arquitectónico principal y qué NUNCA se viola}
+- {Dependencias permitidas entre capas}
+- {Dónde va la lógica de negocio}
 
-### Multi-tenancy [si aplica]
-- {Regla de aislamiento de datos entre tenants}
-- {Cómo se obtiene el tenant_id}
+### Pilares transversales [si aplica] (detalle en `docs/ARQUITECTURA.md` §{n})
+- {Multi-tenancy: cómo se obtiene el identificador del tenant y por dónde NO se pasa}
+- {Permisos: niveles, decorador o guard obligatorio}
+- {Auditoría: qué se registra, qué NUNCA se registra}
 
-### UI y Diseño
-- {Regla de tokens — NUNCA hardcodear colores}
+### UI y Diseño (detalle en `docs/GUIA_DISENO.md`)
+- {Regla de tokens: NUNCA hardcodear colores}
 - {Regla de tipografía o peso de fuente}
-- {Referencia a guía de diseño}: ver `docs/GUIA_DISENO.md`
-- {Referencia a protocolo UX}: ver `docs/UX_PATTERNS_PROTOCOL.md`
+- {Librería de iconos única}
+- {Regla de i18n: todo string visible pasa por la librería}
 
-### i18n [si aplica]
-- {Regla de no hardcodear strings}
-- {Referencia a skill o convenciones}: ver `.claude/skills/i18n-patterns/`
-
-### ORM / Base de datos
-- {Convención de naming — snake_case, @map, etc.}
-- {Campos obligatorios por modelo — id, timestamps, tenant_id}
+### Datos
+- {Convención de naming}
+- {Campos obligatorios por modelo}
 - {Soft delete u otras convenciones}
 
 ### Git
 - Ramas: `{patrón de ramas}`
-- Commits: `{patrón de commits}`
+- Commits: `{patrón de commits}` — código + docs en el mismo commit
 
-## Protocolo de Desarrollo de Features (OBLIGATORIO)
+## Zonas Prohibidas
 
-Antes de escribir código para cualquier feature nueva:
+> Rutas que no se modifican sin aprobación explícita de {quien aprueba}. La AI las comprueba
+> antes de escribir código (paso 1 de `protocolo-features`); si el trabajo las toca, se detiene
+> y pregunta. Tocarlas sin aprobación es el hallazgo de mayor severidad del detector.
 
-1. **Leer** `docs/GUIA_DISENO.md` — aplicar tokens, patrones, layout
-2. **Leer** `docs/UX_PATTERNS_PROTOCOL.md` — verificar navegación por capas, interacciones
-3. **[Si aplica] Lanzar agente especializado** — `{nombre del agente}` para validar enfoque
-4. **Verificar** {verificaciones pre-implementación: i18n, tipos, etc.}
-5. **Implementar** por pasos pequeños, validando después de cada uno
-6. **Después de implementar:** ejecutar `{comando de verificación}` + actualizar docs
+- `{ruta/a/migraciones/}` — {por qué}
+- `{ruta/a/infraestructura/}` — {por qué}
+- `{archivos de secretos o configuración de producción}` — {por qué}
 
-### Gestión de cambios post-implementación
-Para cambios de requerimientos en features existentes, seguir el protocolo en
-`docs/CHANGE_MANAGEMENT_PROTOCOL.md`. NUNCA implementar un cambio sin documento CHG-XXX previo.
+---
+
+## Protocolo de trabajo (OBLIGATORIO)
+
+- **Feature nuevo:** skill `protocolo-features` (pre-implementación en 7 pasos → secuencia por
+  capas → checklists).
+- **Cambio sobre algo que ya funciona:** skill `protocolo-cambios`. Documento CHG obligatorio
+  solo para cambios de requerimiento, diseño o prioridad, o que toquen el esquema de datos o
+  más de {n} archivos. Bugs simples, typos y refactors sin cambio de comportamiento no lo
+  requieren.
+- **Cierre de sesión:** skill `protocolo-cierre` (enruta los aprendizajes con el árbol del
+  §Principio editorial).
+- **Decisiones difíciles de revertir** (una dependencia de producción, un límite entre capas, un
+  paquete compartido nuevo): fila en `docs/ADR.md` con las alternativas descartadas. El plan se
+  archiva; la fila queda.
+- **Las decisiones de producto son de {quien decide el producto}.** Alcance, diseño, prioridad y
+  semántica de negocio los decide esa persona. El agente **recomienda** —con su razonamiento y
+  una opción preferida— y **pregunta**; no cierra la decisión ni la asienta como acordada. Todo
+  punto abierto se marca **DECISIÓN PENDIENTE** con opciones y consecuencias. Las decisiones
+  técnicas verificables (medir algo, elegir dónde vive un helper) sí las resuelve el agente.
+
+---
 
 ## Documentación
 
-> Listar TODOS los documentos que la AI debe conocer, agrupados por función.
+> Listar los documentos que la AI debe conocer, con una instrucción de carga: qué se lee
+> siempre, qué bajo demanda, qué nunca completo.
 
-### Especificaciones del producto
-- `docs/PRD.md` — {descripción breve}
-- `docs/ARQUITECTURA.md` — {descripción breve}
-- `docs/SPECS_POR_MODULO.md` — {descripción breve} [si existe]
+- `docs/PRD.md` — Fuente funcional maestra. **No cargar completo**: usar las specs
+- `docs/specs/{modulo}.md` — Specs autocontenidas. Cargar **la del módulo en curso**
+- `docs/ARQUITECTURA.md` — Stack con versiones, estructura, pilares, módulos
+- `docs/GUIA_DISENO.md` — Diseño y UX: tokens, layout, mobile, microinteracciones
+- `docs/ADR.md` — Decisiones tomadas y alternativas descartadas. Leer antes de proponer una
+- `docs/TECH_NOTES.md` — Cicatrices técnicas por stack. **Bajo demanda**, no cada turno
+- `docs/SESSION_LOG.md` — Registro cronológico de sesiones. Últimas {n} entradas al iniciar
+- `docs/changes/CHANGE_LOG.md` + `pending/` — Cambios formales
+- `docs/COMPONENT_LIBRARY.md` — Inventario UI [si existe]. Obligatorio actualizarlo al tocar
+  `{ruta/de/componentes}` en el mismo commit
+- `{ruta/al/esquema}` — Esquema de datos
 
-### Diseño y UX
-- `docs/GUIA_DISENO.md` — Guía de diseño del proyecto (tokens, componentes, gotchas)
-- `docs/UX_PATTERNS_PROTOCOL.md` — Protocolo de patrones UX agnóstico
+---
 
-### Gestión de cambios
-- `docs/changes/CHANGE_LOG.md` — Registro histórico de cambios
-- `docs/changes/pending/` — Cambios en proceso
+## What NOT to Do (invariantes activos)
 
-### Requerimientos externos [si aplica]
-- `docs/requerimientos/{archivo}` — {descripción}
+> Solo invariantes del proyecto, cada uno con la razón en media línea. Cada línea existe porque
+> la AI ya cometió el error al menos una vez. Los gotchas de stack ya resueltos van a
+> `docs/TECH_NOTES.md`, no aquí.
 
-## What NOT to Do
+**Arquitectura y seguridad**
+- NO {anti-patrón} — {por qué, en media línea}
+- NO {anti-patrón} — {por qué}
 
-> Anti-patrones descubiertos durante el desarrollo. Cada línea existe porque
-> la AI ya cometió este error al menos una vez.
+**Datos**
+- NO {anti-patrón} — {por qué}
 
-- NO {anti-patrón 1 — framework/librería}
-- NO {anti-patrón 2 — arquitectura}
-- NO {anti-patrón 3 — UI/diseño}
-- NO {anti-patrón 4 — base de datos}
-- NO {anti-patrón 5 — navegación/UX}
-- NO {anti-patrón 6 — tooling/build}
+**Frontend**
+- NO crear componentes o layouts nuevos cuando existe uno equivalente — buscar primero en la
+  librería y en pantallas similares; extender antes que duplicar
+- NO {anti-patrón} — {por qué}
 
-> Mantener esta lista viva: agregar nuevos anti-patrones conforme se descubren.
+**Operacional**
+- NO implementar features sin cargar la spec del módulo. No cargar el PRD completo
+- NO {anti-patrón} — {por qué}
 
-## Agent Teams [OPCIONAL — si se usan equipos de agentes]
+> Mantener esta lista viva: entra un anti-patrón cuando se descubre; sale cuando la regla que lo
+> evita ya vive en el código (un lint, un tipo, un test).
 
-> Activar con la configuración correspondiente de la herramienta.
-> Definir roles solo si el proyecto tiene backend + frontend + tests separables.
+---
 
-- **Backend Agent**: {scope, reglas, archivos que puede tocar}
-- **Frontend Agent**: {scope, reglas, archivos que puede tocar}
-- **Test Agent**: {scope, reglas, qué valida}
+## Agent Teams [OPCIONAL — si la herramienta soporta agentes en paralelo]
 
-Regla: cada agente respeta su scope. Schemas compartidos viven en {paquete compartido}.
+> Regla: en tareas multicapa, activar los agentes como equipo en orden (Backend → Frontend →
+> Test). Scopes y responsabilidades: tabla en la skill `protocolo-features`. `{paquete
+> compartido}` es propiedad del agente Backend; el Frontend lo consume, nunca lo modifica.
 
-## Skills [OPCIONAL — si la herramienta soporta skills]
+---
 
-> Skills cargan conocimiento on-demand sin inflar este archivo.
+## Skills (bajo demanda)
 
-- `.claude/skills/{nombre}/` — {descripción}
-- `.claude/skills/{nombre}/` — {descripción}
+> Cada skill tiene su descripción canónica en `.agents/skills/{nombre}/SKILL.md`. Aquí solo el
+> índice y las reglas de orquestación cuando aplican. La herramienta las carga cuando la tarea
+> coincide con su descripción; no hace falta pedirlas.
 
-## Estado Actual [OPCIONAL pero recomendado]
+**Protocolos de trabajo:** `protocolo-features`, `protocolo-cambios`, `protocolo-cierre`;
+`version-bump` al final de cada sesión, después de `protocolo-cierre`.
 
-> Fase actual del proyecto. Ayuda a la AI a entender qué existe y qué no.
+**Diseño y UX** (en este orden): `protocolo-ux` (comportamiento) → `ux-writer` (texto: obligatoria
+al escribir CUALQUIER string visible) → `i18n` (dónde vive cada string) → `ux-audit` (antes de
+mergear frontend).
 
-**Fase actual:** {nombre y descripción de la fase}
+**Del dominio:** `{dominio-1}` — {qué cubre} · `{dominio-2}` — {qué cubre}
 
-**Completado:** {resumen de lo que ya está implementado}
+---
 
-**En progreso:** {qué se está construyendo ahora}
+## Estado actual
 
-**Pendiente:** {qué NO implementar todavía}
+Para estado de fases, backlog y pendientes: **`docs/SESSION_LOG.md`** (cronológico inverso,
+últimas {n} entradas al iniciar sesión). Para cambios formales: `docs/changes/CHANGE_LOG.md`.
+Este archivo **no** lleva estado: envejece y nadie lo actualiza.
 
 ---
 
 # Notas sobre el template
 
+## Lo que salió del template, y por qué
+
+Las versiones anteriores pedían tres secciones que ya no están:
+
+| Sección | Por qué salió | Dónde vive ahora |
+|---|---|---|
+| Estructura del repo (árbol) | `ls` la da al instante y siempre al día; el árbol escrito envejece con la primera carpeta nueva | `ARQUITECTURA.md` §3, solo si necesita prosa |
+| Tech stack | El manifiesto del paquete la declara con versiones exactas; la copia en prosa miente en el primer bump | `ARQUITECTURA.md` §1 |
+| Comandos | Los `scripts` del manifiesto son la fuente de verdad; repetirlos es duplicar | Solo los **no derivables** (test único, flags raras) |
+
+La medición que lo justifica: un AGENTS.md real de 200 líneas gastaba más de 60 en estas tres
+secciones, y eran las que más veces estaban desactualizadas. Cada línea que no evita un error le
+quita atención a las que sí.
+
 ## Secciones obligatorias (mínimo viable)
-1. Descripción del proyecto (1-2 líneas)
-2. Estructura del repo (árbol)
-3. Tech stack (1 línea por capa)
-4. Comandos (los que se usan día a día)
-5. Reglas críticas (solo las que la AI violaría sin ellas)
-6. Documentación (mapa de docs)
-7. What NOT to do (anti-patrones reales)
+
+1. Descripción del proyecto (1-2 líneas) y nomenclatura
+2. Principio editorial con su árbol de decisión
+3. Reglas críticas (solo las que la AI violaría sin ellas)
+4. Zonas Prohibidas
+5. Protocolo de trabajo (qué skill en qué momento, quién decide)
+6. Documentación (mapa con instrucción de carga)
+7. What NOT to do (invariantes reales, con razón)
 
 ## Secciones recomendadas
-8. Protocolo de desarrollo de features
-9. Estado actual del proyecto
+
+8. Índice de skills
+9. Estado actual como puntero al log de sesión
 
 ## Secciones opcionales
-10. Agent teams (si se usan)
-11. Skills (si la herramienta los soporta)
+
+10. Agent teams
+11. Pilares transversales (multi-tenancy, permisos, auditoría)
 
 ## Criterio para incluir vs. delegar
 
 | Pregunta | Sí → inline | No → delegar |
-|----------|-------------|--------------|
+|---|---|---|
 | ¿La AI comete errores sin esto? | ✓ | |
 | ¿Aplica a TODAS las tareas? | ✓ | |
 | ¿Son menos de 5 líneas? | ✓ | |
+| ¿Es un procedimiento para cierto tipo de tarea? | | → skill |
 | ¿Es conocimiento de dominio extenso? | | → skill |
-| ¿Son specs detalladas de un módulo? | | → doc referenciado |
-| ¿Son reglas de diseño con tokens/valores? | | → GUIA_DISENO.md |
-| ¿Son endpoints o páginas? | | → doc referenciado |
-| ¿Son reglas de negocio extensas? | | → PRD o doc dedicado |
+| ¿Son specs de un módulo? | | → `docs/specs/` |
+| ¿Son reglas de diseño con tokens y valores? | | → `GUIA_DISENO.md` |
+| ¿Es el porqué de una decisión? | | → `ADR.md` |
+| ¿Es un gotcha de stack ya resuelto? | | → `TECH_NOTES.md` |
+| ¿Es estado, progreso o historia? | | → `SESSION_LOG.md` |
 
 ## Señales de que tu AGENTS.md es demasiado largo
-- Más de 200 líneas → mover conocimiento a skills
+
+- Más de 200 líneas → depurar con el árbol de decisión antes de agregar nada más
 - La AI empieza a ignorar reglas del final del archivo → priorizar, mover lo menos crítico
-- Tienes secciones que solo aplican a ciertos módulos → convertir en skill
-- El archivo tiene código de ejemplo extenso → mover a doc referenciado
+- Hay secciones que solo aplican a ciertos módulos → convertir en skill
+- Hay código de ejemplo extenso → mover a un documento referenciado
+- Hay líneas que nombran una fase o un sprint → es historia; va al log de sesión
+- La estructura o los comandos están escritos → borrarlos; `ls` y el manifiesto no envejecen
