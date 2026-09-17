@@ -91,3 +91,31 @@ sugerencia automática; la opción era un arma cargada.
 más el archivo que lo alimenta, sin reemplazar el `git clone` de las skills.
 Quien la instale sigue copiando skills a mano. Lo que `init` escribe se valida
 con el mismo lector que usa `audit` antes de tocar el disco.
+
+## ADR-004 — El scope `@falcux` se publica desde la cuenta de usuario `falcux`, no desde una organización
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada. Supera la consecuencia de ADR-002 que pedía crear
+  `@falcux` como organización antes del primer publish.
+
+**Contexto.** ADR-002 dio por hecho que un scope exige una organización. En
+npm un scope pertenece a quien lleve ese nombre, sea usuario u organización, y
+ya existía la cuenta de usuario `falcux`, verificada con `npm whoami` el
+2026-09-17. Usuario y organización comparten el espacio de nombres: una
+organización `falcux` no se puede crear mientras exista el usuario; habría que
+convertir la cuenta, eligiendo otro nombre para el usuario personal.
+
+**Decisión.** `@falcux/ai-first` y el alias `ai-first` se publican desde la
+cuenta de usuario `falcux`, con 2FA activo. No se crea organización ni se
+convierte la cuenta.
+
+**Alternativas.** *Convertir la cuenta en organización ahora*: da equipos,
+tokens y permisos por miembro que hoy no tiene quién usar, a cambio de
+renombrar el usuario personal y rehacer el login en cada máquina. *Crear la
+organización con otro nombre*: pierde el scope `@falcux`, que es la marca.
+
+**Consecuencias.** Los paquetes quedan atados al login personal y a su 2FA;
+quien publique es una sola persona hasta que se convierta la cuenta. La
+conversión conserva el scope y los paquetes, así que se puede hacer el día que
+haya más de una persona publicando, sin tocar nada de lo publicado. El paso 1
+de la lista de publish en `HANDOFF.md` desaparece.

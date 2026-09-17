@@ -117,7 +117,8 @@ tildes**; el resto, con ellas.
 - **No escribas en `skills/`.** Se pierde en la siguiente sincronización.
 - **No toques `main`.** Sirve enlaces publicados.
 - **No publiques a npm.** Ni con `--dry-run` sin avisar. El primer publish
-  tiene su lista en `HANDOFF.md` y empieza por crear la organización `@falcux`.
+  tiene su lista en `HANDOFF.md`. El scope `@falcux` ya es de la cuenta de
+  usuario `falcux` (ADR-004); no hay organización que crear.
 - **No cambies los pesos del puntaje** sin ADR y sin avisar al sitio.
 - **No añadas un modelo, una API ni una llamada de red** al detector.
 - **No metas contenido del sitio acá.** El sitio documenta; este repo entrega.

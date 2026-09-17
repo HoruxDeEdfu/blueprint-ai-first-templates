@@ -39,7 +39,8 @@ esto o el código:
 
 **Decisiones tomadas**, con sus alternativas, en `ADR.md`: dónde vive el
 código (001), el nombre en npm y el alias (002), init mínimo antes que completo
-(003).
+(003), publicar desde la cuenta de usuario `falcux` y no desde una organización
+(004).
 
 ### Lo que sigue, en orden
 
@@ -47,9 +48,10 @@ Para el `npx` ya no falta código: el alias (ADR-002) quedó escrito el
 2026-09-17. Todo lo que falta son decisiones o pasos manuales de Charlie, en
 este orden porque cada uno alimenta al siguiente:
 
-1. **Crear la organización `@falcux` en npm.** En npmjs.com, «Add Organization»,
-   nombre `falcux`, plan gratuito (alcanza para paquetes públicos). La cuenta
-   que publique necesita 2FA. Sin esto, `@falcux/ai-first` no se puede publicar.
+1. ~~Crear la organización `@falcux` en npm.~~ **No hace falta (ADR-004).** El
+   scope `@falcux` ya es de la cuenta de usuario `falcux`, verificado el
+   2026-09-17 con `npm whoami` desde esta máquina, ya logueada. Lo único que
+   queda de este paso es tener 2FA activo en esa cuenta antes de publicar.
 2. **Decidir el renombre del repo** (bloqueador nº4, abajo). Va antes del
    publish porque el `package.json` del raíz todavía no declara `repository` ni
    `homepage`: se agregan con el nombre definitivo, de una vez, para no publicar
