@@ -62,3 +62,32 @@ funcional.
 siempre apuntando a la misma versión. El scope `@falcux` hay que crearlo en
 npm como organización antes del primer publish. Los packs verticales heredan
 el namespace sin discusión.
+
+## ADR-003 — Un `init` mínimo antes que el `init` completo del mapa
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada
+
+**Contexto.** `audit` exige un `AI-FIRST.md` que, sin herramienta, sólo se
+escribe leyendo la spec entera. Publicar `audit` solo era publicar algo que no
+arranca. El `init` del mapa v1 —escanear, entrevistar, adaptar las 8 skills,
+generar AGENTS.md— depende de tres decisiones abiertas: la colisión de
+nombres de las skills (bloqueador nº2), el esquema de `.ai-first/manifest.json`
+y las secuencias base por arquitectura.
+
+**Decisión.** `init` escanea el repo y escribe dos archivos: `AI-FIRST.md` con
+sugerencias derivadas de lo que encuentra, y un `ADR.md` vacío. No toca
+skills ni AGENTS.md, no escribe manifiesto y nunca sobreescribe. Es el
+primer paso del `init` completo, no un sustituto: la entrevista y las skills
+se montan encima cuando sus bloqueadores se resuelvan.
+
+**Alternativas.** *Publicar sólo `audit`*: nadie lo puede usar sin el archivo.
+*Esperar al `init` completo*: semanas y tres decisiones que no son código,
+sin aprender nada del check 2 en repos ajenos mientras tanto. *Sobreescribir
+con `--forzar`*: un `AI-FIRST.md` editado a mano vale más que cualquier
+sugerencia automática; la opción era un arma cargada.
+
+**Consecuencias.** La v0.1 se rotula como lo que es: instrumento de medición
+más el archivo que lo alimenta, sin reemplazar el `git clone` de las skills.
+Quien la instale sigue copiando skills a mano. Lo que `init` escribe se valida
+con el mismo lector que usa `audit` antes de tocar el disco.

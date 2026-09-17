@@ -107,7 +107,10 @@ export function listarArchivos(raiz: string): string[] {
  * —`dist/`, `node_modules/`, `.env`— no es un huérfano: está ausente a propósito.
  */
 export function estaIgnorado(raiz: string, ruta: string): boolean {
-  return gitOpcional(raiz, ['check-ignore', '-q', '--', ruta]) !== undefined;
+  // Un patrón `dist/` sólo casa con directorios, y si `dist` no existe en disco
+  // git no puede saber que lo es: se pregunta también con la barra final.
+  const formas = ruta.endsWith('/') ? [ruta] : [ruta, `${ruta}/`];
+  return formas.some((f) => gitOpcional(raiz, ['check-ignore', '-q', '--', f]) !== undefined);
 }
 
 /** Contenido de un archivo en una revisión. `undefined` si no existía. */
