@@ -1,6 +1,6 @@
 # Handoff — `@falcux/ai-first`
 
-El paquete: los 13 templates, las 8 skills y el detector de
+El paquete: los 13 templates, las 10 skills y el detector de
 entropía documental. El sitio de la metodología tiene su propio handoff en el
 repo `falcux-ai-first-docs-web`; acá sólo lo que es del paquete y lo que los
 dos comparten. Este repo se llama `falcux-ai-first-package` desde el
@@ -202,12 +202,45 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
    parte 1; el capítulo del manual todavía dice `docs/SPECS_POR_MODULO.md` y lo
    cambia el sitio. Queda para un lote posterior: el protocolo de cambios lleva su propia
    anatomía corta del CHG en §2.2 y debería apuntar al template.
-3. **Parte 3 — `lote-3`. Después.** Reestructurar `GUIA_DISENO_TEMPLATE.md`
-   contra la GUIA_DISENO de Compliance (3009 líneas, 71 commits: tokens,
-   layout en niveles, móvil, formularios) y evaluar, una por una y con criterio,
-   las skills transferibles que quedaron fuera: `unit-test-fix`, `e2e-fix`,
-   `information-architecture`, `ux-patterns`, `clean-architecture`. Agregar una
-   skill es cambiar «las 8» que el sitio documenta: coordinar con `redirects`.
+3. **Parte 3 — `lote-3`. Hecha el 2026-09-17 (ADR-010).** Reestructurar
+   `GUIA_DISENO_TEMPLATE.md` contra la GUIA_DISENO de Compliance (3009 líneas,
+   71 commits: tokens, layout en niveles, móvil, formularios) y evaluar, una
+   por una y con criterio, las skills transferibles que quedaron fuera:
+   `unit-test-fix`, `e2e-fix`, `information-architecture`, `ux-patterns`,
+   `clean-architecture`. Agregar una skill es cambiar «las 8» que el sitio
+   documenta: coordinar con `redirects`. Sale en `0.2.0` o después.
+
+   **Lo que quedó.** La guía se reorganizó por sistema, en 18 secciones más
+   una nota de crecimiento, sin nombrar a ningún proyecto de origen (el
+   template viejo nombraba al suyo). Entraron dos skills: `information-architecture`
+   (el eslabón que faltaba antes de `protocolo-ux`) y `test-fix` (fusión de
+   `unit-test-fix` y `e2e-fix`, que compartían el esqueleto). No entraron
+   `ux-patterns` (es 100 % del stack: dos proyectos reales la escribieron sin
+   compartir una línea; la guía cierra con la forma para que cada proyecto
+   escriba la suya) ni `clean-architecture` (prescribe una arquitectura que el
+   manual no enseña). Veredictos y alternativas en ADR-010.
+
+   **Pendientes que deja, en orden:**
+   1. `skills/README.md`: dos filas en «Skills de oficio», el orden de
+      adopción (`information-architecture` va junto a `protocolo-ux`; `test-fix`
+      junto a `protocolo-features`) y el grafo de dependencias
+      (`protocolo-features` → `test-fix`; `information-architecture` →
+      `protocolo-ux`). El índice de skills de `templates/AGENTS_MD_TEMPLATE.md`
+      nombra las 8: le faltan las dos nuevas.
+   2. `protocolo-ux` podría nombrar a `information-architecture` en su
+      «Complemento» como eslabón previo. No se tocó: es de las 8.
+   3. Avisar al sitio: «las 8 skills» pasan a 10; enlaces nuevos a
+      `prod/skills/information-architecture/SKILL.md` y
+      `prod/skills/test-fix/SKILL.md` cuando `dev` llegue a `prod`.
+   4. **Hallazgo colateral, sin resolver:** `templates/UX_PATTERNS_PROTOCOL.md`
+      (2026-04-01) es, en contenido, el precursor de la skill `protocolo-ux`
+      —capas, tablas, formularios, modales, 4 estados— y no una plantilla de
+      `ux-patterns`, aunque su frontmatter dice `name: ux-patterns` y pide
+      copiarse con ese nombre. Un proyecto que lo copie tendrá dos skills que
+      dicen lo mismo con nombres distintos. No se movió ni renombró porque el
+      sitio lo enlaza; qué hacer con él (reescribirlo como el esqueleto que la
+      guía describe en su §18, o retirarlo coordinando con el sitio) es
+      decisión aparte.
 
 **Lo que ninguna parte hace**: publicar a npm, avanzar `prod`, cambiar los
 pesos del puntaje, mover o renombrar rutas de `skills/` o `templates/` que el

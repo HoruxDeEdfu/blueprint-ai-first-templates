@@ -1,7 +1,7 @@
 # Falcux AI-First — paquete
 
 El material de la metodología [Blueprint AI-First](https://ai-first.falcux.com),
-listo para llevar a un proyecto: 13 templates de documentos, 8 skills ejecutables
+listo para llevar a un proyecto: 13 templates de documentos, 10 skills ejecutables
 y el detector de entropía documental.
 
 > **Estado: proyectado, no publicado.** Ni `npx @falcux/ai-first` ni su alias
@@ -13,14 +13,15 @@ y el detector de entropía documental.
 | | Dónde | Estado |
 |---|---|---|
 | 13 templates de documentos (AGENTS.md, PRD, guía de diseño, arquitectura, protocolos, documentos vivos) | `templates/` | 8 publicados; los 5 de la 0.2.0 en `dev` |
-| 8 skills para agentes de código (Claude Code, Codex, Cursor, OpenCode, Kimi Code) | `skills/` | publicadas — [cómo instalarlas](skills/README.md) |
+| 10 skills para agentes de código (Claude Code, Codex, Cursor, OpenCode, Kimi Code) | `skills/` | 8 publicadas; las 2 de la 0.2.0 en `dev` — [cómo instalarlas](skills/README.md) |
 | Detector de entropía (`ai-first audit`) | `src/` | escrito, sin publicar |
 | `ai-first init` mínimo: escanea y escribe `AI-FIRST.md` + `ADR.md` | `src/init.ts` | escrito, sin publicar |
 | `ai-first` sin scope, alias del paquete real con el mismo comando | `alias/` | escrito, sin publicar |
 | `init` completo (entrevista, skills), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
 
-Las 8 skills viven acá y sólo acá desde el 2026-09-17; el sitio enlaza a las
-de `prod`. Antes eran una copia que el repo del sitio sobreescribía.
+Las skills viven acá y sólo acá desde el 2026-09-17; el sitio enlaza a las
+de `prod`. Antes eran una copia que el repo del sitio sobreescribía. Eran 8;
+`information-architecture` y `test-fix` entraron ese mismo día (ADR-010).
 
 ## El detector
 

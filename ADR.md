@@ -349,3 +349,91 @@ skill y template— hasta que el protocolo se edite para apuntar al template;
 esa edición toca un template publicado y va en su propio lote. Nada de esto
 mueve rutas que el sitio enlaza. El `init` futuro puede ofrecer estos cinco
 archivos además de `AI-FIRST.md` y `ADR.md`.
+
+## ADR-010 — La guía de diseño se reorganiza por sistema, y de las cinco skills candidatas entran dos: `information-architecture` y `test-fix`
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada. Parte 3 del lote de actualización de templates y
+  skills (`HANDOFF.md`).
+
+**Contexto.** El template de la guía de diseño se subió el 2026-04-01 y no
+cambió desde entonces: 16 secciones numeradas, extraído de una sola guía y
+nombrándola. Desde entonces dos guías reales evolucionaron en direcciones
+distintas: la de una aplicación de datos con navegación autenticada, que en
+cinco meses pasó por 71 revisiones y llegó a 3.009 líneas organizada por
+sistema (tokens, layout en tres niveles, móvil, tablas, formularios extensos,
+movimiento), y la de un sitio de contenido en otro stack, de 1.114 líneas con
+la mitad de las secciones. Cinco skills de la primera quedaron fuera de las 8
+del paquete y son candidatas a transferibles: `unit-test-fix`, `e2e-fix`,
+`information-architecture`, `ux-patterns` y `clean-architecture`. Allá la
+cadena de diseño es `information-architecture` → `protocolo-ux` →
+`ux-patterns`, y el paquete sólo tiene el eslabón del medio.
+
+**Decisión.**
+
+1. *La guía.* Se reorganiza por sistema, no por lista de temas, con lo que las
+   dos guías reales comparten y sin nombrar a ninguna. Tres cosas nuevas que no
+   estaban y son lo que las mantuvo legibles: una sección «Dónde vive la
+   verdad» que declara los valores como derivados del archivo de tokens; la
+   regla de que cada norma lleva su cicatriz; y un árbol de destinos para lo
+   que no le toca (inventario de componentes, copy, decisiones, changelog). Se
+   recogen las reglas que sólo se aprenden con volumen (estados como roles y
+   no opacidades, un encabezado por tabla, paginación en servidor, la acción
+   de crear dentro del estado vacío, skeletons con retraso y su deriva) y se
+   marcan las secciones que un sitio de contenido borra. Cierra con la forma
+   de la skill `ux-patterns` que el proyecto escribe a partir de ella.
+2. *`information-architecture` entra*, generalizada. Responde una pregunta que
+   ninguna de las 8 responde («¿qué es esto, cómo se llama y dónde vive?») y es
+   el primer eslabón de la cadena; `protocolo-ux` da por decidida esa
+   estructura. Su regla de naming (un concepto, un lema, una forma por capa)
+   es entropía documental aplicada a la interfaz: el mismo argumento del
+   paquete. De sus 437 líneas, la mitad era sitemap, taxonomía y deuda del
+   producto; eso pasa a la sección «Adaptación a tu proyecto» como las cinco
+   cosas que el proyecto agrega.
+3. *`unit-test-fix` y `e2e-fix` entran fusionadas en `test-fix`.* Comparten el
+   esqueleto entero (alcance desde git, salida filtrada por un agente aparte,
+   clasificación mecánica vs. negocio, corrección mínima, tope de dos rondas,
+   suite completa una vez, reporte) y duplicaban ese texto; la fusión deja una
+   sección E2E con lo que sólo ella tiene: prerrequisitos, evidencia, tests
+   intocables, y la regla de que corre sólo bajo decisión explícita. Lo que
+   gobierna es la frontera entre lo que el agente corrige solo y lo que
+   decide el humano: los tests son la especificación.
+4. *`ux-patterns` no entra como skill.* Dos proyectos reales la escribieron y
+   no comparten una sola línea: es 100 % del stack. Lo compartido es la forma,
+   y esa va en la última sección de la guía. `protocolo-ux` y `ux-audit` ya
+   dicen «crea un `ux-patterns` propio»; una genérica sería una skill de
+   marcadores, el caso que el README de skills advierte como peor que no
+   tenerla. Sus reglas agnósticas (tokens, una librería de iconos, i18n, 4
+   estados) ya existen como checks en la Capa 1 de `ux-audit`.
+5. *`clean-architecture` no entra.* Prescribe una arquitectura (dominio →
+   aplicación → infraestructura) que el manual no enseña, y el paquete se
+   posiciona como gobierno del contexto que se instala encima de cualquier
+   framework. Sería agregar el acoplamiento que `HANDOFF.md` ya anota como
+   residual en `protocolo-features`. Sus reglas de dependencia son del
+   documento de arquitectura del proyecto; una skill de 40 líneas se escribe
+   desde ahí.
+
+**Alternativas.** *Fusionar `information-architecture` en `protocolo-ux`*:
+una sola skill de diseño, pero mezcla dos momentos (estructura antes de la
+spec, comportamiento al diseñarla) y triplica una skill que es corta a
+propósito. *Dos skills de tests separadas, como en el origen*: respeta la
+activación distinta de E2E, pero al precio de duplicar 40 % del texto; la
+regla «E2E sólo bajo decisión explícita» dentro de una sola skill resuelve lo
+mismo. *`ux-patterns` como esqueleto con marcadores*: da un archivo que
+copiar, pero cada línea sería `{…}`, y una skill sin contenido ocupa
+presupuesto de carga sin dar instrucciones. *Reescribir la guía copiando la
+de la aplicación y quitando nombres*: 3.000 líneas de las que la mitad son
+del producto (pipeline de tokens, barra inferior móvil, formularios de un
+dominio, PDFs); el template quedaría inutilizable para un sitio.
+
+**Consecuencias.** El paquete pasa de 8 a **10 skills**; «las 8» que el sitio
+documenta y enlaza cambia, y se avisa a la sesión del sitio antes de que `dev`
+llegue a `prod`. `skills/README.md` necesita las dos filas, el orden de
+adopción y el grafo de dependencias actualizados; lo escribe la parte 1 o
+quien cierre el lote, porque ese archivo es suyo en este lote. `protocolo-ux`
+podría nombrar a `information-architecture` como eslabón previo en su
+«Complemento»; no se toca en esta parte. Esta parte sale en la 0.2.0 o
+después. Hallazgo colateral: el template de protocolo de patrones UX de
+`templates/` es, en contenido, el precursor de `protocolo-ux` y no una
+plantilla de `ux-patterns`; queda anotado en `HANDOFF.md`, sin mover ni
+renombrar, porque el sitio lo enlaza.
