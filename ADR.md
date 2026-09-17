@@ -119,3 +119,36 @@ quien publique es una sola persona hasta que se convierta la cuenta. La
 conversión conserva el scope y los paquetes, así que se puede hacer el día que
 haya más de una persona publicando, sin tocar nada de lo publicado. El paso 1
 de la lista de publish en `HANDOFF.md` desaparece.
+
+## ADR-005 — El repo del paquete se llama `falcux-ai-first-package`
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada
+
+**Contexto.** ADR-001 anticipó que el repo, nacido como material descargable
+con el nombre `blueprint-ai-first-templates`, iba a necesitar renombrarse al
+volverse paquete: el `repository` del `package.json` es la URL que npm muestra.
+El repo del sitio ya se había renombrado a `falcux-ai-first-docs-web`, soltando
+`falcux-ai-first`. En GitHub no hay organización `falcux`: el usuario `falcux`
+existe desde 2013, sin repos, y no es del proyecto. GitHub redirige los
+nombres viejos mientras nadie los reutilice, así que el renombre no bloqueaba
+el publish; se hizo antes para editar una sola vez las URL del sitio.
+
+**Decisión.** `HoruxDeEdfu/falcux-ai-first-package`. Los dos `package.json`
+declaran `repository`, `homepage` (`ai-first.falcux.com`) y `bugs` con ese
+nombre; el alias agrega `directory: alias`.
+
+**Alternativas.** *`falcux-ai-first`*, espejo del nombre npm: estaba libre,
+pero cada mención a `falcux-ai-first` en los documentos de este repo pasaba de
+desactualizada a señalar al repo equivocado, y el clon local del sitio empuja
+todavía a esa URL. *`ai-first`* a secas bajo la cuenta personal: es la
+convención de cuentas personales y el más corto, pero junto a
+`falcux-ai-first-docs-web` queda huérfano y sin la marca que la Apache 2.0
+protege. *`falcux/ai-first`*: exige el handle `falcux`, que no es nuestro;
+Charlie va a evaluar pedirlo a GitHub.
+
+**Consecuencias.** Los dos repos se leen como hermanos: `-docs-web` documenta,
+`-package` entrega. Si el handle `falcux` se consigue, transferir el repo ahí y
+dejarlo en `falcux/ai-first` conserva los redirects; sería una fila nueva.
+Hasta entonces, `main` sigue sirviendo raw links por redirect, y el sitio
+tiene que actualizar 21 URL y una línea del workflow en la edición del merge.

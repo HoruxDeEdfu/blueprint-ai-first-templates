@@ -2,8 +2,11 @@
 
 El paquete: los 8 templates, la copia de las 8 skills y el detector de
 entropía documental. El sitio de la metodología tiene su propio handoff en el
-repo `falcux-ai-first`; acá sólo lo que es del paquete y lo que los dos
-comparten.
+repo `falcux-ai-first-docs-web`; acá sólo lo que es del paquete y lo que los
+dos comparten. Este repo se llama `falcux-ai-first-package` desde el
+2026-09-17 (ADR-005); antes fue `blueprint-ai-first-templates`, y antes
+`docs-ai-first-blueprint`. GitHub redirige los dos nombres viejos mientras
+nadie los reutilice.
 
 > Este archivo nació el 2026-09-17 al mudar la Parte B del handoff del sitio,
 > que fue donde el paquete se planeó mientras no tenía repo. El plan original
@@ -52,11 +55,10 @@ este orden porque cada uno alimenta al siguiente:
    scope `@falcux` ya es de la cuenta de usuario `falcux`, verificado el
    2026-09-17 con `npm whoami` desde esta máquina, ya logueada. Lo único que
    queda de este paso es tener 2FA activo en esa cuenta antes de publicar.
-2. **Decidir el renombre del repo** (bloqueador nº4, abajo). Va antes del
-   publish porque el `package.json` del raíz todavía no declara `repository` ni
-   `homepage`: se agregan con el nombre definitivo, de una vez, para no publicar
-   una URL que GitHub redirija. Arrastra los raw links de cuatro capítulos del
-   sitio y las 8 tarjetas de templates.
+2. ~~Decidir el renombre del repo.~~ **Hecho el 2026-09-17**: es
+   `falcux-ai-first-package` (ADR-005), y los dos `package.json` ya declaran
+   `repository`, `homepage` y `bugs` con ese nombre. Lo que arrastra al sitio
+   sigue pendiente y está en la lista del merge a `main`, abajo.
 3. ~~Quitar `private: true` y subir a `0.1.0` en los dos `package.json`.~~
    **Hecho el 2026-09-17**, raíz y `alias/` en el mismo commit. Desde entonces
    nada frena un `pnpm publish` accidental salvo no correrlo. La prueba
@@ -308,11 +310,16 @@ el nombre.
    - Las del dominio viejo de AutenTIC → falcux.com: verificar que existan los 301; el
      índice de Google todavía apunta allá.
 
-**4. Renombrar los repos.** Hay que hacerlo antes de publicar el npm, y es el mismo
-movimiento que la unificación de repos descrita en la Parte A. Nota: el handoff viejo
-hablaba de consolidar `docs-ai-first-blueprint` y `blueprint-ai-first-templates`; los
-repos que existen de verdad son **`blueprint-ai-first-mintlify`** y
-**`blueprint-ai-first-templates`**.
+**4. ~~Renombrar los repos.~~ Resuelto el 2026-09-17.** Este repo pasó de
+`blueprint-ai-first-templates` a **`falcux-ai-first-package`** (ADR-005); el del
+sitio ya era **`falcux-ai-first-docs-web`**, aunque su clon local y los
+documentos de acá lo llamaban `falcux-ai-first`. Lo que queda es del sitio: la
+línea `repository:` del workflow de sincronización de skills, las 8 tarjetas de templates con el
+nombre viejo `docs-ai-first-blueprint`, 11 menciones más en esa página, una en
+cada capítulo de protocolos y una en «sobre este proyecto». Todo funciona hoy
+por los redirects de GitHub; se corrige en la misma edición que la ruta
+`templates/`. El clon local del sitio empuja a `falcux-ai-first.git`, que
+redirige: `git remote set-url origin` cuando se abra ese repo.
 
 ## Otros hallazgos abiertos del repo de contenido
 

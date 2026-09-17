@@ -5,6 +5,15 @@
   "type": "module",
   "license": "Apache-2.0",
   "author": "Charlie Herrera",
+  "homepage": "https://ai-first.falcux.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HoruxDeEdfu/falcux-ai-first-package.git",
+    "directory": "alias"
+  },
+  "bugs": {
+    "url": "https://github.com/HoruxDeEdfu/falcux-ai-first-package/issues"
+  },
   "engines": {
     "node": ">=22.12.0"
   },

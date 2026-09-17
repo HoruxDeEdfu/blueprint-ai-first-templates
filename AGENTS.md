@@ -2,7 +2,8 @@
 
 Repo de `@falcux/ai-first`: los 8 templates, una copia de las 8 skills y el
 código del detector de entropía documental. El sitio de la metodología vive en
-otro repo, `falcux-ai-first`; este repo **entrega**, aquél **documenta**.
+otro repo, `falcux-ai-first-docs-web`; este repo, `falcux-ai-first-package`,
+**entrega**; aquél **documenta**.
 
 **El paquete no está publicado.** Desde el 2026-09-17 los dos `package.json`
 ya no llevan `private: true` y van en `0.1.0`: están listos para el primer
