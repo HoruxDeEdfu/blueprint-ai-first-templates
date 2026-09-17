@@ -1,0 +1,34 @@
+{
+  "name": "@falcux/ai-first",
+  "version": "0.0.0",
+  "description": "Gobierno del contexto para proyectos AI-First: mide la entropía documental en código puro, sin modelo ni API key.",
+  "type": "module",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "Charlie Herrera",
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "bin": {
+    "ai-first": "dist/src/cli.js"
+  },
+  "files": [
+    "dist/src",
+    "skills",
+    "*_TEMPLATE.md",
+    "*_PROTOCOL.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && node --test \"dist/test/**/*.test.js\"",
+    "audit:self": "node dist/src/cli.js audit"
+  },
+  "dependencies": {
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.9.0"
+  }
+}
