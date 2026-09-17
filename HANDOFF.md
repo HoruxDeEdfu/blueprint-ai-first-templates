@@ -118,6 +118,75 @@ Después del publish, por retorno: el `init` completo (entrevista, skills),
 que depende del bloqueador nº2; los hooks (hueco 5); y `.ai-first/manifest.json`,
 que tiene frontera pero no esquema.
 
+### Lote de actualización de templates y skills (decidido el 2026-09-17)
+
+**El hallazgo.** Los 8 templates se subieron el 2026-04-01 y no cambiaron
+desde entonces; Compliance arrancó el 2026-04-15 y en cinco meses evolucionó
+justo lo que los templates no tienen: un principio editorial en `AGENTS.md`
+(árbol de destinos por tipo de contenido, techo de 200 líneas, frescura, cero
+duplicación, y estructura y comandos fuera por derivables de `ls` y
+`package.json`), y documentos sin molde —TECH_NOTES (150 commits),
+COMPONENT_LIBRARY (163), ARQUITECTURA (31), ROLES_PERMISSIONS_MATRIX (40),
+una carpeta de cambios con 20 CHG y una de specs con 26—. Los 4 protocolos
+coinciden casi línea a línea con los de Compliance porque allá también se
+estancaron: la práctica se mudó a las skills. Las 8 skills sí reflejan
+Compliance al 2026-09-15, pero perdieron al generalizarse las referencias de
+`ux-writer` (5) e `i18n` (3), los dos checks de `ux-audit`, el paso 7 de
+features y el «Enforcement» de `ux-writer`. Y nada en el paquete habla de más
+de una herramienta: `skills/README.md` instala con `cp -r` a la carpeta de skills de Claude.
+
+**La decisión multi-agente.** En los proyectos que adopten el paquete, la
+fuente de las skills va en «.agents/skills/», el directorio del estándar Agent
+Skills que leen nativamente Codex, Cursor, OpenCode y Kimi Code, con un solo
+enlace simbólico «.claude/skills» apuntando a «../.agents/skills» para Claude
+Code. `AGENTS.md` es el
+archivo cross-tool; `CLAUDE.md` sigue siendo `@AGENTS.md`. Lo verificó
+`falcux_personal_web` al revés (fuente en la carpeta de Claude, enlaces por skill en
+la de agents), probado con Claude Code y Codex. En este repo `skills/` sigue
+siendo la carpeta del tarball; lo que cambia es lo que enseña a instalar.
+
+**Tres partes, tres sesiones, un orden.** Cada parte es una sesión de Claude
+(`lote-1`, `lote-2`, `lote-3`), cada una en su **worktree y rama** (`lote-1`,
+`lote-2`, `lote-3`, nacidas de `dev`), porque comparten archivos. Se mergean a
+`dev` **en orden**: primero la 1; la 2 rebasa sobre `dev` cuando la 1 esté
+dentro; la 3, cuando la 2. Números de ADR reservados para que el append no
+choque: **ADR-008** para la parte 1, **ADR-009** para la 2, **ADR-010** para la
+3. Cada sesión escribe su fila con su número aunque la anterior no haya
+llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
+
+1. **Parte 1 — `lote-1`. Sin dependencias externas salvo un aviso.** Va antes
+   de la `0.1.0`. `skills/README.md` con la instalación multi-agente
+   («.agents/skills/» más el enlace de Claude). `templates/CLAUDE_MD_TEMPLATE.md` y
+   `templates/AGENTS_MD_TEMPLATE.md` con el principio editorial de Compliance,
+   sin las secciones derivables, con el índice de skills on-demand y el árbol
+   multi-herramienta. Restaurar en las 8 skills lo perdido al generalizar, ya
+   generalizado. Opcional: que este repo predique con el ejemplo y mueva
+   `.claude/skills/criterio` a «.agents/skills/criterio» con el enlace.
+   **Aviso al sitio**: el apéndice de templates repite el bloque `cp -r` de
+   instalación; hay que avisar a la sesión `redirects` para que lo cambie.
+   Antes de tocar `protocolo-features`, `protocolo-cambios` o
+   `protocolo-cierre`, avisar también: asumen el capítulo de gobierno.
+2. **Parte 2 — `lote-2`. Necesita al sitio.** Templates nuevos para lo que
+   Compliance más editó: un template de TECH_NOTES, uno de inventario de
+   componentes (el check 5 del detector ya lo asume), uno de ARQUITECTURA, el
+   documento CHG de la carpeta de cambios y la SPEC por módulo. Fuentes: la
+   carpeta docs de Compliance, y en `falcux_personal_web` el CHG-template de
+   changes/pending y el README de specs. Generalizar como se hizo con
+   las skills: sin nombrar el proyecto de origen. Cambian la cadena de
+   artefactos del manual y las tarjetas del apéndice: coordinar con `redirects`
+   antes del merge a `prod`. Sale en `0.2.0`.
+3. **Parte 3 — `lote-3`. Después.** Reestructurar `GUIA_DISENO_TEMPLATE.md`
+   contra la GUIA_DISENO de Compliance (3009 líneas, 71 commits: tokens,
+   layout en niveles, móvil, formularios) y evaluar, una por una y con criterio,
+   las skills transferibles que quedaron fuera: `unit-test-fix`, `e2e-fix`,
+   `information-architecture`, `ux-patterns`, `clean-architecture`. Agregar una
+   skill es cambiar «las 8» que el sitio documenta: coordinar con `redirects`.
+
+**Lo que ninguna parte hace**: publicar a npm, avanzar `prod`, cambiar los
+pesos del puntaje, mover o renombrar rutas de `skills/` o `templates/` que el
+sitio enlaza. Para el `init` futuro queda anotado: escribe «.agents/skills/» y
+el enlace de Claude, no la carpeta de Claude.
+
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de
