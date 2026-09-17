@@ -1,6 +1,6 @@
 # Handoff — `@falcux/ai-first`
 
-El paquete: los 8 templates, la copia de las 8 skills y el detector de
+El paquete: los 8 templates, las 8 skills y el detector de
 entropía documental. El sitio de la metodología tiene su propio handoff en el
 repo `falcux-ai-first-docs-web`; acá sólo lo que es del paquete y lo que los
 dos comparten. Este repo se llama `falcux-ai-first-package` desde el
@@ -43,7 +43,16 @@ esto o el código:
 **Decisiones tomadas**, con sus alternativas, en `ADR.md`: dónde vive el
 código (001), el nombre en npm y el alias (002), init mínimo antes que completo
 (003), publicar desde la cuenta de usuario `falcux` y no desde una organización
-(004).
+(004), el nombre del repo (005), y `skills/` como fuente de verdad en vez de
+copia del sitio (006).
+
+**Las skills cambiaron de dueño el 2026-09-17** (ADR-006). El sitio borró su
+`skills/` y el workflow que la empujaba acá con `rsync --delete`, tras
+verificar con `diff -rq` que los 9 archivos eran idénticos a los de `dev` en
+`6de6794`. Desde entonces `skills/` se edita acá; `AI-FIRST.md` la quita de
+Zonas Prohibidas porque la razón era el rsync. El sitio sigue enlazando a
+`main/skills/<nombre>/SKILL.md`. Tres skills asumen su capítulo «Gobierno del
+contexto»: tocarlas obliga a avisar al sitio, y viceversa.
 
 ### Lo que sigue, en orden
 
@@ -97,9 +106,10 @@ que tiene frontera pero no esquema.
 
 ### Cómo trabajar acá
 
-`AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: `skills/` es una
-copia que el rsync borra; `main` no se toca; `pnpm test` en verde por exit code
-y `audit:self` en 0 antes de cada commit.
+`AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de
+`skills/` y `templates/` que el sitio enlaza no se mueven sin coordinar; `main`
+se avanza sólo cuando Charlie lo decide; `pnpm test` en verde por exit code y
+`audit:self` en 0 antes de cada commit.
 
 ---
 
@@ -293,8 +303,10 @@ modelo —el blueprint atrae, falcux.com vende—.
 Replicado también en `blueprint-ai-first-templates` (commit `7c84650`, ya en su
 `main` público): es de donde la gente clona las skills y no declaraba licencia,
 así que quien las descargaba no tenía permiso formal para usarlas. Vive en la
-raíz a propósito, donde el `rsync --delete` de el workflow de sincronización del sitio no lo alcanza,
-porque ese sincroniza `skills/` contra `skills/`.
+raíz a propósito, donde el `rsync --delete` del workflow de sincronización del
+sitio no lo alcanzaba, porque ese sincronizaba `skills/` contra `skills/`. (Ese
+workflow dejó de existir el 2026-09-17, ADR-006; la razón de ubicación ya no
+aplica, pero el archivo sigue bien donde está.)
 
 `blueprint-ai-first-mintlify` **no se corrige**: se da de baja al terminar este
 sitio. Su `LICENSE` seguirá diciendo `Copyright (c) 2023 Mintlify` hasta que
@@ -327,9 +339,10 @@ redirige: `git remote set-url origin` cuando se abra ese repo.
 
 - **Su `AGENTS.md` es el template de Mintlify sin personalizar**, con el banner de
   *first-time setup* todavía puesto.
-- **El README dice que hay que replicar `skills/` a mano al repo público**, pero el
-  workflow el workflow de sincronización del sitio (commit `fcf5eca`) ya lo automatiza con `rsync --delete`.
-  Una de las dos fuentes miente.
+- ~~**El README dice que hay que replicar `skills/` a mano al repo público**, pero el
+  workflow de sincronización del sitio (commit `fcf5eca`) ya lo automatizaba con `rsync --delete`.
+  Una de las dos fuentes miente.~~ **Cerrado el 2026-09-17**: no hay nada que
+  replicar en ningún sentido; `skills/` vive sólo acá (ADR-006).
 
 ---
 

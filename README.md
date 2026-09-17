@@ -19,8 +19,8 @@ y el detector de entropía documental.
 | `ai-first` sin scope, alias del paquete real con el mismo comando | `alias/` | escrito, sin publicar |
 | `init` completo (entrevista, skills), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
 
-Las skills se sincronizan **desde** el repo del sitio a cada publicación: acá
-son una copia generada. Editarlas acá se pierde en la siguiente sincronización.
+Las 8 skills viven acá y sólo acá desde el 2026-09-17; el sitio enlaza a las
+de `main`. Antes eran una copia que el repo del sitio sobreescribía.
 
 ## El detector
 

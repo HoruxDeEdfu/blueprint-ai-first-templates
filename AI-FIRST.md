@@ -7,10 +7,10 @@ actualizado: 2026-09-17
 
 verificacion: pnpm test
 
-zonas_prohibidas:
-  - ruta: skills/
-    razon: copia generada; sync-skills.yml del repo del sitio la sobreescribe con rsync --delete a cada publicacion
-    desde: 2026-09-17
+# Sin zonas hoy. skills/ lo fue mientras el sitio la sobreescribía con rsync
+# (hasta el 2026-09-17, ADR-006); ahora se edita acá. El check 1 se reporta
+# omitido, que es lo honesto: no hay zona que inventar.
+zonas_prohibidas: []
 
 # Cambiar la forma del contrato o de la interfaz es decisión. Las dependencias
 # de producción las vigila el check 2 sin declararlas.
@@ -37,9 +37,11 @@ artefactos:
 
 ## Notas
 
-Por qué `skills/` es Zona Prohibida: la fuente de verdad de las skills es el
-repo del sitio. Lo que hay acá se regenera en cada publicación de `prod`, y un
-cambio hecho a mano desaparece sin aviso en la siguiente sincronización.
+Por qué `skills/` dejó de ser Zona Prohibida: lo era porque el sitio la
+sobreescribía con `rsync --delete` a cada publicación, no por importancia.
+Desde el 2026-09-17 (ADR-006) la fuente de verdad de las 8 skills es este repo
+y nada las regenera. Lo que sí sigue: el sitio enlaza a
+`main/skills/<nombre>/SKILL.md`, así que esas rutas no se mueven sin avisar.
 
 Por qué `src/puntaje.ts` es superficie de decisión: los pesos 40 / 20 / 8
 están calibrados contra el único ejemplo publicado en la landing. Cambiarlos

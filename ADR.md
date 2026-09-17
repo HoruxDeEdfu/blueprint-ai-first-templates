@@ -152,3 +152,41 @@ Charlie va a evaluar pedirlo a GitHub.
 dejarlo en `falcux/ai-first` conserva los redirects; sería una fila nueva.
 Hasta entonces, `main` sigue sirviendo raw links por redirect, y el sitio
 tiene que actualizar 21 URL y una línea del workflow en la edición del merge.
+
+## ADR-006 — `skills/` es la fuente de verdad de las 8 skills; el sitio deja de sincronizarlas
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada. Supera la consecuencia de ADR-001 «nada del código
+  puede vivir dentro de `skills/`: el rsync lo borraría», y la Zona Prohibida
+  que `AI-FIRST.md` declaraba por esa razón.
+
+**Contexto.** El 2026-09-16 las skills se autoraban en el repo del sitio y un
+workflow las empujaba acá con `rsync --delete` a cada publicación de `prod`. La
+razón era de ese día: el repo Mintlify se daba de baja y éste era un espejo
+público sin CI, así que la fuente tenía que estar donde había workflow. Esa
+razón caducó al día siguiente, cuando este repo pasó a ser el paquete: la
+carpeta `skills/` viaja en el tarball de npm (`files` del `package.json`) y no
+se podía editar desde acá. Mantener la sincronización obligaba a distribuir
+una carpeta cuyo dueño era otro repo. Lo pidió el sitio con su criterio;
+Charlie lo decidió.
+
+**Decisión.** `skills/` vive acá y sólo acá. El sitio borró su copia y el
+workflow, tras verificar con `diff -rq` que los 9 archivos eran idénticos a los
+de `dev` en `6de6794`. `AI-FIRST.md` queda sin Zonas Prohibidas: la de `skills/`
+existía por el rsync, no por importancia, y el check 1 se reporta omitido antes
+que inventar una zona.
+
+**Alternativas.** *Seguir sincronizando desde el sitio*: el paquete publicaría
+algo que no gobierna, y cada edición a una skill pasaría por un repo privado
+ajeno al paquete. *Sincronizar al revés, de acá al sitio*: el sitio no necesita
+la copia; enlaza a los raw links de `main`. Un espejo sin lector es entropía.
+
+**Consecuencias.** Las skills se editan acá con las mismas compuertas que el
+código: `pnpm test` y `audit:self`. El sitio sigue enlazando a
+`main/skills/<nombre>/SKILL.md`; mover o renombrar esas rutas se coordina antes
+del merge a `main`, igual que con `templates/`. Nace una dependencia de
+contenido en los dos sentidos: `protocolo-features`, `protocolo-cambios` y
+`protocolo-cierre` asumen el capítulo «Gobierno del contexto» del manual; si
+cambian ellas, se avisa al sitio, y si cambia el capítulo, el sitio avisa acá.
+El bloqueador compartido nº2, los nombres genéricos de las skills, pasa a ser
+enteramente de este repo.
