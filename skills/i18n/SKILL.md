@@ -26,6 +26,8 @@ El síntoma de haber resuelto solo la Capa 1: la interfaz está impecable en ing
 
 ## Capa 1 — Frontend
 
+Detalle con código: `references/frontend.md`.
+
 - Rutas con segmento de idioma, con un idioma por defecto explícito.
 - Mensajes en archivos por idioma, organizados en **namespaces por feature** — no un archivo plano de 5.000 claves.
 - Formateo de fechas, números y monedas mediante la librería de i18n, **nunca** con métodos nativos sin pasar el locale.
@@ -35,6 +37,8 @@ El síntoma de haber resuelto solo la Capa 1: la interfaz está impecable en ing
 ---
 
 ## Capa 2 — Backend
+
+Detalle con modelo y servicio: `references/backend-plantillas.md`.
 
 Las plantillas de comunicación tienen su texto por idioma (asunto y cuerpo) más una declaración de las variables que aceptan.
 
@@ -47,6 +51,8 @@ Los documentos generados (PDF, Excel) se emiten en el idioma de quien los solici
 ---
 
 ## Capa 3 — Datos
+
+Detalle con esquema y resolución: `references/datos-etiquetas.md`.
 
 Todo catálogo y toda configuración que el usuario ve necesitan **una etiqueta por idioma** en la base de datos: roles, estados, niveles, severidades, tipos de documento, campos de formulario configurables.
 
@@ -72,9 +78,19 @@ Ningún string nuevo se entrega en un solo idioma. La paridad se verifica, no se
 
 ---
 
+## Referencias
+
+- `references/frontend.md` — Capa 1: estructura, namespaces, pluralización ICU, cambio de idioma, middleware, formateo.
+- `references/backend-plantillas.md` — Capa 2: modelo de plantilla, resolución por destinatario, variables declaradas, branding.
+- `references/datos-etiquetas.md` — Capa 3: columnas por idioma, seed y validación, resolución en el backend, excepciones.
+
+Las tres usan un stack concreto como ejemplo y lo dicen en su primera línea. El código es ilustrativo; las reglas, no.
+
+---
+
 ## Adaptación a tu proyecto
 
-1. Reemplaza los nombres de librería por los de tu stack. **Las tres capas son independientes del stack** — el error de resolver solo la primera es universal.
+1. Reemplaza los nombres de librería por los de tu stack, en esta skill y en las tres referencias. **Las tres capas son independientes del stack** — el error de resolver solo la primera es universal.
 2. Si tu producto es monolingüe hoy pero podría no serlo: aplicar la Capa 1 desde el inicio cuesta poco. Retrofitear las Capas 2 y 3 sobre un producto en producción cuesta mucho.
 3. Define desde el inicio dónde vive la preferencia de idioma: en el usuario, en la organización, o en ambos con precedencia explícita.
 
