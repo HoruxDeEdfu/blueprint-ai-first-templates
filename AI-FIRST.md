@@ -23,6 +23,8 @@ superficies_de_decision:
 # Sólo documentos que hablan de ESTE repo. SPEC-PAQUETE.md no entra: describe un
 # proyecto genérico y sus rutas de ejemplo no tienen por qué existir acá.
 artefactos:
+  agents: AGENTS.md
+  handoff: HANDOFF.md
   adr: ADR.md
   readme: README.md
 ---
