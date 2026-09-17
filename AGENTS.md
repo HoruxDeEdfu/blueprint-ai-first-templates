@@ -60,9 +60,11 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
 
 ### Ramas
 
-- Se trabaja en **`dev`**. **`main` no se toca** hasta que el paquete merezca
-  verse: el sitio publicado descarga skills desde los raw links de `main`, y el
-  workflow del sitio empuja ahí. Un `main` a medias rompe enlaces vivos.
+- Se trabaja en **`dev`**. **`main` se avanza sólo cuando Charlie lo decide**,
+  con `--ff-only`: el sitio publicado descarga skills y templates desde los raw
+  links de `main`, y el workflow del sitio empuja ahí. El primer merge fue el
+  2026-09-17; mover o renombrar algo en `skills/` o `templates/` obliga a
+  coordinar con el sitio antes del siguiente.
 - Publicar el paquete es una decisión aparte de mergear `dev`. Ver `HANDOFF.md`.
 
 ### El alias
@@ -117,7 +119,7 @@ tildes**; el resto, con ellas.
 ## What NOT to do
 
 - **No escribas en `skills/`.** Se pierde en la siguiente sincronización.
-- **No toques `main`.** Sirve enlaces publicados.
+- **No avances `main` sin que Charlie lo pida.** Sirve enlaces publicados.
 - **No publiques a npm.** Ni con `--dry-run` sin avisar. El primer publish
   tiene su lista en `HANDOFF.md`. El scope `@falcux` ya es de la cuenta de
   usuario `falcux` (ADR-004); no hay organización que crear.

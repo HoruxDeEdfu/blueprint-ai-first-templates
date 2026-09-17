@@ -80,14 +80,16 @@ Nota menor: el tarball del alias lleva `bin/`, `package.json` y `README.md`, no
 `LICENSE`; el campo `license: Apache-2.0` sí viaja. Copiar el archivo sería
 duplicarlo. Si npm lo reclama en la página del paquete, se copia en el `prepack`.
 
-**El merge de `dev` a `main` tiene su propia lista**, porque `main` sirve
-enlaces publicados. El 2026-09-17 los 8 templates pasaron de la raíz a
-`templates/`; las 8 tarjetas de descarga de `/docs/apendices/templates` en el
-sitio apuntan a la raíz de `main` **y** al nombre viejo del repo,
-`docs-ai-first-blueprint`, que hoy responde sólo porque GitHub redirige tras el
-renombre. Al mergear: primero `main` acá, después las 8 URL en el sitio con la
-ruta nueva y el nombre actual del repo, en la misma edición. Las 8 de skills no
-se mueven y ya usan el nombre actual.
+**El merge de `dev` a `main` se hizo el 2026-09-17**, avance directo de 12
+commits hasta `b6d3804`, coordinado con el sitio en dos lotes: primero el
+nombre nuevo del repo en las 21 URL y el workflow de sincronización, sin mover
+rutas; después de nuestro merge, las 8 tarjetas de `/docs/apendices/templates`
+a `main/templates/<archivo>`, publicado en `prod` del sitio en `e60c1a2`.
+Verificado desde la página publicada: 8 tarjetas a `templates/`, ninguna a la
+raíz, cero nombres viejos, las 8 URL en 200. La raíz de `main` siguió dando 200
+unos minutos por la caché del CDN de GitHub, no porque los archivos siguieran
+ahí. Desde entonces `main` y `dev` van a la par; los merges siguientes los
+decide Charlie y ya no arrastran nada del sitio.
 
 Después del publish, por retorno: el `init` completo (entrevista, skills),
 que depende del bloqueador nº2; los hooks (hueco 5); y `.ai-first/manifest.json`,
