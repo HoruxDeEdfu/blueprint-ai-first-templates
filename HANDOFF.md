@@ -43,8 +43,10 @@ esto o el código:
 **Decisiones tomadas**, con sus alternativas, en `ADR.md`: dónde vive el
 código (001), el nombre en npm y el alias (002), init mínimo antes que completo
 (003), publicar desde la cuenta de usuario `falcux` y no desde una organización
-(004), el nombre del repo (005), y `skills/` como fuente de verdad en vez de
-copia del sitio (006).
+(004), el nombre del repo (005), `skills/` como fuente de verdad en vez de
+copia del sitio (006), `prod` como rama publicada (007), y la instalación de
+las skills en «.agents/skills/» con enlace para Claude Code más el principio
+editorial en los templates (008).
 
 **Las skills cambiaron de dueño el 2026-09-17** (ADR-006). El sitio borró su
 `skills/` y el workflow que la empujaba acá con `rsync --delete`, tras
@@ -154,7 +156,19 @@ choque: **ADR-008** para la parte 1, **ADR-009** para la 2, **ADR-010** para la
 3. Cada sesión escribe su fila con su número aunque la anterior no haya
 llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
 
-1. **Parte 1 — `lote-1`. Sin dependencias externas salvo un aviso.** Va antes
+1. **Parte 1 — `lote-1`. Hecha el 2026-09-17, en `dev`.** Seis commits, cada
+   uno con la suite en verde y `audit:self` en 0. Lo que quedó: la
+   instalación multi-agente en `skills/README.md`; los dos templates de
+   contexto con el principio editorial; `ux-writer` con sus cinco referencias
+   y la sección de enforcement; `i18n` con tres; `ux-audit` con los dos
+   scripts de la Capa 1; `protocolo-features` con el paso 7; `criterio` mudada
+   a `.agents/skills/` con `.claude/skills` como enlace; ADR-008. El sitio ya
+   tiene el bloque de instalación nuevo en su `dev` y lo publica cuando esta
+   parte llegue a `prod`. Queda abierto de este lado: el capítulo de
+   protocolo de features del manual numera 6 pasos porque no tiene el
+   inventario de reuso como paso; la skill numera 7. El sitio pidió la lista
+   para comparar; se le mandó. El plan original de la parte, tal como se
+   escribió: va antes
    de la `0.1.0`. `skills/README.md` con la instalación multi-agente
    («.agents/skills/» más el enlace de Claude). `templates/CLAUDE_MD_TEMPLATE.md` y
    `templates/AGENTS_MD_TEMPLATE.md` con el principio editorial de Compliance,
