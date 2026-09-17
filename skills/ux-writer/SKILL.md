@@ -60,7 +60,7 @@ El registro cambia (cero jerga); la neutralidad **no** cambia. No se tutea al us
 
 ## Glosario canónico
 
-**Una fuente única, consultada antes de nombrar cualquier cosa.** No inferir del copy vecino — el copy vecino puede estar en deriva, y la deriva se imita sola.
+**Una fuente única, consultada antes de nombrar cualquier cosa:** `references/glosario.md`. No inferir del copy vecino — el copy vecino puede estar en deriva, y la deriva se imita sola.
 
 El patrón que más se rompe es confundir **el sujeto**, **el proceso** y **la evidencia**. Un ejemplo de cómo resolverlo:
 
@@ -124,6 +124,8 @@ Casi todas las guías de voz dicen «sé cercano pero profesional» y no ayudan 
 
 ## Principios de voz
 
+Detalle, excepciones a la impersonalidad y antes/después: `references/voz.md`. En corto:
+
 1. **La acción primero.** `Crear vinculación`, no `Comienza creando tu primera contraparte para gestionar el proceso`. Nunca abrir con relleno (`Aquí puedes…`, `Este módulo permite…`).
 2. **Corto de verdad.** Botón ≤ 3 palabras · título ≤ 4 · estado vacío, hint o toast: 1 oración · error o bloqueo: 2 · email: 4.
 3. **El enemigo es la complejidad, nunca el lector.** Un error dice qué pasó y qué sigue, sin señalar responsable.
@@ -133,7 +135,7 @@ Casi todas las guías de voz dicen «sé cercano pero profesional» y no ayudan 
 
 ## Inglés (si el producto es bilingüe)
 
-Voz propia, **no traducción**. `Your session will close due to inactivity` es español con palabras inglesas; un nativo escribe `You'll be signed out in 5 min`.
+Detalle, glosario EN y reglas de plain English: `references/ingles.md`. En corto: voz propia, **no traducción**. `Your session will close due to inactivity` es español con palabras inglesas; un nativo escribe `You'll be signed out in 5 min`.
 
 **La asimetría con el español es deliberada: el inglés sí usa segunda persona.** GOV.UK, en el contexto más regulado que existe, lo manda: *«Address the user as "you" where possible.»* En español, `tú`/`usted` obliga a marcar cercanía o distancia; en inglés, `you` es neutro y evitarlo produce burocracia.
 
@@ -161,11 +163,35 @@ Voz propia, **no traducción**. `Your session will close due to inactivity` es e
 
 ---
 
+## Enforcement
+
+Una skill que sólo se carga cuando alguien se acuerda no gobierna nada. Tres anclas, en orden de eficacia:
+
+1. **El checklist de merge de la guía de diseño** incluye un ítem que remite a esta skill: todo string nuevo pasa por aquí antes del merge. Sin ese ítem, el copy se escribe primero y se revisa nunca.
+2. **El gate de copy de `protocolo-features`** (paso 6 de la secuencia de implementación): si el frontend lo escribe un agente separado, la instrucción de cargar esta skill va explícita en su prompt.
+3. **La línea base de `references/deuda-conocida.md`**: si los conteos vuelven a medirse y subieron, la skill no se está aplicando. Es la métrica más barata que existe.
+
+Y una regla de coherencia: si la guía de diseño prescribe otra persona gramatical u otro tono en alguna superficie (un panel de bienvenida que «tutea», por ejemplo), **se alinea la guía**, no se hace la excepción en silencio. Dos fuentes que se contradicen son la deriva que esta skill combate.
+
+---
+
 ## Auditoría y reescritura
 
-**El skill gobierna lo nuevo.** El copy existente no se reescribe en campaña.
+**El skill gobierna lo nuevo.** El copy existente no se reescribe en campaña. La deuda medida vive en `references/deuda-conocida.md`, con el método para medirla.
 
 Cuando toque una reescritura, va **por lotes de una sola familia** (solo los verbos de acción, o solo un término mal usado), con el diff a la vista y aprobación **antes** de tocar archivos. Nunca un barrido completo: un error de criterio se propagaría a todo el producto de golpe.
+
+---
+
+## Referencias
+
+- `references/glosario.md` — Plantilla del glosario canónico: entidades, estados, verbos de acción, términos prohibidos, vocabulario del registro externo.
+- `references/voz.md` — Cómo derivar la voz del producto de la de la marca, la redacción impersonal y sus tres excepciones, la regla de temperatura, antes/después.
+- `references/superficies.md` — Patrones por tipo de texto: botón, título, vacío, error, carga, toast, confirmación destructiva, label, email, aria-label, PDF, portal.
+- `references/ingles.md` — Voz en inglés, la asimetría con el español, glosario EN, plain English.
+- `references/deuda-conocida.md` — Cómo medir la deuda de copy, plantilla de registro y orden de los lotes.
+- Skill `protocolo-ux` — Comportamiento (cuándo modal, cuándo página). Esta skill no lo duplica.
+- Skill `i18n` — Mecánica: dónde vive cada string.
 
 ---
 
@@ -174,4 +200,5 @@ Cuando toque una reescritura, va **por lotes de una sola familia** (solo los ver
 1. **El glosario es 100% tuyo.** Los términos de ejemplo son de un dominio de compliance — reemplázalos por los tuyos. Lo que se hereda es el método: identificar los términos que se confunden entre sí y resolverlos por escrito.
 2. **La regla de temperatura es transferible tal cual.** Solo ajusta qué superficies caen en cada categoría.
 3. Define tus registros por audiencia antes de escribir el primer string. Si tu producto solo tiene un tipo de usuario, elimina esa sección.
-4. Si el producto es monolingüe, elimina la sección de inglés.
+4. Si el producto es monolingüe, elimina la sección de inglés y `references/ingles.md`.
+5. Las referencias son plantillas con ejemplos: se rellenan con el producto real, y `deuda-conocida.md` se llena la primera vez que se mide. Una referencia vacía no le sirve a nadie; una con los términos de otro producto, menos.
