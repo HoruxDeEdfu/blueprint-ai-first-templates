@@ -1,6 +1,6 @@
 ---
 name: protocolo-features
-description: "Protocolo de desarrollo de features nuevos: pre-implementación (spec → inventario de reuso → diseño → UX → dependencias), secuencia estricta de implementación por capas, validación incremental y checklists post-implementación. Comprueba Zonas Prohibidas antes de escribir código y manda al ADR las decisiones difíciles de revertir. Activar ANTES de implementar cualquier feature nuevo, página, módulo o endpoint. Para modificar algo que ya existe, usar protocolo-cambios."
+description: "Protocolo de desarrollo de features nuevos: pre-implementación en 7 pasos (spec → inventario de reuso → diseño → UX → dependencias → contexto → secuencia), secuencia estricta de implementación por capas, validación incremental y checklists post-implementación. Comprueba Zonas Prohibidas antes de escribir código y manda al ADR las decisiones difíciles de revertir. Activar ANTES de implementar cualquier feature nuevo, página, módulo o endpoint. Para modificar algo que ya existe, usar protocolo-cambios."
 ---
 
 ## Cuándo activar
@@ -12,7 +12,7 @@ description: "Protocolo de desarrollo de features nuevos: pre-implementación (s
 
 ---
 
-## Pre-implementación — 6 pasos obligatorios
+## Pre-implementación — 7 pasos obligatorios
 
 ### Paso 1 — Verificar que existe una spec implementable
 
@@ -79,6 +79,17 @@ Revisar la spec contra el checklist de `protocolo-ux`. Si tienes un agente crít
 ### Paso 6 — Preparar el contexto de la AI
 
 Construir el prompt con: la spec, los documentos a consultar, la arquitectura del módulo, las restricciones y **los archivos que no deben modificarse**.
+
+### Paso 7 — Definir la secuencia de implementación
+
+El último paso antes del código, y el que cierra la pre-implementación: dejar **escrito en el plan** cómo se va a recorrer la sección siguiente.
+
+- [ ] Qué variante aplica: full-stack (pasos 1-10), solo-backend (1-5, 7-8, 10) o solo-frontend (6-8, 10)
+- [ ] Qué pasos se omiten y por qué (sin migración, sin interfaz, sin paquete compartido)
+- [ ] Si hay división por agentes, qué agente ejecuta qué pasos y en qué orden
+- [ ] Qué comando verifica cada paso antes de avanzar al siguiente
+
+Sin este paso, la secuencia se decide sobre la marcha, y sobre la marcha es cuando se saltan pasos: el test que «se hace después», el paquete compartido que se toca desde el frontend porque era más rápido. Escribirla cuesta dos minutos; seguirla sin haberla escrito no ocurre.
 
 ---
 
