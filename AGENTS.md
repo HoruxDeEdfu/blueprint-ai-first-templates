@@ -4,9 +4,10 @@ Repo de `@falcux/ai-first`: los 8 templates, una copia de las 8 skills y el
 código del detector de entropía documental. El sitio de la metodología vive en
 otro repo, `falcux-ai-first`; este repo **entrega**, aquél **documenta**.
 
-**El paquete no está publicado.** `package.json` lleva `private: true` a
-propósito para que nadie lo publique por accidente. Se quita en el primer
-publish, no antes.
+**El paquete no está publicado.** Desde el 2026-09-17 los dos `package.json`
+ya no llevan `private: true` y van en `0.1.0`: están listos para el primer
+publish, que sigue siendo una decisión aparte. Lo único que impide publicar
+por accidente es no correr `pnpm publish`.
 
 ## Estructura
 
@@ -67,8 +68,8 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
 
 - `alias/` es `ai-first` sin scope. No tiene código: su bin importa
   `@falcux/ai-first/cli`, el único `export` del raíz. Las pruebas exigen que los
-  dos `package.json` compartan `version` y `private`: se publican juntos, en la
-  misma versión, o no se publica ninguno.
+  dos `package.json` compartan `version` y `private` (hoy, ninguno lo lleva):
+  se publican juntos, en la misma versión, o no se publica ninguno.
 
 ### El detector
 

@@ -1,9 +1,8 @@
 {
   "name": "ai-first",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Alias sin scope de @falcux/ai-first: el mismo comando, más corto. `npx ai-first audit`.",
   "type": "module",
-  "private": true,
   "license": "Apache-2.0",
   "author": "Charlie Herrera",
   "engines": {

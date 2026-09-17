@@ -57,9 +57,10 @@ este orden porque cada uno alimenta al siguiente:
    `homepage`: se agregan con el nombre definitivo, de una vez, para no publicar
    una URL que GitHub redirija. Arrastra los raw links de cuatro capítulos del
    sitio y las 8 tarjetas de templates.
-3. **Quitar `private: true`** en los dos `package.json` —raíz y `alias/`— en el
-   mismo commit. La prueba `test/alias.test.ts` exige que coincidan, así que un
-   solo cambio falla la suite. Subir la versión de `0.0.0` a `0.1.0` en los dos.
+3. ~~Quitar `private: true` y subir a `0.1.0` en los dos `package.json`.~~
+   **Hecho el 2026-09-17**, raíz y `alias/` en el mismo commit. Desde entonces
+   nada frena un `pnpm publish` accidental salvo no correrlo. La prueba
+   `test/alias.test.ts` sigue exigiendo que `version` y `private` coincidan.
 4. **Primer publish, con provenance.** Después de mergear `dev` a `main`:
    `pnpm publish` se niega desde otra rama o con el árbol sucio, y eso está
    bien. Desde GitHub Actions con `permissions: id-token: write` y
