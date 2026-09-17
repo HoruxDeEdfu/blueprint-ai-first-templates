@@ -12,7 +12,7 @@ y el detector de entropía documental.
 
 | | Dónde | Estado |
 |---|---|---|
-| 8 templates de documentos (AGENTS.md, PRD, guía de diseño, protocolos) | raíz, `*_TEMPLATE.md` y `*_PROTOCOL.md` | publicados |
+| 8 templates de documentos (AGENTS.md, PRD, guía de diseño, protocolos) | `templates/` | publicados |
 | 8 skills para Claude Code | `skills/` | publicadas — [cómo instalarlas](skills/README.md) |
 | Detector de entropía (`ai-first audit`) | `src/` | escrito, sin publicar |
 | `ai-first init` mínimo: escanea y escribe `AI-FIRST.md` + `ADR.md` | `src/init.ts` | escrito, sin publicar |

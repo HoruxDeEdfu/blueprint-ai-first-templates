@@ -20,7 +20,7 @@ src/puntaje.ts             40·P0 + 20·P1 + 8·P2. Calibrado contra la landing.
 src/git.ts  src/glob.ts  src/markdown.ts   Lo único que se le pregunta a git, a los patrones y al Markdown.
 test/                      node:test sobre repos git desechables. Sin mocks.
 skills/                    COPIA GENERADA. Ver «Las skills».
-*_TEMPLATE.md *_PROTOCOL.md   Los 8 templates. Acá es su único hogar.
+templates/                 Los 8 templates. Acá es su único hogar. El sitio enlaza a los de `main`.
 SPEC-PAQUETE.md            El contrato: formato de AI-FIRST.md, los 5 checks, el puntaje.
 ADR.md                     Por qué se decidió cada cosa. Se agrega, no se edita.
 ```
@@ -50,7 +50,9 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
   sitio, cuyo workflow la sobreescribe con `rsync --delete` a cada publicación.
   **Nada que se escriba dentro de `skills/` sobrevive.** Es Zona Prohibida en
   `AI-FIRST.md` por eso, no por importancia.
-- Los templates de la raíz, en cambio, sí viven acá y sólo acá.
+- Los templates de `templates/`, en cambio, sí viven acá y sólo acá. Moverlos o
+  renombrarlos rompe las tarjetas de descarga del sitio cuando llegue a `main`;
+  la lista está en `HANDOFF.md`.
 
 ### Ramas
 

@@ -16,8 +16,7 @@
   "files": [
     "dist/src",
     "skills",
-    "*_TEMPLATE.md",
-    "*_PROTOCOL.md"
+    "templates"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

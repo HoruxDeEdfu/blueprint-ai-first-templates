@@ -51,6 +51,15 @@ Para el `npx` ya no falta código; falta lo de alrededor:
 4. Quitar `private: true`, primer publish con `--access public`, con
    provenance desde CI.
 
+**El merge de `dev` a `main` tiene su propia lista**, porque `main` sirve
+enlaces publicados. El 2026-09-17 los 8 templates pasaron de la raíz a
+`templates/`; las 8 tarjetas de descarga de `/docs/apendices/templates` en el
+sitio apuntan a la raíz de `main` **y** al nombre viejo del repo,
+`docs-ai-first-blueprint`, que hoy responde sólo porque GitHub redirige tras el
+renombre. Al mergear: primero `main` acá, después las 8 URL en el sitio con la
+ruta nueva y el nombre actual del repo, en la misma edición. Las 8 de skills no
+se mueven y ya usan el nombre actual.
+
 Después del publish, por retorno: el `init` completo (entrevista, skills),
 que depende del bloqueador nº2; los hooks (hueco 5); y `.ai-first/manifest.json`,
 que tiene frontera pero no esquema.
