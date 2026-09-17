@@ -165,10 +165,12 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
    scripts de la Capa 1; `protocolo-features` con el paso 7; `criterio` mudada
    a `.agents/skills/` con `.claude/skills` como enlace; ADR-008. El sitio ya
    tiene el bloque de instalación nuevo en su `dev` y lo publica cuando esta
-   parte llegue a `prod`. Queda abierto de este lado: el capítulo de
-   protocolo de features del manual numera 6 pasos porque no tiene el
-   inventario de reuso como paso; la skill numera 7. El sitio pidió la lista
-   para comparar; se le mandó. El plan original de la parte, tal como se
+   parte llegue a `prod`. El capítulo de protocolo de features del
+   manual numeraba 6 pasos porque no tenía el inventario de reuso; el sitio
+   lo incorporó como paso 2 el mismo día, adaptado del texto de la skill, y
+   renumeró 3-7 con los mismos nombres. Capítulo y skill coinciden; está en
+   el `dev` del sitio, retenido hasta que esta parte llegue a `prod`. El plan
+   original de la parte, tal como se
    escribió: va antes
    de la `0.1.0`. `skills/README.md` con la instalación multi-agente
    («.agents/skills/» más el enlace de Claude). `templates/CLAUDE_MD_TEMPLATE.md` y
