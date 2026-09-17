@@ -24,6 +24,7 @@ test/                      node:test sobre repos git desechables. Sin mocks.
 skills/                    Las 8 skills. Acá es su único hogar desde ADR-006. El sitio enlaza a las de `prod`.
 templates/                 Los 8 templates. Acá es su único hogar. El sitio enlaza a los de `prod`.
 alias/                     El paquete `ai-first` sin scope (ADR-002): un shim que importa `@falcux/ai-first/cli`.
+.agents/skills/            Las skills de ESTE repo (hoy, `criterio`). `.claude/skills` es un enlace a ella (ADR-008).
 pnpm-workspace.yaml        Raíz + alias/. El alias depende del raíz por `workspace:*`.
 SPEC-PAQUETE.md            El contrato: formato de AI-FIRST.md, los 5 checks, el puntaje.
 ADR.md                     Por qué se decidió cada cosa. Se agrega, no se edita.
@@ -61,7 +62,11 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
   el capítulo cambia, el sitio avisa acá.
 - El sitio enlaza a `prod/skills/<nombre>/SKILL.md` y a `prod/templates/<archivo>`.
   Mover o renombrar cualquiera de esas rutas rompe enlaces publicados: se
-  coordina con el sitio antes del merge a `prod`.
+  coordina con el sitio antes del merge a `prod`. Agregar archivos de apoyo
+  dentro de la carpeta de una skill («references/», «checks/») no mueve nada.
+- La instalación que enseña `skills/README.md` es en «.agents/skills/» (estándar
+  Agent Skills) con un enlace `.claude/skills` para Claude Code (ADR-008). Este
+  repo hace lo mismo con su propia skill `criterio`: se edita en `.agents/skills/`.
 
 ### Ramas
 

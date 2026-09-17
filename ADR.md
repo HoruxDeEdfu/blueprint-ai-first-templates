@@ -234,3 +234,61 @@ por tanto, la decisión de publicar. Queda pendiente el workflow y la
 configuración de trusted publishing (`HANDOFF.md`, paso 4). Los documentos que
 digan `main` de este repo están desactualizados; los de las ADR anteriores se
 leen con su fecha.
+
+## ADR-008 — Las skills se instalan en `.agents/skills/` con un enlace para Claude Code, y los templates de contexto adoptan el principio editorial
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada. Supera lo que `skills/README.md` enseñaba hasta hoy
+  (copiar a la carpeta de skills de Claude Code) y las secciones de estructura,
+  tech stack y comandos que `templates/AGENTS_MD_TEMPLATE.md` pedía inline.
+
+**Contexto.** Los 8 templates se subieron el 2026-04-01 y no cambiaron; el
+proyecto donde nació la metodología arrancó dos semanas después y en cinco
+meses aprendió dos cosas que el paquete no enseñaba. La primera: su `AGENTS.md`
+pasó de plantilla a documento gobernado por un principio editorial —un árbol de
+destinos por tipo de contenido, techo de 200 líneas, regla de frescura, cero
+duplicación, y las secciones de estructura, stack y comandos fuera del archivo
+por derivables de `ls` y del manifiesto del paquete—, porque cada línea que no
+evita un error hoy le quita atención a las que sí. La segunda: nada en el
+paquete hablaba de más de una herramienta. `skills/README.md` instalaba con
+`cp -r` a `.claude/skills/`, y los equipos que usan Claude Code y Codex sobre el
+mismo repo acababan con dos copias o con un enlace por skill. Existe un
+estándar abierto, *Agent Skills*, cuyo directorio `.agents/skills/` leen
+nativamente Codex, Cursor, OpenCode y Kimi Code; Claude Code lee
+`.claude/skills/`. Lo verificó `falcux_personal_web` al revés —fuente en la
+carpeta de Claude, un enlace por skill en la de agents—, probado con Claude
+Code y Codex. Charlie decidió el alcance el 2026-09-17; esta fila es la Parte 1
+del lote que `HANDOFF.md` describe.
+
+**Decisión.** En los proyectos que adopten el paquete, la fuente única de las
+skills es `.agents/skills/`, y `.claude/skills` es un enlace simbólico relativo
+a «../.agents/skills». `AGENTS.md` sigue siendo el archivo cross-tool y
+`CLAUDE.md` sigue siendo `@AGENTS.md`. Este repo predica con el ejemplo: su
+única skill propia pasa de `.claude/skills/criterio` a
+`.agents/skills/criterio`, con el enlace. `skills/` sigue siendo la carpeta del
+tarball; lo que cambia es lo que enseña a instalar. Los templates
+`CLAUDE_MD_TEMPLATE.md` y `AGENTS_MD_TEMPLATE.md` incorporan el principio
+editorial, generalizado sin nombrar el proyecto de origen, con el índice de
+skills bajo demanda y el árbol multi-herramienta. Las ocho skills recuperan lo
+que se perdió al generalizarlas: las cinco referencias de `ux-writer` y su
+sección de enforcement, las tres de `i18n`, los dos scripts de la Capa 1 de
+`ux-audit` y el paso 7 de `protocolo-features`, todo generalizado.
+
+**Alternativas.** *Fuente en `.claude/skills/` y un enlace por skill hacia
+`.agents/skills/`*, como hizo `falcux_personal_web`: funciona y está probado,
+pero obliga a crear un enlace nuevo por cada skill que se agrega y a recordarlo;
+el enlace único de carpeta no. *Copias por herramienta*: dos carpetas con el
+mismo contenido son la entropía que el paquete mide; divergen en la primera
+edición apurada. *Dejar los templates como estaban y anotar el principio en el
+manual*: el template es lo que se copia; un principio que vive sólo en el sitio
+no llega al `AGENTS.md` de nadie.
+
+**Consecuencias.** El apéndice de templates del sitio repite el bloque `cp -r`
+y tiene que cambiar; se avisó a la sesión del sitio. El `init` futuro escribe
+`.agents/skills/` y el enlace, no la carpeta de Claude. Un equipo en Windows
+sin enlaces simbólicos habilitados usa copia en la carpeta de Claude y declara
+la fuente en su `AGENTS.md`. Las skills ganan archivos de apoyo dentro de su
+carpeta («references/», «checks/»); los `SKILL.md` no se mueven, así que los
+enlaces del sitio siguen vivos. Los templates dejan de pedir estructura, stack
+y comandos: un `AGENTS.md` generado desde ellos es más corto y envejece más
+despacio.
