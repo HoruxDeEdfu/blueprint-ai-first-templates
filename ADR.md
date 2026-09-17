@@ -4,7 +4,7 @@ Una fila por decisión, en orden, sin borrar nunca. Una decisión entra si es
 difícil de revertir, tenía alternativas reales y alguien va a preguntar por qué
 en seis meses. Formato en `SPEC-PAQUETE.md` §3.
 
-## ADR-001 — El código del paquete vive en este repo, en la rama `dev`
+## ADR-001 — El código del paquete vive en `blueprint-ai-first-templates`, rama `dev`, y no en el repo del sitio
 
 - **Fecha:** 2026-09-17
 - **Estado:** aceptada
