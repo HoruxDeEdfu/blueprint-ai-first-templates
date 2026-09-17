@@ -9,7 +9,9 @@
 //
 // Cómo resuelve, en orden:
 //
-//   1. Desde la raíz del repo y desde la carpeta del documento.
+//   1. Desde la raíz del repo y desde la carpeta del documento. Lo que
+//      .gitignore cubre (`dist/`, `.env`) cuenta como existente: está ausente
+//      a propósito, no huérfano.
 //   2. Si el token es un nombre sin carpeta (`expediente.ts`), por nombre de
 //      archivo en todo el repo: la prosa nombra archivos, no los ubica.
 //   3. Si el token tiene carpeta y su PRIMER segmento no existe en la raíz
@@ -22,7 +24,7 @@
 
 import { readFile, stat } from 'node:fs/promises';
 import { basename, dirname, resolve } from 'node:path';
-import { listarArchivos } from '../git.js';
+import { estaIgnorado, listarArchivos } from '../git.js';
 import { normalizarRuta, referenciasARutas } from '../markdown.js';
 import { conHallazgos, omitido, type Hallazgo, type Verificacion } from './tipos.js';
 
@@ -60,6 +62,8 @@ class Resolutor {
 
     if (await existe(resolve(this.raiz, limpia))) return 'existe';
     if (await existe(resolve(this.raiz, dirname(documento), limpia))) return 'existe';
+    // Lo que .gitignore cubre está ausente a propósito: `dist/`, `.env`.
+    if (estaIgnorado(this.raiz, limpia)) return 'existe';
 
     if (!limpia.includes('/')) {
       return this.indiceDeNombres().has(limpia) ? 'existe' : 'falta';

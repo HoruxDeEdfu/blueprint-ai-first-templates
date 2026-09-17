@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Punto de entrada de `npx @falcux/ai-first`.
 //
-// Hoy existe un solo comando, `audit`. Los otros cuatro del mapa v1 —init,
-// sync, adr, handoff— están mapeados en HANDOFF.md y no escritos: se anuncian
+// Dos comandos hoy: `init` (mínimo) y `audit`. Los otros tres del mapa v1
+// —sync, adr, handoff— están mapeados en HANDOFF.md y no escritos: se anuncian
 // como tales en vez de fingir que corren.
 //
 // Códigos de salida:
@@ -14,12 +14,19 @@ import { parseArgs } from 'node:util';
 import { resolve } from 'node:path';
 import { ErrorAiFirst } from './ai-first-md.js';
 import { auditar } from './audit.js';
+import { iniciar } from './init.js';
 import { reporteHumano, reporteJson } from './reporte.js';
 
 const AYUDA = `ai-first — gobierno del contexto para proyectos AI-First
 
 Uso:
+  ai-first init  [--raiz <dir>]
   ai-first audit [opciones]
+
+init escanea el repo y escribe AI-FIRST.md con lo que encuentra —Zonas Prohibidas
+sugeridas, superficies de decisión, documentos existentes— y un ADR.md vacío.
+No toca nada más y nunca sobreescribe. Las skills y los templates se copian a
+mano por ahora.
 
 Opciones de audit:
   --base <ref>     Compara el rango <ref>...HEAD (CI). Sin ella, compara el árbol
@@ -33,7 +40,7 @@ Opciones de audit:
 Puntaje: entropía = min(100, 40·P0 + 20·P1 + 8·P2). Más alto es peor.
 `;
 
-const NO_ESCRITOS = new Set(['init', 'sync', 'adr', 'handoff']);
+const NO_ESCRITOS = new Set(['sync', 'adr', 'handoff']);
 
 async function main(argv: string[]): Promise<number> {
   const { values, positionals } = parseArgs({
@@ -61,12 +68,30 @@ async function main(argv: string[]): Promise<number> {
     return 2;
   }
 
+  const raiz = resolve(values.raiz ?? process.cwd());
+
+  if (comando === 'init') {
+    const { escaneo, escritos } = await iniciar({ raiz });
+    const salida = [
+      `ai-first init — ${escaneo.proyecto}`,
+      '',
+      ...escritos.map((e) => `  escrito  ${e}`),
+      '',
+      `  ${escaneo.zonas.length} Zona${escaneo.zonas.length === 1 ? '' : 's'} Prohibida${escaneo.zonas.length === 1 ? '' : 's'} sugerida${escaneo.zonas.length === 1 ? '' : 's'}: ${escaneo.zonas.map((z) => z.ruta).join(', ')}`,
+      `  ${escaneo.superficies.length} superficie${escaneo.superficies.length === 1 ? '' : 's'} de decisión: ${escaneo.superficies.join(', ') || '—'}`,
+      `  ${Object.keys(escaneo.artefactos).length} artefactos declarados`,
+      '',
+      'Revisa AI-FIRST.md —sobre todo las razones de cada zona— y luego corre `ai-first audit`.',
+      '',
+    ];
+    process.stdout.write(salida.join('\n'));
+    return 0;
+  }
+
   if (comando !== 'audit') {
     process.stderr.write(`Comando desconocido: «${comando}».\n\n${AYUDA}`);
     return 2;
   }
-
-  const raiz = resolve(values.raiz ?? process.cwd());
   const opciones: Parameters<typeof auditar>[0] = { raiz, estricto: values.estricto, registrar: values.registrar };
   if (values.base) opciones.base = values.base;
 

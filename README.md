@@ -15,7 +15,8 @@ y el detector de entropía documental.
 | 8 templates de documentos (AGENTS.md, PRD, guía de diseño, protocolos) | raíz, `*_TEMPLATE.md` y `*_PROTOCOL.md` | publicados |
 | 8 skills para Claude Code | `skills/` | publicadas — [cómo instalarlas](skills/README.md) |
 | Detector de entropía (`ai-first audit`) | `src/` | escrito, sin publicar |
-| `init`, `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
+| `ai-first init` mínimo: escanea y escribe `AI-FIRST.md` + `ADR.md` | `src/init.ts` | escrito, sin publicar |
+| `init` completo (entrevista, skills), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
 
 Las skills se sincronizan **desde** el repo del sitio a cada publicación: acá
 son una copia generada. Editarlas acá se pierde en la siguiente sincronización.
@@ -30,11 +31,14 @@ con código de salida para servir igual en un hook local y en CI.
 ```bash
 pnpm install
 pnpm run build
+node dist/src/cli.js init  --raiz /ruta/a/tu/proyecto   # escribe AI-FIRST.md y ADR.md
 node dist/src/cli.js audit --raiz /ruta/a/tu/proyecto
 ```
 
-El proyecto auditado necesita un `AI-FIRST.md` en la raíz. Su formato y el de
-las cinco verificaciones están en [`SPEC-PAQUETE.md`](SPEC-PAQUETE.md).
+`init` escanea el repo y deja un `AI-FIRST.md` con Zonas Prohibidas sugeridas,
+superficies de decisión y los documentos que ya existen, más un `ADR.md`
+vacío. No toca nada más y nunca sobreescribe. Su formato y el de las cinco
+verificaciones están en [`SPEC-PAQUETE.md`](SPEC-PAQUETE.md).
 
 | Severidad | Verificación | Cómo lee |
 |---|---|---|

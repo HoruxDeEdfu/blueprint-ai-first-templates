@@ -102,6 +102,14 @@ export function listarArchivos(raiz: string): string[] {
   );
 }
 
+/**
+ * ¿Esta ruta está cubierta por .gitignore? Una referencia a algo ignorado
+ * —`dist/`, `node_modules/`, `.env`— no es un huérfano: está ausente a propósito.
+ */
+export function estaIgnorado(raiz: string, ruta: string): boolean {
+  return gitOpcional(raiz, ['check-ignore', '-q', '--', ruta]) !== undefined;
+}
+
 /** Contenido de un archivo en una revisión. `undefined` si no existía. */
 export function contenidoEn(raiz: string, ref: string, ruta: string): string | undefined {
   return gitOpcional(raiz, ['show', `${ref}:${ruta}`]);

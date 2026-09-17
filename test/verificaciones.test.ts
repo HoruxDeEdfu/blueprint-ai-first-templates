@@ -386,6 +386,17 @@ test('artefacto huérfano: un archivo borrado del disco pero aún en el índice 
     assert.match(hs[0]?.mensaje ?? '', /SPEC\.md/);
   }));
 
+test('artefacto huérfano: lo que .gitignore cubre está ausente a propósito y no se reporta', () =>
+  conRepo(async (repo) => {
+    repo.escribir('AI-FIRST.md', aiFirstMd('artefactos:\n  agents: AGENTS.md'));
+    repo.escribir('.gitignore', 'dist/\n.env\n');
+    repo.escribir('AGENTS.md', '# A\n\nNo edites `dist/`: se regenera. Las credenciales van en `.env`. Pero `build/` sí falta.\n');
+    repo.commit('inicio');
+
+    const hs = hallazgos(await auditar({ raiz: repo.raiz }), 'artefacto-huerfano');
+    assert.deepEqual(hs.map((h) => h.mensaje), ['AGENTS.md menciona build/, que no existe']);
+  }));
+
 test('artefacto huérfano: una ruta cuya primera carpeta no existe habla de otro árbol y no se reporta', () =>
   conRepo(async (repo) => {
     repo.escribir('AI-FIRST.md', aiFirstMd('artefactos:\n  spec: SPEC.md'));
