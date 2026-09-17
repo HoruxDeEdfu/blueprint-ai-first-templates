@@ -20,7 +20,7 @@ y el detector de entropía documental.
 | `init` completo (entrevista, skills), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
 
 Las 8 skills viven acá y sólo acá desde el 2026-09-17; el sitio enlaza a las
-de `main`. Antes eran una copia que el repo del sitio sobreescribía.
+de `prod`. Antes eran una copia que el repo del sitio sobreescribía.
 
 ## El detector
 

@@ -190,3 +190,47 @@ contenido en los dos sentidos: `protocolo-features`, `protocolo-cambios` y
 cambian ellas, se avisa al sitio, y si cambia el capítulo, el sitio avisa acá.
 El bloqueador compartido nº2, los nombres genéricos de las skills, pasa a ser
 enteramente de este repo.
+
+## ADR-007 — La rama publicada se llama `prod` en los tres repos, y mergear a ella despliega
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada. Supera lo que ADR-001 dice de `main` como rama que
+  sirve los raw links; la rama sigue existiendo con otro nombre.
+
+**Contexto.** El sitio y la landing despliegan con Workers Builds a cada push
+de `prod`; este repo usaba `dev` y `main`. Pero mergear a `main` acá ya era un
+despliegue: cambia al instante lo que el sitio sirve por raw links, y el
+publish a npm iba a colgarse de la misma rama. Una rama que despliega sin
+llamarse como las otras dos rompe el hábito de quien opera los tres repos:
+«mergear a `prod` despliega» es una sola regla si el nombre es uno solo. Hoy
+el costo de renombrar era el más bajo que va a tener: nada publicado en npm,
+ningún `repository` apuntando a la rama, y la sesión del sitio cambiando URL
+del mismo tipo el mismo día.
+
+**Decisión.** La rama publicada es `prod`; `dev` sigue siendo la de trabajo y
+`main` desaparece. `prod` se avanza con `--ff-only` cuando Charlie lo decide, y
+mergear a ella despliega dos cosas: los raw links del sitio al instante, y npm
+cuando la versión del `package.json` cambió, por un workflow que compara con
+la versión publicada y no publica si es la misma. `.npmrc` fija
+`publish-branch=prod` para que `pnpm publish` se niegue desde otra rama. El
+primer publish, `0.1.0`, sale a mano desde `prod` porque trusted publishing se
+configura sobre un paquete que ya existe. El cambio de nombre se hizo sin
+ventana: `prod` nació idéntica a `main`, el sitio movió sus 16 raw links con
+las dos vivas, y `main` se borró al confirmar.
+
+**Alternativas.** *Mantener `main` acá y `prod` en los otros dos*: era la
+recomendación inicial, por ahorrar la edición de 16 URL; perdía ante el
+argumento del hábito único y del despliegue implícito que `main` ya tenía.
+*Publicar a npm por tag `v*` en vez de por merge*: es la convención de los
+paquetes npm, pero mete un segundo gesto («además del merge, el tag») que
+rompe la regla única; la comparación de versiones lo resuelve sin tags.
+*Renombrar con la API de GitHub en vez de crear y borrar*: más corto, pero
+depende de que los redirects de rama alcancen a `raw.githubusercontent.com`,
+que no se pudo verificar; crear y borrar no depende de nada.
+
+**Consecuencias.** Un merge a `prod` sin subir la versión sólo actualiza raw
+links; con la versión subida, publica los dos paquetes. Subir la versión es,
+por tanto, la decisión de publicar. Queda pendiente el workflow y la
+configuración de trusted publishing (`HANDOFF.md`, paso 4). Los documentos que
+digan `main` de este repo están desactualizados; los de las ADR anteriores se
+leen con su fecha.

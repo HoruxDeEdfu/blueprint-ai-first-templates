@@ -51,7 +51,7 @@ copia del sitio (006).
 verificar con `diff -rq` que los 9 archivos eran idénticos a los de `dev` en
 `6de6794`. Desde entonces `skills/` se edita acá; `AI-FIRST.md` la quita de
 Zonas Prohibidas porque la razón era el rsync. El sitio sigue enlazando a
-`main/skills/<nombre>/SKILL.md`. Tres skills asumen su capítulo «Gobierno del
+`prod/skills/<nombre>/SKILL.md`. Tres skills asumen su capítulo «Gobierno del
 contexto»: tocarlas obliga a avisar al sitio, y viceversa.
 
 ### Lo que sigue, en orden
@@ -67,21 +67,29 @@ este orden porque cada uno alimenta al siguiente:
 2. ~~Decidir el renombre del repo.~~ **Hecho el 2026-09-17**: es
    `falcux-ai-first-package` (ADR-005), y los dos `package.json` ya declaran
    `repository`, `homepage` y `bugs` con ese nombre. Lo que arrastra al sitio
-   sigue pendiente y está en la lista del merge a `main`, abajo.
+   se resolvió en la lista del merge, abajo.
 3. ~~Quitar `private: true` y subir a `0.1.0` en los dos `package.json`.~~
    **Hecho el 2026-09-17**, raíz y `alias/` en el mismo commit. Desde entonces
    nada frena un `pnpm publish` accidental salvo no correrlo. La prueba
    `test/alias.test.ts` sigue exigiendo que `version` y `private` coincidan.
-4. **Primer publish, con provenance.** Después de mergear `dev` a `main`:
-   `pnpm publish` se niega desde otra rama o con el árbol sucio, y eso está
-   bien. Desde GitHub Actions con `permissions: id-token: write` y
-   `provenance=true` en el `.npmrc` del job, dos comandos en este orden:
-   `pnpm publish --access public` en la raíz y luego
+4. **Primer publish a mano, desde `prod`** (ADR-007). Trusted publishing de
+   npm se configura desde la página del paquete, así que el paquete tiene que
+   existir antes: la `0.1.0` sale de la máquina de Charlie, logueada como
+   `falcux`, con `prod` al día y árbol limpio (`.npmrc` fija
+   `publish-branch=prod`; `pnpm publish` se niega desde otra rama). Dos
+   comandos en este orden: `pnpm publish --access public` en la raíz y luego
    `pnpm --filter ai-first publish --access public`. Son dos porque `pnpm -r`
    excluye la raíz del workspace por defecto; el alias va segundo porque su
-   `package.json` empaquetado ya pide la versión exacta del raíz. Hacerlo a mano
-   desde la máquina pierde la provenance; se puede, pero es peor. Nada de esto
-   se corre sin que Charlie lo pida: es el único paso irreversible.
+   `package.json` empaquetado ya pide la versión exacta del raíz. Esa versión
+   sale sin provenance; es el precio de no crear nunca un token de larga vida.
+   Nada de esto se corre sin que Charlie lo pida: es el único paso irreversible.
+   **Después**, y es la segunda mitad del paso: configurar trusted publishing en
+   npmjs.com para los dos paquetes apuntando a este repo y al workflow, y
+   escribir `.github/workflows/publish.yml` disparado por push a `prod`, con
+   `id-token: write`, que corre la suite y `audit:self --base`, compara la
+   versión del `package.json` con la publicada y publica raíz y alias sólo si
+   cambió. Queda por verificar si `pnpm publish` ya habla OIDC con npm; si no,
+   el workflow empaqueta con `pnpm pack` y publica el tarball con `npm publish`.
 5. **Verificar en una carpeta vacía:** `npx @falcux/ai-first --help` y
    `npx ai-first --help` deben dar la misma ayuda.
 
@@ -97,8 +105,14 @@ a `main/templates/<archivo>`, publicado en `prod` del sitio en `e60c1a2`.
 Verificado desde la página publicada: 8 tarjetas a `templates/`, ninguna a la
 raíz, cero nombres viejos, las 8 URL en 200. La raíz de `main` siguió dando 200
 unos minutos por la caché del CDN de GitHub, no porque los archivos siguieran
-ahí. Desde entonces `main` y `dev` van a la par; los merges siguientes los
-decide Charlie y ya no arrastran nada del sitio.
+ahí. Desde entonces la rama publicada y `dev` van a la par; los merges
+siguientes los decide Charlie y ya no arrastran nada del sitio.
+
+**`main` pasó a llamarse `prod` el 2026-09-17** (ADR-007), para que los tres
+repos —landing, sitio y paquete— compartan la convención «mergear a `prod`
+despliega». Se hizo sin ventana de enlaces rotos: `prod` se creó idéntica a
+`main` en `741e422` y se puso por defecto, el sitio cambió sus 16 raw links de
+la rama vieja a la nueva con las dos vivas, y `main` se borró al confirmar.
 
 Después del publish, por retorno: el `init` completo (entrevista, skills),
 que depende del bloqueador nº2; los hooks (hueco 5); y `.ai-first/manifest.json`,
@@ -107,8 +121,9 @@ que tiene frontera pero no esquema.
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de
-`skills/` y `templates/` que el sitio enlaza no se mueven sin coordinar; `main`
-se avanza sólo cuando Charlie lo decide; `pnpm test` en verde por exit code y
+`skills/` y `templates/` que el sitio enlaza no se mueven sin coordinar; `prod`
+se avanza sólo cuando Charlie lo decide, y mergear ahí despliega; `pnpm test` en
+verde por exit code y
 `audit:self` en 0 antes de cada commit.
 
 ---

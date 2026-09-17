@@ -21,8 +21,8 @@ src/ai-first-md.ts         El lector del contrato. Único sitio que interpreta e
 src/puntaje.ts             40·P0 + 20·P1 + 8·P2. Calibrado contra la landing.
 src/git.ts  src/glob.ts  src/markdown.ts   Lo único que se le pregunta a git, a los patrones y al Markdown.
 test/                      node:test sobre repos git desechables. Sin mocks.
-skills/                    Las 8 skills. Acá es su único hogar desde ADR-006. El sitio enlaza a las de `main`.
-templates/                 Los 8 templates. Acá es su único hogar. El sitio enlaza a los de `main`.
+skills/                    Las 8 skills. Acá es su único hogar desde ADR-006. El sitio enlaza a las de `prod`.
+templates/                 Los 8 templates. Acá es su único hogar. El sitio enlaza a los de `prod`.
 alias/                     El paquete `ai-first` sin scope (ADR-002): un shim que importa `@falcux/ai-first/cli`.
 pnpm-workspace.yaml        Raíz + alias/. El alias depende del raíz por `workspace:*`.
 SPEC-PAQUETE.md            El contrato: formato de AI-FIRST.md, los 5 checks, el puntaje.
@@ -59,19 +59,21 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
   las Zonas Prohibidas y el `ADR.md` que ese capítulo define. Tocar cualquiera
   de las tres obliga a **avisar al repo del sitio** para revisar el capítulo; si
   el capítulo cambia, el sitio avisa acá.
-- El sitio enlaza a `main/skills/<nombre>/SKILL.md` y a `main/templates/<archivo>`.
+- El sitio enlaza a `prod/skills/<nombre>/SKILL.md` y a `prod/templates/<archivo>`.
   Mover o renombrar cualquiera de esas rutas rompe enlaces publicados: se
-  coordina con el sitio antes del merge a `main`.
+  coordina con el sitio antes del merge a `prod`.
 
 ### Ramas
 
-- Se trabaja en **`dev`**. **`main` se avanza sólo cuando Charlie lo decide**,
-  con `--ff-only`: el sitio publicado descarga skills y templates desde los raw
-  links de `main`. Nadie más escribe en `main` desde que el workflow del sitio
-  dejó de existir (ADR-006). El primer merge fue el 2026-09-17; mover o
-  renombrar algo en `skills/` o `templates/` obliga a coordinar con el sitio
-  antes del siguiente.
-- Publicar el paquete es una decisión aparte de mergear `dev`. Ver `HANDOFF.md`.
+- Se trabaja en **`dev`**. **`prod` es la rama publicada y se avanza sólo
+  cuando Charlie lo decide**, con `--ff-only`. Mergear a `prod` **despliega**:
+  el sitio sirve skills y templates desde sus raw links al instante, y el
+  workflow de publish (pendiente, ADR-007) sube a npm si la versión cambió.
+  Es la misma convención que los repos del sitio y de la landing: `prod`
+  despliega, en los tres. No hay `main`; se llamó así hasta el 2026-09-17.
+- Mover o renombrar algo en `skills/` o `templates/` obliga a coordinar con el
+  sitio antes del merge a `prod`.
+- `.npmrc` fija `publish-branch=prod`: `pnpm publish` se niega desde otra rama.
 
 ### El alias
 
@@ -128,7 +130,7 @@ tildes**; el resto, con ellas.
   sin coordinar con el sitio: son enlaces publicados.
 - **No toques `protocolo-features`, `protocolo-cambios` ni `protocolo-cierre`**
   sin avisar al sitio: asumen su capítulo «Gobierno del contexto».
-- **No avances `main` sin que Charlie lo pida.** Sirve enlaces publicados.
+- **No avances `prod` sin que Charlie lo pida.** Mergear ahí despliega.
 - **No publiques a npm.** Ni con `--dry-run` sin avisar. El primer publish
   tiene su lista en `HANDOFF.md`. El scope `@falcux` ya es de la cuenta de
   usuario `falcux` (ADR-004); no hay organización que crear.
