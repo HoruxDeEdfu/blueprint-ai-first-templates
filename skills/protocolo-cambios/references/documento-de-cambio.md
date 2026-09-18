@@ -1,9 +1,9 @@
-# CHG-XXX — Template del documento de cambio
+# CHG-XXX — El documento de cambio
 
-> Este template es el documento individual que el protocolo de gestión de
-> cambios exige **antes** de modificar algo que ya funciona. La skill
-> `protocolo-cambios` define el flujo; este archivo es la pieza que ese flujo
-> produce y consume.
+> Referencia de la skill `protocolo-cambios`: el molde del documento que esa
+> skill exige **antes** de modificar algo que ya funciona. La skill define
+> cuándo y con qué flujo; este archivo define qué va adentro. Viaja con la
+> skill, así que no hay que descargarlo aparte.
 >
 > **Principio:** Un cambio sin evaluación de impacto es una apuesta. Este
 > documento existe para que el humano entienda qué se toca y qué se puede

@@ -41,61 +41,18 @@ escribir el documento, no después.
 
 ## El documento de cambio (obligatorio antes de implementar)
 
-Crear en `docs/changes/pending/CHG-XXX_nombre.md`:
+Crear en `docs/changes/pending/CHG-XXX_nombre.md`, copiando el molde de
+`references/documento-de-cambio.md`. Ese archivo trae las secciones, cuáles
+son obligatorias en el flujo corto y cuáles en el completo, y el formato que
+el detector lee.
 
-```markdown
-# CHG-XXX: [Nombre descriptivo]
+Dos cosas que no se negocian, y que están ahí explicadas:
 
-## Metadata
-- **Fecha:** YYYY-MM-DD
-- **Solicitado por:** [Cliente / PO / Dev / Descubrimiento]
-- **Tipo:** [Corrección / Ajuste / Cambio de requerimiento / Cambio de prioridad]
-- **Estado:** Pendiente
-
-## Qué cambia
-[Qué se quiere diferente — concreto]
-
-## Por qué cambia
-[Contexto de negocio o técnico]
-
-## Estado actual
-[Cómo funciona HOY: rutas, archivos, componentes específicos]
-
-## Estado deseado
-[Cómo debe funcionar DESPUÉS: igual de específico]
-
-## Análisis de impacto
-
-### Archivos afectados
-- [ ] `ruta/archivo` — [qué cambia]
-
-### Dependencias
-- [ ] ¿Migración de BD? [Sí/No]
-- [ ] ¿Afecta otros features? [Cuáles]
-- [ ] ¿Requiere actualizar tests? [Cuáles]
-- [ ] ¿Afecta endpoints? [Cuáles]
-
-### Reuso y lógica compartida
-- [ ] ¿Existe lógica o componentes que ya cubran parte de esto? [Qué se reusa — o por qué no se puede]
-- [ ] ¿Lo que se construye le sirve a otro módulo? [Si sí → diseñarlo compartido desde el inicio e indicar dónde vive]
-
-### Estados de carga
-- [ ] ¿El cambio agrega o quita una columna, un tab, una acción de header, o cambia el ancho de la página?
-      [Si sí → el skeleton hermano entra en "archivos afectados" y se actualiza en el MISMO commit]
-
-## Plan de implementación
-1. Paso 1 — [descripción + archivos]
-2. Paso 2 — [descripción + archivos]
-
-## Verificación post-cambio
-- [ ] El feature modificado funciona según el estado deseado
-- [ ] Los features adyacentes no se rompieron
-- [ ] Los tests pasan
-- [ ] Los docs están actualizados
-- [ ] Movido a CHANGE_LOG.md
-```
-
-**El par «estado actual / estado deseado» es el corazón del documento.** Sin el estado actual descrito con precisión, la AI reconstruye el feature desde cero en vez de modificarlo.
+- **El par «estado actual / estado deseado» es el corazón del documento.** Sin
+  el estado actual descrito con precisión, la AI reconstruye el feature desde
+  cero en vez de modificarlo.
+- **«Archivos afectados» lista las rutas entre acentos graves.** Es lo que el
+  detector compara contra lo que el commit tocó de verdad.
 
 ---
 

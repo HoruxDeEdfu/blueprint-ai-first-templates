@@ -1,6 +1,6 @@
 # Handoff — `@falcux/ai-first`
 
-El paquete: los 9 templates, las 10 skills y el detector de
+El paquete: los 8 templates, las 10 skills y el detector de
 entropía documental. El sitio de la metodología tiene su propio handoff en el
 repo `falcux-ai-first-docs-web`; acá sólo lo que es del paquete y lo que los
 dos comparten. Este repo se llama `falcux-ai-first-package` desde el
@@ -190,7 +190,7 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
    antes del merge a `prod`. Sale en `0.2.0`.
    **Escrita el 2026-09-17 (ADR-009)**: `templates/TECH_NOTES_TEMPLATE.md`,
    `templates/COMPONENT_LIBRARY_TEMPLATE.md`, `templates/ARQUITECTURA_TEMPLATE.md`,
-   `templates/CHG_TEMPLATE.md` y `templates/SPEC_MODULO_TEMPLATE.md`. El sitio
+   el molde del CHG y `templates/SPEC_MODULO_TEMPLATE.md`. El sitio
    ya tiene los nombres y agrupa: «Documentos vivos» para los tres primeros,
    CHG y SPEC junto a sus protocolos; escribe las tarjetas cuando lea el
    contenido en `origin/dev` y publica cuando los archivos existan en `prod`.
@@ -257,6 +257,19 @@ de `falcux-ai-first-docs-web`: su propio handoff, los cuatro capítulos de
 protocolos de la Parte III, el de skills y hooks y el de guía de diseño en
 la Parte II, el de AGENTS.md en la Parte II, el apéndice de templates —las 4
 tarjetas— y el glosario. No se tocó nada de eso desde acá.
+
+### El molde del CHG se muda dentro de su skill (2026-09-18, ADR-013)
+
+El molde del CHG, que vivía en `templates/`, pasó a ser
+`skills/protocolo-cambios/references/documento-de-cambio.md`. La skill llevaba
+61 de sus 233 líneas repitiendo la anatomía que el template ya traía completa;
+ahora dice cuándo y apunta al molde, y bajó a 190 líneas. El paquete pasa de 9
+a 8 templates. El documento producido no se mueve: cada cambio sigue naciendo
+en `docs/changes/pending/` del proyecto, que es donde el check 3 lo lee y donde
+un humano lo revisa en el PR.
+
+**Coordinar con el sitio**: la tarjeta del apéndice que ofrecía ese template
+apunta ahora al archivo dentro de la skill, en la misma rama `prod`.
 
 ### Cómo trabajar acá
 

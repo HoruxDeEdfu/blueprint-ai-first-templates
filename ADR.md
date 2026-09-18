@@ -314,7 +314,8 @@ documentos que las skills y el detector ya asumían.
 
 **Decisión.** Cinco templates nuevos en `templates/`, con el patrón de nombre
 existente: `TECH_NOTES_TEMPLATE.md`, `COMPONENT_LIBRARY_TEMPLATE.md`,
-`ARQUITECTURA_TEMPLATE.md`, `CHG_TEMPLATE.md` y `SPEC_MODULO_TEMPLATE.md`.
+`ARQUITECTURA_TEMPLATE.md`, el molde del documento de cambio y
+`SPEC_MODULO_TEMPLATE.md`.
 Cada uno generaliza el documento real sin nombrarlo, cita sus cifras como «un
 proyecto real», y trae la anatomía que el detector lee: encabezado por
 componente en el inventario, sección «Archivos afectados» en el CHG y
@@ -519,3 +520,51 @@ la guía de diseño, el capítulo de AGENTS.md, el glosario—; ninguno se tocó
 desde acá. Un proyecto que instaló la versión anterior del paquete y copió
 estos cuatro documentos los conserva sin problema: nada los borra
 retroactivamente, sólo dejan de distribuirse en versiones nuevas.
+
+## ADR-013 — El molde de un documento que pertenece a una sola skill vive dentro de ella, no en `templates/`
+
+- **Fecha:** 2026-09-18
+- **Estado:** aceptada. Supera la consecuencia de ADR-009 que dejaba la
+  anatomía del documento de cambio en tres sitios «hasta que el protocolo se
+  edite para apuntar al template».
+
+**Contexto.** La skill `protocolo-cambios` repetía adentro la anatomía del
+documento de cambio: 61 de sus 233 líneas, contra las 267 del template, que
+era la versión completa. ADR-009 ya lo había anotado como deuda. Los cuatro
+templates de protocolo retirados el mismo día (ADR-012) demostraron adónde
+lleva esa forma: copias paralelas que divergen sin que nada las vigile. El
+patrón alternativo ya existía en el paquete desde ADR-008: `ux-writer` lleva
+cinco `references/` —su glosario se declara «plantilla con ejemplos»— e `i18n`
+tres. El estándar Agent Skills contempla empaquetar plantillas y material de
+referencia dentro de la skill, y desde que se instalan como carpeta en
+`.agents/skills/`, una referencia viaja con la skill sin descarga aparte, que
+era la razón por la que ADR-009 los quería separados.
+
+**Decisión.** El molde del documento de cambio pasa a
+`skills/protocolo-cambios/references/documento-de-cambio.md`. La skill dice
+cuándo y con qué flujo, y apunta ahí para el qué. El paquete pasa de 9 a 8
+templates. La regla general: **si un documento tiene exactamente una skill
+dueña y es un artefacto por evento, su molde vive dentro de esa skill**.
+
+**Lo que NO se mueve.** El documento producido sigue en el repo del proyecto:
+cada cambio nace en `docs/changes/pending/CHG-XXX.md`, que es donde el check 3
+lo lee y donde un humano lo revisa en el PR. Y los demás templates se quedan en
+`templates/`, porque no cumplen la regla: la spec de módulo la mencionan seis
+skills, arquitectura cuatro, y `AGENTS.md`, el PRD, la guía de diseño, las
+cicatrices y el inventario de componentes son documentos permanentes que
+`AI-FIRST.md` declara bajo `artefactos` y que el detector lee. Meterlos dentro
+de una skill obligaría a elegir una dueña arbitraria y los escondería de quien
+no instale esa skill.
+
+**Alternativas.** *Dejar el template en `templates/` y que la skill lo nombre*:
+conserva la tarjeta de descarga tal cual, pero mantiene dos archivos que se
+editan por separado y ningún check vigila que digan lo mismo; es exactamente lo
+que produjo los cuatro fósiles de ADR-012. *Mover también la spec de módulo*:
+tiene seis skills lectoras y es un documento permanente del proyecto, no un
+artefacto por evento; entraría en la misma trampa de dueño arbitrario.
+
+**Consecuencias.** El sitio cambia la tarjeta del apéndice para que apunte al
+archivo dentro de la skill, en la misma rama `prod`; sigue siendo descargable.
+Quien instale la skill recibe el molde sin pedirlo. La regla queda escrita para
+los moldes que aparezcan después: si nace un documento por evento con una sola
+skill dueña, va adentro de ella.
