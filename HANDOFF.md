@@ -196,7 +196,7 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
    CHG y SPEC junto a sus protocolos; escribe las tarjetas cuando lea el
    contenido en `origin/dev` y publica cuando los archivos existan en `prod`.
    El template de `AGENTS.md` ya apunta a `docs/specs/{modulo}.md` desde la
-   parte 1; el capítulo del manual todavía dice `docs/SPECS_POR_MODULO.md` y lo
+   parte 1; el capítulo del manual todavía dice docs/SPECS_POR_MODULO.md y lo
    cambia el sitio. Queda para un lote posterior: el protocolo de cambios lleva su propia
    anatomía corta del CHG en §2.2 y debería apuntar al template.
 3. **Parte 3 — `lote-3`. Hecha el 2026-09-17 (ADR-010).** Reestructurar
@@ -266,7 +266,7 @@ El molde del CHG, que vivía en `templates/`, pasó a ser
 61 de sus 233 líneas repitiendo la anatomía que el template ya traía completa;
 ahora dice cuándo y apunta al molde, y bajó a 190 líneas. El paquete pasa de 9
 a 8 templates. El documento producido no se mueve: cada cambio sigue naciendo
-en `docs/changes/pending/` del proyecto, que es donde el check 3 lo lee y donde
+en docs/changes/pending/ del proyecto, que es donde el check 3 lo lee y donde
 un humano lo revisa en el PR.
 
 **Coordinar con el sitio**: la tarjeta del apéndice que ofrecía ese template
@@ -490,7 +490,7 @@ Tres decisiones, para no rediscutirlas:
    estado.
 
 3. **Los cuatro instrumentos entraron al manual** como capítulo nuevo de la Parte
-   II: `docs/parte-2/gobierno-del-contexto`, en la posición 3 de 5 —después de
+   II: docs/parte-2/gobierno-del-contexto, en la posición 3 de 5 —después de
    `agents-md`, porque presupone que el lector ya sabe qué es el AGENTS.md y qué
    es la cadena de artefactos—. El manual pasa de 11 a **12 capítulos** y el sitio
    de 19 a **20 páginas**.
@@ -500,7 +500,7 @@ Tres decisiones, para no rediscutirlas:
    27.682 líneas de `SESSION_LOG` en 626 sesiones, 1.587 de `TECH_NOTES`, 385
    `CHG-XXX`, un `AGENTS.md` de 201 líneas contra un techo declarado de 200.
 
-**Colisión advertida:** en Compliance, `docs/ROLES_PERMISSIONS_MATRIX.md` (461
+**Colisión advertida:** en Compliance, docs/ROLES_PERMISSIONS_MATRIX.md (461
 líneas) es la matriz de permisos **del producto**, no la del repositorio. Se resolvió
 por ubicación y no por renombre, para no tocar la landing publicada. Detalle en
 `SPEC-PAQUETE.md` §4.

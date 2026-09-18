@@ -116,6 +116,7 @@ tildes**; el resto, con ellas.
 | Archivo | Qué contiene |
 |---|---|
 | `HANDOFF.md` | Estado, pendientes y los bloqueadores que comparte con el sitio. Léelo al empezar. |
+| `docs/SESSION_LOG.md` | La cronología: una entrada por sesión, la más reciente arriba. La escribe `protocolo-cierre`. |
 | `SPEC-PAQUETE.md` | El contrato del detector. Se probó contra código el 2026-09-17; lo que dejó abierto está en `HANDOFF.md`. |
 | `ADR.md` | Las decisiones tomadas y lo que se descartó. |
 | `AI-FIRST.md` | Lo que gobierna a este repo. Lo lee `audit:self`. |

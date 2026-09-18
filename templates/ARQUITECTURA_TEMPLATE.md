@@ -11,7 +11,7 @@
 > nadie sabe por qué está ahí.
 >
 > **Relación con otros documentos:**
-> - `PRD.md` decide **qué** se construye; este documento decide **cómo**
+> - `docs/PRD.md` decide **qué** se construye; este documento decide **cómo**
 > - `AGENTS.md` lleva las **reglas activas** derivadas de esta arquitectura, no la arquitectura
 > - Las specs por módulo detallan **cada módulo**; acá va el mapa entre ellos
 > - `ADR.md` guarda **por qué** se eligió cada cosa y qué se descartó

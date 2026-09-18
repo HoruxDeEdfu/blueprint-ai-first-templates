@@ -11,7 +11,7 @@
 > evidencia de qué se decidió y por qué.
 >
 > **Relación con otros documentos:**
-> - `CHANGE_LOG.md` recibe el **resumen** cuando el cambio se cierra; este archivo se elimina
+> - `docs/changes/CHANGE_LOG.md` recibe el **resumen** cuando el cambio se cierra; este archivo se elimina
 > - `ADR.md` recibe una fila si el cambio es, además, una **decisión** difícil de revertir
 > - La spec del módulo se actualiza al cerrar: el cambio ya no es cambio, es el estado
 > - Un **runbook** aparte guarda el paso a paso del despliegue cuando hay migración o datos que tocar
@@ -30,7 +30,7 @@
 4. La sección «Archivos afectados» lista las rutas **entre acentos graves**:
    es lo que el detector lee para el check 3 (alcance excedido) cuando
    `alcance.spec` apunta a `docs/changes/pending/`
-5. Al cerrar: resumen a `CHANGE_LOG.md`, documentación principal al día, y
+5. Al cerrar: resumen a `docs/changes/CHANGE_LOG.md`, documentación principal al día, y
    **eliminar este archivo** de `pending/`
 6. Borrar este bloque de instrucciones en la copia
 
@@ -194,7 +194,7 @@ arquitectónica, vuelve a §6.}
 - [ ] El estado deseado (§4) se cumple; validaciones de §10 ejecutadas y en verde
 - [ ] «Documentación a actualizar» al día
 - [ ] Fila en `ADR.md` escrita, si §6 dijo sí
-- [ ] Resumen agregado a `CHANGE_LOG.md`: fecha, tipo, archivos, migración, resumen, lecciones
+- [ ] Resumen agregado a `docs/changes/CHANGE_LOG.md`: fecha, tipo, archivos, migración, resumen, lecciones
 - [ ] Log de sesión actualizado con la sesión donde se hizo
 - [ ] **Este archivo eliminado de `pending/`**
 - [ ] Estado final: Completado
@@ -250,7 +250,7 @@ ya trae:
 `pending/` contiene trabajo en curso, no historia. Un archivo que sobrevive
 ahí después de cerrado se lee como trabajo por hacer, y en una carpeta con
 veinte documentos nadie distingue cuáles son de verdad. El resumen en
-`CHANGE_LOG.md` es el registro permanente; el ADR guarda lo que era decisión;
+`docs/changes/CHANGE_LOG.md` es el registro permanente; el ADR guarda lo que era decisión;
 la spec del módulo absorbe el nuevo estado. Con los tres al día, el documento
 individual ya no tiene lector. Algunos proyectos prefieren moverlo a
 `applied/` en vez de borrarlo; funciona igual mientras `pending/` quede limpio.

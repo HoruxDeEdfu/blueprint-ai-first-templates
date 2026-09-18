@@ -66,14 +66,14 @@ aplicar el filtro: *«¿Quitar esto haría que la AI cometa un error ahora mismo
 | Detalles de un módulo (modelo, endpoints, reglas de negocio) | `docs/specs/{modulo}.md` |
 | Arquitectura, pilares, stack con versiones | `docs/ARQUITECTURA.md` |
 | Procedimiento que la AI debe seguir en cierto tipo de tarea | skill en `.agents/skills/{nombre}/` |
-| Estructura de carpetas, comandos estándar, dependencias | **No entra.** Derivable de `ls` y del manifiesto; si necesita prosa, `ARQUITECTURA.md` §3 y aquí solo la referencia |
+| Estructura de carpetas, comandos estándar, dependencias | **No entra.** Derivable de `ls` y del manifiesto; si necesita prosa, `docs/ARQUITECTURA.md` §3 y aquí solo la referencia |
 
 ### Umbrales duros
 
 - **Techo:** 200 líneas. Al rebasarlo, depurar antes de seguir agregando.
 - **Frescura:** una regla que menciona una fase, un sprint o un prompt concreto («Fase 0»,
-  «Prompt 1b») es sospechosa: probablemente es historia, no regla. Historia → `SESSION_LOG.md`.
-- **Duplicación prohibida:** si la información ya vive en `ARQUITECTURA.md`, `GUIA_DISENO.md`
+  «Prompt 1b») es sospechosa: probablemente es historia, no regla. Historia → `docs/SESSION_LOG.md`.
+- **Duplicación prohibida:** si la información ya vive en `docs/ARQUITECTURA.md`, `docs/GUIA_DISENO.md`
   o una spec, aquí va la referencia, no el contenido. Dos copias divergen en la primera edición.
 
 Esta tabla también gobierna el cierre de sesión: los aprendizajes se enrutan según ella,
@@ -244,8 +244,8 @@ Las versiones anteriores pedían tres secciones que ya no están:
 
 | Sección | Por qué salió | Dónde vive ahora |
 |---|---|---|
-| Estructura del repo (árbol) | `ls` la da al instante y siempre al día; el árbol escrito envejece con la primera carpeta nueva | `ARQUITECTURA.md` §3, solo si necesita prosa |
-| Tech stack | El manifiesto del paquete la declara con versiones exactas; la copia en prosa miente en el primer bump | `ARQUITECTURA.md` §1 |
+| Estructura del repo (árbol) | `ls` la da al instante y siempre al día; el árbol escrito envejece con la primera carpeta nueva | `docs/ARQUITECTURA.md` §3, solo si necesita prosa |
+| Tech stack | El manifiesto del paquete la declara con versiones exactas; la copia en prosa miente en el primer bump | `docs/ARQUITECTURA.md` §1 |
 | Comandos | Los `scripts` del manifiesto son la fuente de verdad; repetirlos es duplicar | Solo los **no derivables** (test único, flags raras) |
 
 La medición que lo justifica: un AGENTS.md real de 200 líneas gastaba más de 60 en estas tres
@@ -282,10 +282,10 @@ quita atención a las que sí.
 | ¿Es un procedimiento para cierto tipo de tarea? | | → skill |
 | ¿Es conocimiento de dominio extenso? | | → skill |
 | ¿Son specs de un módulo? | | → `docs/specs/` |
-| ¿Son reglas de diseño con tokens y valores? | | → `GUIA_DISENO.md` |
+| ¿Son reglas de diseño con tokens y valores? | | → `docs/GUIA_DISENO.md` |
 | ¿Es el porqué de una decisión? | | → `ADR.md` |
-| ¿Es un gotcha de stack ya resuelto? | | → `TECH_NOTES.md` |
-| ¿Es estado, progreso o historia? | | → `SESSION_LOG.md` |
+| ¿Es un gotcha de stack ya resuelto? | | → `docs/TECH_NOTES.md` |
+| ¿Es estado, progreso o historia? | | → `docs/SESSION_LOG.md` |
 
 ## Señales de que tu AGENTS.md es demasiado largo
 

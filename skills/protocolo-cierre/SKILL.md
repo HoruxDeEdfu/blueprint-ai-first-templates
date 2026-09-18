@@ -37,8 +37,8 @@ git log --oneline -10        # últimos commits, para entender el hilo
 ```
 
 Leer además:
-- Las últimas 2 entradas del `SESSION_LOG.md` — para no duplicar y seguir la numeración
-- El `CHANGE_LOG.md` — para saber si algún cambio se completó en esta sesión
+- Las últimas 2 entradas del `docs/SESSION_LOG.md` — para no duplicar y seguir la numeración
+- El `docs/changes/CHANGE_LOG.md` — para saber si algún cambio se completó en esta sesión
 
 > **No fabricar.** Lo que no aparece en `git diff` no pasó. Un log de sesión inventado es peor que no tener log: se lee como verdad en la sesión siguiente.
 
@@ -89,7 +89,7 @@ Reglas:
 | Guía de diseño | Se crearon patrones visuales nuevos o cambió uno existente |
 | Inventario de componentes | Se creó, modificó, deprecó o renombró un componente compartido (gate obligatorio) |
 | Documento de arquitectura | Se agregó un módulo, cambió un pilar o cambió el stack |
-| `CHANGE_LOG.md` | Se completó un cambio — moverlo de `pending/` y eliminar el archivo |
+| `docs/changes/CHANGE_LOG.md` | Se completó un cambio — moverlo de `docs/changes/pending/` y eliminar el archivo |
 
 **Regla de oro:** si el doc no fue afectado por esta sesión, no lo toques. No "mejorar de paso" secciones no relacionadas.
 
@@ -101,7 +101,7 @@ Si en la sesión apareció un error, un gotcha o una decisión no obvia, tiene q
 |------|---------|
 | Invariante arquitectónico **activo** | `AGENTS.md`, sección «Qué NO hacer» |
 | **Por qué** se eligió algo, y qué se descartó | `ADR.md`, fila nueva |
-| Cicatriz de stack: fix de una librería o versión | `TECH_NOTES.md`, por stack |
+| Cicatriz de stack: fix de una librería o versión | `docs/TECH_NOTES.md`, por stack |
 | Regla visual, microinteracción o UX | Guía de diseño, sección «Gotchas» |
 | Decisión de un módulo específico | La spec de ese módulo |
 
@@ -115,7 +115,7 @@ Si en la sesión apareció un error, un gotcha o una decisión no obvia, tiene q
 
 > *«¿Remover esto haría que la próxima sesión cometa un error ahora mismo?»*
 
-Si la respuesta no es inmediata, va a `TECH_NOTES.md`. El AGENTS.md tiene techo — pasado ese techo, agregar una regla **debilita** las demás.
+Si la respuesta no es inmediata, va a `docs/TECH_NOTES.md`. El AGENTS.md tiene techo — pasado ese techo, agregar una regla **debilita** las demás.
 
 ### Paso 6 — Evaluar el bump de versión
 
@@ -131,7 +131,7 @@ Si amerita bump, ejecutar `version-bump` (que pedirá confirmación). Si no, ind
 ### Paso 7 — Reportar
 
 ```
-✓ SESSION_LOG.md actualizado (sesión N)
+✓ docs/SESSION_LOG.md actualizado (sesión N)
 ✓ [Doc actualizado] — [qué sección]
   (si no hubo otros: "No se actualizaron otros docs — la sesión no los afectó")
 ✓ Versión: 0.X.X → 0.Y.Z (MINOR)  |  "sin cambio (solo fixes/docs)"

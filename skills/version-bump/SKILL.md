@@ -83,7 +83,7 @@ git log $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-paren
 
 ### Paso 3 — Cruzar con el SESSION_LOG
 
-Leer las últimas 2 entradas para contexto que el mensaje de commit no captura:
+Leer las últimas 2 entradas de `docs/SESSION_LOG.md` para contexto que el mensaje de commit no captura:
 
 - ¿Se completó un cambio con features nuevas? → confirma MINOR
 - ¿La sesión fue solo infra o testing? → probablemente PATCH

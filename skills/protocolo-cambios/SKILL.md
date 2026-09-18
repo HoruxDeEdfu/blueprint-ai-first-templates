@@ -170,14 +170,14 @@ Después de implementar:
 ## Ciclo de vida del documento
 
 ```
-pending/CHG-XXX.md (Pendiente)
+docs/changes/pending/CHG-XXX.md (Pendiente)
     ↓ análisis
-pending/CHG-XXX.md (En implementación)
+docs/changes/pending/CHG-XXX.md (En implementación)
     ↓ implementación + docs
-CHANGE_LOG.md (resumen permanente)  +  pending/CHG-XXX.md ELIMINADO
+docs/changes/CHANGE_LOG.md (resumen permanente)  +  docs/changes/pending/CHG-XXX.md ELIMINADO
 ```
 
-Un archivo en `pending/` sin actividad por 2+ semanas: revisarlo y moverlo al CHANGE_LOG como "Descartado" si ya no aplica.
+Un archivo en `docs/changes/pending/` sin actividad por 2+ semanas: revisarlo y moverlo al CHANGE_LOG como "Descartado" si ya no aplica.
 
 ---
 

@@ -342,8 +342,8 @@ protocolo dice cuándo y el template dice qué, y se descargan por separado.
 cuenta en la landing, el volcado para LLMs y el apéndice, que gana el grupo
 «Documentos vivos» y suma CHG y SPEC junto a sus protocolos. La cadena de
 artefactos del manual y el template de `AGENTS.md` nombran
-`docs/SPECS_POR_MODULO.md` como archivo único; la spec por módulo lo
-reemplaza por la carpeta `docs/specs/` con un README índice, que es lo que el
+docs/SPECS_POR_MODULO.md como archivo único; la spec por módulo lo
+reemplaza por la carpeta docs/specs/ con un README índice, que es lo que el
 proyecto real terminó haciendo. El template ya lo dice desde ADR-008; el
 capítulo lo cambia el sitio. La anatomía del CHG queda en tres sitios —protocolo,
 skill y template— hasta que el protocolo se edite para apuntar al template;
@@ -626,3 +626,67 @@ bloque de instalación desde ADR-008 y hay que avisarle que cambió. La spec
 pierde el ítem de la colisión en su lista de lo que queda fuera. Un proyecto que
 haya instalado con el comando anterior y perdido una skill no la recupera desde
 acá: el daño se hizo al copiar y esto sólo impide que vuelva a pasar.
+
+## ADR-015 — El registro de sesión es `docs/SESSION_LOG.md`: el paquete se alinea al manual y corrige las rutas de `protocolo-cierre`
+
+- **Fecha:** 2026-09-18
+- **Estado:** aceptada
+
+**Contexto.** Al preparar la instalación de `protocolo-cierre` en este repo —el
+paquete usando sus propias skills— aparecieron tres convenciones distintas para
+el mismo documento. El manual publicado define el registro de sesión como un
+archivo único bajo `docs`, con su formato de entrada y una regla de archivado
+pasadas las ~50 entradas (Parte III, «Protocolo de cierre de sesión»), y el
+capítulo «Gobierno del contexto» lo respalda citando un proyecto real de 626
+sesiones. `skills/protocolo-cierre/SKILL.md` pedía ese mismo archivo pero en la
+raíz, y lo mismo con el registro de cambios, que su hermana
+`skills/protocolo-cambios/SKILL.md` sí escribe en la carpeta que el manual
+define. Y dos proyectos reales —los dos portales de compliance— montaron una
+tercera: un archivo por sesión bajo una carpeta `sessions`, con los cambios
+nombrados por fecha y slug. Al medirla, esa tercera estaba vacía: las dos
+carpetas contienen sólo su `README.md`, cero sesiones y cero cambios
+registrados en ninguno de los dos repos. Andamiaje montado y nunca ejercido.
+
+**Decisión.** El registro de sesión es un archivo único, `docs/SESSION_LOG.md`,
+con la sesión más reciente arriba: la convención del manual, que es la que tiene
+kilometraje. El paquete corrige las tres rutas de `protocolo-cierre`, que
+escribía en la raíz:
+
+```
+SESSION_LOG.md   → docs/SESSION_LOG.md
+CHANGE_LOG.md    → docs/changes/CHANGE_LOG.md
+pending/         → docs/changes/pending/
+```
+
+y `skills/version-bump/SKILL.md` nombra el archivo en su Paso 3, donde antes
+pedía «las últimas 2 entradas» sin decir de dónde. El defecto no era suyo: el
+mismo documento se nombraba con y sin el prefijo dentro de la misma colección
+—la arquitectura, las notas técnicas, la guía de diseño, el registro de cambios
+y el PRD—, así que la corrección se extiende a `skills/protocolo-cambios/SKILL.md`,
+su molde del CHG y `templates/AGENTS_MD_TEMPLATE.md`. La forma canónica es con
+`docs/`; el título de un template y el árbol de carpetas no lo llevan, porque
+ahí el nombre no es una ruta. Este repo abre el suyo;
+`HANDOFF.md` se queda con el estado, los pendientes y los bloqueadores que
+comparte con el sitio, que es otra cosa que la cronología. Los dos portales de
+compliance se alinean el día que se los toque.
+
+**Alternativas.** *Adoptar la convención de compliance*, un archivo por sesión,
+se defiende sola: diffs más limpios, crece sin necesitar archivado, y ya estaba
+montada en dos repos. Pero obligaba a cambiar dos capítulos publicados del sitio
+y dos skills publicadas para adoptar una convención con cero archivos detrás,
+mientras la del manual lleva 626 sesiones de uso real. *Dejar las rutas como
+estaban y mapear el registro de sesión a `HANDOFF.md` sólo en este repo*: cero
+cambios en skills publicadas, pero deja el defecto en pie para todo el que
+instale —el skill escribe en la raíz lo que el manual pone bajo `docs`— e
+inventa para este repo una equivalencia que ningún otro proyecto tiene.
+
+**Consecuencias.** No se mueve ninguna ruta de SKILL.md ni de `templates/`:
+ningún enlace publicado se rompe. Pero `protocolo-cierre` es una de las tres que
+asumen el capítulo «Gobierno del contexto», y `protocolo-cambios` es otra, así
+que hay que avisar al sitio antes del merge a `prod`; el aviso es liviano, porque el skill pasa a coincidir
+con el capítulo y el capítulo no cambia. Quedan dos divergencias abiertas entre
+el skill y el manual, ninguna de ruta: el skill no implementa el archivado que
+el manual define, y numera las entradas («sesión N») donde el manual sólo las
+fecha. El registro de sesión **no** entra en `artefactos` de `AI-FIRST.md`: es
+cronología que sólo crece y que nombra lo ya retirado, y el check 4 lo cobraría
+como un P2 por cada ruta muerta, para siempre.
