@@ -5,10 +5,11 @@ código del detector de entropía documental. El sitio de la metodología vive e
 otro repo, `falcux-ai-first-docs-web`; este repo, `falcux-ai-first-package`,
 **entrega**; aquél **documenta**.
 
-**El paquete no está publicado.** Desde el 2026-09-17 los dos `package.json`
-ya no llevan `private: true` y van en `0.1.0`: están listos para el primer
-publish, que sigue siendo una decisión aparte. Lo único que impide publicar
-por accidente es no correr `pnpm publish`.
+**El paquete está publicado.** `@falcux/ai-first@0.1.0` salió a npm el
+2026-09-17, sin `private: true`. `.npmrc` fija `publish-branch=prod`: un
+`pnpm publish` desde otra rama se niega solo. El comando sigue siendo
+`ai-first`, vía el `bin` del paquete con scope; el alias sin scope se
+descartó (ADR-011).
 
 ## Estructura
 
@@ -118,7 +119,7 @@ tildes**; el resto, con ellas.
 | `SPEC-PAQUETE.md` | El contrato del detector. Se probó contra código el 2026-09-17; lo que dejó abierto está en `HANDOFF.md`. |
 | `ADR.md` | Las decisiones tomadas y lo que se descartó. |
 | `AI-FIRST.md` | Lo que gobierna a este repo. Lo lee `audit:self`. |
-| `README.md` | Lo que ve quien llega. Rotula el paquete como proyectado. |
+| `README.md` | Lo que ve quien llega. Dice qué está publicado en npm y qué no. |
 
 ## What NOT to do
 
@@ -127,9 +128,10 @@ tildes**; el resto, con ellas.
 - **No toques `protocolo-features`, `protocolo-cambios` ni `protocolo-cierre`**
   sin avisar al sitio: asumen su capítulo «Gobierno del contexto».
 - **No avances `prod` sin que Charlie lo pida.** Mergear ahí despliega.
-- **No publiques a npm.** Ni con `--dry-run` sin avisar. El primer publish
-  tiene su lista en `HANDOFF.md`. El scope `@falcux` ya es de la cuenta de
-  usuario `falcux` (ADR-004); no hay organización que crear.
+- **No publiques a npm sin que Charlie lo pida.** Ni con `--dry-run` sin
+  avisar. El primer publish ya salió (`0.1.0`); los siguientes tienen su lista
+  en `HANDOFF.md`. El scope `@falcux` es de la cuenta de usuario `falcux`
+  (ADR-004); no hay organización que crear.
 - **No cambies los pesos del puntaje** sin ADR y sin avisar al sitio.
 - **No añadas un modelo, una API ni una llamada de red** al detector.
 - **No metas contenido del sitio acá.** El sitio documenta; este repo entrega.

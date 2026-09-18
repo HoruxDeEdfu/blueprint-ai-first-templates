@@ -6,8 +6,7 @@ y el detector de entropía documental.
 
 > **Estado: publicado el 2026-09-17.** `npx @falcux/ai-first` ya existe en npm,
 > en `0.1.0`. El alias sin scope `ai-first` se descartó (ADR-011): npm lo
-> bloqueó por similitud con el paquete `ee-first`. Lo que hay acá se puede clonar y correr; lo que no hay es un paquete
-> instalable. El sitio lo rotula igual.
+> bloqueó por similitud con el paquete `ee-first`.
 
 ## Qué hay
 
@@ -15,8 +14,8 @@ y el detector de entropía documental.
 |---|---|---|
 | 13 templates de documentos (AGENTS.md, PRD, guía de diseño, arquitectura, protocolos, documentos vivos) | `templates/` | 8 publicados; los 5 de la 0.2.0 en `dev` |
 | 10 skills para agentes de código (Claude Code, Codex, Cursor, OpenCode, Kimi Code) | `skills/` | 8 publicadas; las 2 de la 0.2.0 en `dev` — [cómo instalarlas](skills/README.md) |
-| Detector de entropía (`ai-first audit`) | `src/` | escrito, sin publicar |
-| `ai-first init` mínimo: escanea y escribe `AI-FIRST.md` + `ADR.md` | `src/init.ts` | escrito, sin publicar |
+| Detector de entropía (`ai-first audit`) | `src/` | publicado en `0.1.0` |
+| `ai-first init` mínimo: escanea y escribe `AI-FIRST.md` + `ADR.md` | `src/init.ts` | publicado en `0.1.0` |
 | `init` completo (entrevista, skills), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
 
 Las skills viven acá y sólo acá desde el 2026-09-17; el sitio enlaza a las
