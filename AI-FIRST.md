@@ -12,6 +12,11 @@ verificacion: pnpm test
 # omitido, que es lo honesto: no hay zona que inventar.
 zonas_prohibidas: []
 
+# El check 3 lee la spec del cambio en curso. Sin CHG abierto se omite, que es
+# lo correcto: no hay alcance que exceder.
+alcance:
+  spec: docs/changes/pending/
+
 # Cambiar la forma del contrato o de la interfaz es decisión. Las dependencias
 # de producción las vigila el check 2 sin declararlas.
 superficies_de_decision:

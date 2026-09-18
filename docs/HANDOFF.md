@@ -396,6 +396,28 @@ están calibrados contra «la landing». Están calibrados contra la portada del
 sitio, que es donde vive el ejemplo del 68; la landing comercial es otro repo y
 no lo publica. La palabra mandaba a buscar al repo equivocado.
 
+**La herramienta quedó configurada en este repo** al final del día: cinco skills
+por enlace en `.agents/skills/`, `docs/changes/` con su registro y su carpeta de
+CHG en curso, `alcance.spec` declarado, y los tres tags de versión sobre los
+commits publicados. El detalle, en `docs/SESSION_LOG.md`, que estrenó con esta
+sesión.
+
+**Hallazgos para el detector**, salidos de usarlo sobre este repo. Ninguno se
+tocó hoy; los dos primeros son cambio de spec:
+
+1. *Regla 3 del check 4.* «Si el primer segmento no existe, la ruta es de otro
+   árbol» falla para todo adoptante que tenga `docs/`: en cuanto la carpeta
+   existe, toda mención a un docs ajeno da P2. Este repo se salvaba por no
+   tenerla. La salida que se usó fue escribir las rutas ajenas en prosa, sin
+   acentos graves; el arreglo de verdad es del contrato.
+2. *Check 3 y los README.* Un `README.md` dentro de la carpeta de specs se lee
+   como spec y el check reporta «no lista archivos». Compliance tiene README en
+   esas carpetas. Debería ignorarlos.
+3. *`init` sugiere un nombre que nadie usa.* La línea 185 de `src/init.ts`
+   propone un inventario de componentes con un nombre distinto al del template.
+4. *El mensaje del CLI para comandos mapeados* remite al handoff de este repo.
+   A quien lo corre desde otro proyecto no le dice nada.
+
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de

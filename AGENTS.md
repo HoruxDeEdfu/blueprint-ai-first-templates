@@ -48,6 +48,28 @@ node dist/src/cli.js init  --raiz <repo>
 node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registrar] [--json]
 ```
 
+## Cómo se trabaja acá: con nuestras propias skills
+
+Este repo usa la metodología que publica. Cinco de las diez skills están
+instaladas en `.agents/skills/` como **enlaces simbólicos** a `skills/`, la fuente
+única: `protocolo-features`, `protocolo-cambios`, `protocolo-cierre`,
+`version-bump` y `test-fix`. Las cinco de UX no aplican a un CLI. `criterio` es
+carpeta real porque es de este repo y no se publica. Editar una skill en
+`skills/` es editar la que corres: ese es el punto.
+
+Dónde escribe cada una acá, en el vocabulario del manual:
+
+| El manual dice | Acá es |
+|---|---|
+| Registro de sesión | `docs/SESSION_LOG.md` |
+| Registro de decisiones | `docs/ADR.md` |
+| Cambio en curso / registro de cambios | `docs/changes/pending/` → `docs/changes/CHANGE_LOG.md` |
+| Notas técnicas, guía de diseño, specs por módulo | No existen todavía. Si una skill pide escribir ahí, se crea el archivo en `docs/`, no se inventa otro sitio. |
+| Schema y migraciones | No hay base de datos: ese paso se salta. |
+
+Las versiones publicadas llevan tag `vX.Y.Z` sobre el commit que las publicó;
+`version-bump` arranca desde el último. El tag lo pone Charlie, nunca la skill.
+
 ## Reglas críticas
 
 ### Las skills
@@ -139,5 +161,8 @@ tildes**; el resto, con ellas.
   en `docs/HANDOFF.md`. El scope `@falcux` es de la cuenta de usuario `falcux`
   (ADR-004); no hay organización que crear.
 - **No cambies los pesos del puntaje** sin ADR y sin avisar al sitio.
+- **No pongas entre acentos graves una ruta de otro repo** en `docs/HANDOFF.md`
+  ni en `docs/ADR.md`: el check 4 la busca acá y la cobra como P2 en cuanto
+  exista la primera carpeta del camino. Las rutas ajenas van en prosa pelada.
 - **No añadas un modelo, una API ni una llamada de red** al detector.
 - **No metas contenido del sitio acá.** El sitio documenta; este repo entrega.
