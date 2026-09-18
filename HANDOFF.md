@@ -270,7 +270,11 @@ en `docs/changes/pending/` del proyecto, que es donde el check 3 lo lee y donde
 un humano lo revisa en el PR.
 
 **Coordinar con el sitio**: la tarjeta del apéndice que ofrecía ese template
-apunta ahora al archivo dentro de la skill, en la misma rama `prod`.
+apunta ahora al archivo dentro de la skill, en la misma rama `prod`. La tarjeta
+se escribió y quedó retenida en el `dev` del sitio el 2026-09-18, a la espera de
+que `prod` de acá tuviera `64375d8`. **Ya lo tiene**: `prod` avanzó ese mismo día
+hasta `047d03f`, dos commits de golpe, y el archivo responde 200 en su raw link.
+El sitio puede publicar sus tres commits.
 
 ### El bloqueador nº2 se cierra por donde no se esperaba (2026-09-18, ADR-014)
 
@@ -297,9 +301,31 @@ unas 160 menciones cruzadas entre skills.
 depende de una decisión de nombres, sólo del esquema del manifiesto. Cuando
 instale skills hereda esta política.
 
-**Coordinar con el sitio**: su apéndice de templates repite el bloque de
-instalación desde ADR-008, y ese bloque cambió. Ninguna ruta se movió, así que no
-hay enlaces que arreglar ni nada que retener antes del merge.
+**El sitio ya lo aplicó** el 2026-09-18, en su `dev` (`511a9ce`): el apéndice
+trae el bucle con un `git clone` delante, porque ahí el lector todavía no tiene el
+paquete, más la prosa de que no sobreescribe y las tres salidas. No nombra la
+sección nueva del README a propósito, porque cuando lo escribió `prod` de acá
+todavía servía la versión anterior; con `prod` ya en `047d03f` la frase es cierta
+y puede nombrarla cuando quiera. Ninguna ruta se movió, así que no hubo nada que
+retener.
+
+De paso, el dato de qué skills nombran cada instrumento corrigió dos sitios del
+sitio que decían «tres skills» —un aviso de su capítulo «Gobierno del contexto» y
+una regla de su `AGENTS.md`—, contados a mano allá contra las diez publicadas y
+coincidentes con los de acá. Su ADR-010 conserva el «tres» porque era cierto el
+2026-09-17, cuando eran ocho: un ADR es una foto fechada.
+
+### `prod` avanza a `047d03f` (2026-09-18)
+
+Dos commits de golpe, los dos del día: el molde del CHG dentro de su skill
+(ADR-013) y la instalación que no sobreescribe (ADR-014). Con eso los raw links
+del sitio sirven ya las dos cosas, y el sitio puede publicar los tres commits que
+tenía retenidos. La versión del `package.json` sigue en `0.1.1`, la misma que
+está en npm, así que esto no publica nada: subir la versión sigue siendo la
+decisión de publicar (ADR-007). El raw link del README tardó unos minutos en
+reflejarlo por la caché del CDN de GitHub, como ya había pasado en el merge del
+2026-09-17; lo que manda es el contenido de la rama, no lo que devuelve el raw
+mientras tanto.
 
 ### Cómo trabajar acá
 
