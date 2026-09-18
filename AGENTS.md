@@ -1,6 +1,6 @@
 # Falcux AI-First — el paquete
 
-Repo de `@falcux/ai-first`: los 13 templates, las 10 skills y el
+Repo de `@falcux/ai-first`: los 9 templates, las 10 skills y el
 código del detector de entropía documental. El sitio de la metodología vive en
 otro repo, `falcux-ai-first-docs-web`; este repo, `falcux-ai-first-package`,
 **entrega**; aquél **documenta**.
@@ -23,7 +23,7 @@ src/puntaje.ts             40·P0 + 20·P1 + 8·P2. Calibrado contra la landing.
 src/git.ts  src/glob.ts  src/markdown.ts   Lo único que se le pregunta a git, a los patrones y al Markdown.
 test/                      node:test sobre repos git desechables. Sin mocks.
 skills/                    Las 10 skills. Acá es su único hogar desde ADR-006. El sitio enlaza a las de `prod`.
-templates/                 Los 13 templates. Acá es su único hogar. El sitio enlaza a los de `prod`.
+templates/                 Los 9 templates. Acá es su único hogar. El sitio enlaza a los de `prod`.
 .agents/skills/            Las skills de ESTE repo (hoy, `criterio`). `.claude/skills` es un enlace a ella (ADR-008).
 SPEC-PAQUETE.md            El contrato: formato de AI-FIRST.md, los 5 checks, el puntaje.
 ADR.md                     Por qué se decidió cada cosa. Se agrega, no se edita.

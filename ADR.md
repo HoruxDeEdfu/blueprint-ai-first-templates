@@ -475,3 +475,47 @@ el chequeo pero pierde el nombre corto que motivaba el alias en primer lugar
 dependieron del alias. `README.md`, `AGENTS.md` y `HANDOFF.md` dejan de
 mencionar un segundo paquete. Si en el futuro se quiere un nombre corto, esta
 fila es el antecedente de por qué no salió a la primera.
+
+## ADR-012 — Se retiran los cuatro templates de protocolo; las skills `protocolo-*` son el único formato
+
+- **Fecha:** 2026-09-18
+- **Estado:** aceptada
+
+**Contexto.** Los cuatro templates de protocolo —desarrollo de features,
+gestión de cambios, cierre de sesión y patrones UX— se subieron el
+2026-04-01, antes de que este repo existiera como paquete. Los cuatro llevan
+frontmatter de skill (nombres `feature-development`, `change-management`,
+`session-closure`, `ux-patterns`) con los nombres de antes de la
+generalización del 2026-09-15, que los renombró a `protocolo-features`,
+`protocolo-cambios`, `protocolo-cierre` y `protocolo-ux`. `lote-3` ya había
+encontrado el caso del de patrones UX («es el precursor de `protocolo-ux`,
+no una plantilla de `ux-patterns`») y lo dejó sin resolver porque el sitio lo
+enlazaba. Al revisar los otros tres, el mismo patrón se repite en los cuatro.
+Además, ninguno sigue el mecanismo que sí tienen los demás templates: no se
+declaran bajo `artefactos.*` en `AI-FIRST.md`, y ningún check del detector
+los lee. Y el contenido divergió: las skills incorporan Zonas Prohibidas y
+`ADR.md`, formalizados el 2026-09-16, que los templates no tienen porque son
+de un mes y medio antes. El template de `AGENTS.md`, reescrito el
+2026-09-17, ya sólo instruye instalar las skills; no hay ningún flujo
+vigente que pida copiar estos cuatro documentos a un proyecto.
+
+**Decisión.** Se borran los cuatro. `skills/protocolo-*/SKILL.md` queda como
+el único formato de los cuatro protocolos de la Parte III. El paquete pasa de
+13 a 9 templates. El template del documento de cambio deja de nombrar al de
+gestión de cambios como alternativa a la skill.
+
+**Alternativas.** *Reescribirlos como prosa sin frontmatter de skill,
+distinta del contenido de la skill*: es la lectura literal de
+`skills/README.md` («protocolo = documento; skill = mismo procedimiento en
+formato IA»), pero exige mantener dos versiones del mismo procedimiento
+sincronizadas a mano para siempre —la entropía que este producto vende
+medir— sin que ningún mecanismo del propio paquete lo vigile. *Dejarlos
+como están, marcados obsoletos en una nota*: no evita que alguien los copie
+igual, y no corrige el `name:` que colisiona con el nombre real de la skill.
+
+**Consecuencias.** El sitio pierde 4 tarjetas de descarga en el apéndice y
+ajusta 8 archivos que nombran los cuatro templates —capítulos de protocolos,
+la guía de diseño, el capítulo de AGENTS.md, el glosario—; ninguno se tocó
+desde acá. Un proyecto que instaló la versión anterior del paquete y copió
+estos cuatro documentos los conserva sin problema: nada los borra
+retroactivamente, sólo dejan de distribuirse en versiones nuevas.

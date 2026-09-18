@@ -1,6 +1,6 @@
 # Handoff — `@falcux/ai-first`
 
-El paquete: los 13 templates, las 10 skills y el detector de
+El paquete: los 9 templates, las 10 skills y el detector de
 entropía documental. El sitio de la metodología tiene su propio handoff en el
 repo `falcux-ai-first-docs-web`; acá sólo lo que es del paquete y lo que los
 dos comparten. Este repo se llama `falcux-ai-first-package` desde el
@@ -226,20 +226,37 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
    1. Avisar al sitio: «las 8 skills» pasan a 10; enlaces nuevos a
       `prod/skills/information-architecture/SKILL.md` y
       `prod/skills/test-fix/SKILL.md` cuando `dev` llegue a `prod`.
-   2. **Hallazgo colateral, sin resolver:** `templates/UX_PATTERNS_PROTOCOL.md`
-      (2026-04-01) es, en contenido, el precursor de la skill `protocolo-ux`
-      —capas, tablas, formularios, modales, 4 estados— y no una plantilla de
-      `ux-patterns`, aunque su frontmatter dice `name: ux-patterns` y pide
-      copiarse con ese nombre. Un proyecto que lo copie tendrá dos skills que
-      dicen lo mismo con nombres distintos. No se movió ni renombró porque el
-      sitio lo enlaza; qué hacer con él (reescribirlo como el esqueleto que la
-      guía describe en su §18, o retirarlo coordinando con el sitio) es
-      decisión aparte.
+   2. ~~Hallazgo colateral: el template de patrones UX era el precursor de
+      `protocolo-ux`, no una plantilla de `ux-patterns`.~~ **Resuelto el
+      2026-09-18** (ADR-012): los cuatro templates de protocolo —desarrollo de
+      features, gestión de cambios, cierre de sesión y patrones UX— se
+      retiraron. Los cuatro llevaban frontmatter de skill con los nombres de
+      antes de la generalización (`feature-development`, `change-management`,
+      `session-closure`, `ux-patterns`), no se declaraban en `AI-FIRST.md` de
+      ningún proyecto ni los leía el detector, y su contenido había divergido:
+      las skills `protocolo-*` incorporan Zonas Prohibidas y `ADR.md`, que no
+      existían el 2026-04-01. Coordinar con el sitio: 8 archivos lo
+      referencian, abajo.
 
 **Lo que ninguna parte hace**: publicar a npm, avanzar `prod`, cambiar los
 pesos del puntaje, mover o renombrar rutas de `skills/` o `templates/` que el
 sitio enlaza. Para el `init` futuro queda anotado: escribe «.agents/skills/» y
 el enlace de Claude, no la carpeta de Claude.
+
+### Se retiran los cuatro templates de protocolo (2026-09-18, ADR-012)
+
+Salieron de `templates/` los cuatro documentos de protocolo que traían
+frontmatter de skill: el de desarrollo de features, el de gestión de
+cambios, el de cierre de sesión y el de patrones UX. El paquete pasa de 13 a
+9 templates; en npm, de 4 protocolos publicados a ninguno —las skills
+`protocolo-*` son ahora el único formato. El template del documento de
+cambio dejó de nombrar al de gestión de cambios como alternativa.
+
+**Coordinar con el sitio**, que referencia los cuatro nombres en 8 archivos
+de `falcux-ai-first-docs-web`: su propio handoff, los cuatro capítulos de
+protocolos de la Parte III, el de skills y hooks y el de guía de diseño en
+la Parte II, el de AGENTS.md en la Parte II, el apéndice de templates —las 4
+tarjetas— y el glosario. No se tocó nada de eso desde acá.
 
 ### Cómo trabajar acá
 
