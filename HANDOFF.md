@@ -327,6 +327,19 @@ reflejarlo por la caché del CDN de GitHub, como ya había pasado en el merge de
 2026-09-17; lo que manda es el contenido de la rama, no lo que devuelve el raw
 mientras tanto.
 
+**Quién avanzó `prod` no está verificado.** Se hizo desde fuera de esta sesión,
+y lo más probable es que fuera Charlie, que es quien lo decide; pero nadie lo
+confirmó. Queda como supuesto, no como hecho.
+
+**El sitio publicó el mismo día**, en su `prod` (`0fffcc9`), los cuatro commits
+que tenía esperando. Antes de mergear verificó este `prod` por tres vías —
+`ls-remote`, la API de contenidos y el raw del molde del CHG, que ya daba 200 sin
+esperar al CDN—, y comprobó en producción las 19 URL únicas del apéndice en 200,
+la tarjeta del CHG apuntando dentro de la skill, el bloque de instalación nuevo y
+las cuentas de 8 templates, 10 skills y cinco skills que nombran el ADR. Añadió
+además la mención a la sección «Si un nombre ya está ocupado», que con `prod`
+avanzada ya es cierta. **No queda nada pendiente entre los dos repos.**
+
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de
