@@ -444,7 +444,7 @@ No hubo `--dry-run` contra el registro: el tarball se listó con
 
 **El README se quedó en el 17.** Decía publicado «en `0.1.0`» tres versiones
 después, y cuenta templates y skills como estaban antes de ADR-012. Se corrigió
-sólo la versión; el arreglo de fondo es el que ya está en la cola: `CHANGELOG.md`
+sólo la versión; el arreglo de fondo es el que ya está en la cola: el CHANGELOG
 y la versión leída de npm, no escrita a mano.
 
 ### Cómo trabajar acá
