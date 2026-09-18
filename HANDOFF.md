@@ -23,7 +23,6 @@ nadie los reutilice.
 | `ai-first audit` | Los cinco checks de la spec, el puntaje y los exit codes. Dos modos: árbol de trabajo (hook local) y `--base <ref>` (CI). |
 | `ai-first init` | Mínimo: escanea, sugiere y escribe `AI-FIRST.md` + `ADR.md`. No toca skills ni AGENTS.md. Nunca sobreescribe (ADR-003). |
 | `sync`, `adr`, `handoff` | Mapeados abajo, sin escribir. El CLI lo dice con exit 2. |
-| `ai-first` sin scope | El alias de ADR-002, en `alias/`: shim que importa `@falcux/ai-first/cli`, miembro del workspace pnpm, `workspace:*` que `pnpm pack` vuelve versión exacta. Cinco pruebas lo atan al raíz. |
 
 **Lo que la spec dejó abierto y cómo se resolvió** — si la spec cambia, alinear
 esto o el código:
@@ -41,13 +40,15 @@ esto o el código:
    handoff que narra otros repos genera un P2 por cada ruta ajena.
 
 **Decisiones tomadas**, con sus alternativas, en `ADR.md`: dónde vive el
-código (001), el nombre en npm y el alias (002), init mínimo antes que completo
-(003), publicar desde la cuenta de usuario `falcux` y no desde una organización
-(004), el nombre del repo (005), `skills/` como fuente de verdad en vez de
-copia del sitio (006), `prod` como rama publicada (007), y la instalación de
-las skills en «.agents/skills/» con enlace para Claude Code más el principio
-editorial en los templates (008), y cinco templates nuevos para los
-documentos que las skills y el detector ya asumían (009).
+código (001), el nombre en npm (002, superada en la parte del alias por la
+011), init mínimo antes que completo (003), publicar desde la cuenta de
+usuario `falcux` y no desde una organización (004), el nombre del repo (005),
+`skills/` como fuente de verdad en vez de copia del sitio (006), `prod` como
+rama publicada (007), la instalación de las skills en «.agents/skills/» con
+enlace para Claude Code más el principio editorial en los templates (008),
+cinco templates nuevos para los documentos que las skills y el detector ya
+asumían (009), la guía de diseño reorganizada y dos skills más (010), y el
+alias descartado tras el bloqueo de npm (011).
 
 **Las skills cambiaron de dueño el 2026-09-17** (ADR-006). El sitio borró su
 `skills/` y el workflow que la empujaba acá con `rsync --delete`, tras
@@ -59,9 +60,10 @@ contexto»: tocarlas obliga a avisar al sitio, y viceversa.
 
 ### Lo que sigue, en orden
 
-Para el `npx` ya no falta código: el alias (ADR-002) quedó escrito el
-2026-09-17. Todo lo que falta son decisiones o pasos manuales de Charlie, en
-este orden porque cada uno alimenta al siguiente:
+El publish ya salió: `@falcux/ai-first` está en npm en `0.1.0` desde el
+2026-09-17. El alias `ai-first` sin scope se descartó (ADR-011): ver el
+detalle abajo, en el paso 4. Lo que sigue son decisiones o pasos manuales de
+Charlie:
 
 1. ~~Crear la organización `@falcux` en npm.~~ **No hace falta (ADR-004).** El
    scope `@falcux` ya es de la cuenta de usuario `falcux`, verificado el
@@ -71,34 +73,28 @@ este orden porque cada uno alimenta al siguiente:
    `falcux-ai-first-package` (ADR-005), y los dos `package.json` ya declaran
    `repository`, `homepage` y `bugs` con ese nombre. Lo que arrastra al sitio
    se resolvió en la lista del merge, abajo.
-3. ~~Quitar `private: true` y subir a `0.1.0` en los dos `package.json`.~~
-   **Hecho el 2026-09-17**, raíz y `alias/` en el mismo commit. Desde entonces
-   nada frena un `pnpm publish` accidental salvo no correrlo. La prueba
-   `test/alias.test.ts` sigue exigiendo que `version` y `private` coincidan.
-4. **Primer publish a mano, desde `prod`** (ADR-007). Trusted publishing de
-   npm se configura desde la página del paquete, así que el paquete tiene que
-   existir antes: la `0.1.0` sale de la máquina de Charlie, logueada como
-   `falcux`, con `prod` al día y árbol limpio (`.npmrc` fija
-   `publish-branch=prod`; `pnpm publish` se niega desde otra rama). Dos
-   comandos en este orden: `pnpm publish --access public` en la raíz y luego
-   `pnpm --filter ai-first publish --access public`. Son dos porque `pnpm -r`
-   excluye la raíz del workspace por defecto; el alias va segundo porque su
-   `package.json` empaquetado ya pide la versión exacta del raíz. Esa versión
-   sale sin provenance; es el precio de no crear nunca un token de larga vida.
-   Nada de esto se corre sin que Charlie lo pida: es el único paso irreversible.
-   **Después**, y es la segunda mitad del paso: configurar trusted publishing en
-   npmjs.com para los dos paquetes apuntando a este repo y al workflow, y
-   escribir `.github/workflows/publish.yml` disparado por push a `prod`, con
-   `id-token: write`, que corre la suite y `audit:self --base`, compara la
-   versión del `package.json` con la publicada y publica raíz y alias sólo si
+3. ~~Quitar `private: true` y subir a `0.1.0`.~~ **Hecho el 2026-09-17.**
+   Desde entonces nada frena un `pnpm publish` accidental salvo no correrlo.
+4. ~~Primer publish a mano, desde `prod`.~~ **Hecho el 2026-09-17** (ADR-007).
+   `pnpm publish --access public` desde `prod`, con 2FA en la cuenta `falcux`:
+   `@falcux/ai-first@0.1.0` está en npm, sin provenance —es el precio de no
+   crear nunca un token de larga vida—. El segundo comando,
+   `pnpm --filter ai-first publish --access public` para el alias, falló con
+   403: «Package name too similar to existing package ee-first». No era un
+   problema de cuenta ni de 2FA —ese ya estaba resuelto—, es el chequeo de
+   npm contra nombres parecidos a paquetes existentes, y no ofrece forma de
+   forzarlo para un nombre sin scope. Charlie decidió descartar el alias
+   (**ADR-011**) en vez de pedir una excepción a soporte de npm. La carpeta del
+   alias, el archivo de workspace de pnpm y su prueba se borraron el mismo día.
+   **Pendiente, para cuando haya versión nueva que publicar:** configurar
+   trusted publishing en npmjs.com para `@falcux/ai-first` apuntando a este
+   repo, y escribir `.github/workflows/publish.yml` disparado por push a
+   `prod`, con `id-token: write`, que corre la suite y `audit:self --base`,
+   compara la versión del `package.json` con la publicada y publica sólo si
    cambió. Queda por verificar si `pnpm publish` ya habla OIDC con npm; si no,
    el workflow empaqueta con `pnpm pack` y publica el tarball con `npm publish`.
-5. **Verificar en una carpeta vacía:** `npx @falcux/ai-first --help` y
-   `npx ai-first --help` deben dar la misma ayuda.
-
-Nota menor: el tarball del alias lleva `bin/`, `package.json` y `README.md`, no
-`LICENSE`; el campo `license: Apache-2.0` sí viaja. Copiar el archivo sería
-duplicarlo. Si npm lo reclama en la página del paquete, se copia en el `prepack`.
+5. **Verificar en una carpeta vacía:** `npx @falcux/ai-first --help` debe dar
+   la ayuda del comando `ai-first`.
 
 **El merge de `dev` a `main` se hizo el 2026-09-17**, avance directo de 12
 commits hasta `b6d3804`, coordinado con el sitio en dos lotes: primero el

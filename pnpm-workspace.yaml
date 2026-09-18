@@ -1,4 +1,0 @@
-# El raíz es `@falcux/ai-first`; `alias/` es `ai-first` sin scope (ADR-002).
-# Los dos se publican juntos, siempre en la misma versión.
-packages:
-  - alias

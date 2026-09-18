@@ -23,9 +23,7 @@ src/git.ts  src/glob.ts  src/markdown.ts   Lo único que se le pregunta a git, a
 test/                      node:test sobre repos git desechables. Sin mocks.
 skills/                    Las 10 skills. Acá es su único hogar desde ADR-006. El sitio enlaza a las de `prod`.
 templates/                 Los 13 templates. Acá es su único hogar. El sitio enlaza a los de `prod`.
-alias/                     El paquete `ai-first` sin scope (ADR-002): un shim que importa `@falcux/ai-first/cli`.
 .agents/skills/            Las skills de ESTE repo (hoy, `criterio`). `.claude/skills` es un enlace a ella (ADR-008).
-pnpm-workspace.yaml        Raíz + alias/. El alias depende del raíz por `workspace:*`.
 SPEC-PAQUETE.md            El contrato: formato de AI-FIRST.md, los 5 checks, el puntaje.
 ADR.md                     Por qué se decidió cada cosa. Se agrega, no se edita.
 ```
@@ -79,13 +77,6 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
 - Mover o renombrar algo en `skills/` o `templates/` obliga a coordinar con el
   sitio antes del merge a `prod`.
 - `.npmrc` fija `publish-branch=prod`: `pnpm publish` se niega desde otra rama.
-
-### El alias
-
-- `alias/` es `ai-first` sin scope. No tiene código: su bin importa
-  `@falcux/ai-first/cli`, el único `export` del raíz. Las pruebas exigen que los
-  dos `package.json` compartan `version` y `private` (hoy, ninguno lo lleva):
-  se publican juntos, en la misma versión, o no se publica ninguno.
 
 ### El detector
 

@@ -437,3 +437,41 @@ después. Hallazgo colateral: el template de protocolo de patrones UX de
 `templates/` es, en contenido, el precursor de `protocolo-ux` y no una
 plantilla de `ux-patterns`; queda anotado en `HANDOFF.md`, sin mover ni
 renombrar, porque el sitio lo enlaza.
+
+## ADR-011 — El alias `ai-first` sin scope se descarta; se publica sólo `@falcux/ai-first`
+
+- **Fecha:** 2026-09-17
+- **Estado:** aceptada. Supera la parte de ADR-002 que decidía publicar el
+  alias en el mismo primer publish; el nombre en npm del paquete real,
+  `@falcux/ai-first`, sigue en pie.
+
+**Contexto.** El primer publish salió el 2026-09-17 desde `prod`, con 2FA en
+la cuenta `falcux`: `pnpm publish --access public` en la raíz publicó
+`@falcux/ai-first@0.1.0` sin problema. El segundo comando,
+`pnpm --filter ai-first publish --access public`, falló con 403: «Package
+name too similar to existing package ee-first; try renaming your package to
+'@falcux/ai-first'…». No era el 2FA, ya resuelto para el primer comando: es el
+chequeo de similitud de npm contra paquetes existentes, pensado contra
+typosquatting, y no tiene bandera para forzarlo en un nombre sin scope. El
+paquete `ee-first` es una dependencia real y muy instalada (la usa `finalhandler`
+de Express), así que no es un falso positivo trivial de desactivar.
+
+**Decisión.** Se descarta el alias. `@falcux/ai-first` es el único nombre en
+npm; el comando sigue siendo `ai-first` porque así lo expone el `bin` del
+paquete con scope, sólo que se invoca `npx @falcux/ai-first`, no
+`npx ai-first`. Se borran la carpeta del alias, el archivo de workspace de
+pnpm y su prueba el mismo día.
+
+**Alternativas.** *Pedir a soporte de npm una excepción al chequeo de
+similitud*: npm las concede a veces cuando el paquete con scope ya existe y el
+propósito es legítimo, pero es un trámite con soporte humano, de duración
+incierta, para un nombre que es conveniencia y no necesidad. *Publicar el
+alias con otro nombre sin scope* (`falcux-ai-first`, `ai-first-cli`): resuelve
+el chequeo pero pierde el nombre corto que motivaba el alias en primer lugar
+(ADR-002); no vale la pena mantener dos paquetes por una comodidad menor.
+
+**Consecuencias.** Los packs verticales futuros (`@falcux/compliance-pack`,
+`@falcux/fintech-pack`) siguen bajo el scope sin que esto los afecte: nunca
+dependieron del alias. `README.md`, `AGENTS.md` y `HANDOFF.md` dejan de
+mencionar un segundo paquete. Si en el futuro se quiere un nombre corto, esta
+fila es el antecedente de por qué no salió a la primera.
