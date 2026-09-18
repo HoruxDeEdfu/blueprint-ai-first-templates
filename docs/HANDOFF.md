@@ -354,6 +354,48 @@ ya distribuido, y sale a mano desde `prod` como la `0.1.0` y la `0.1.1`. El
 workflow de publish va detrás, sin atarle el arreglo: es el pendiente 4 de la
 lista de arriba y estrena con la `0.2.0`.
 
+### El prefijo `docs/` se unifica en los dos repos (2026-09-18)
+
+Empezó por querer estrenar `protocolo-cierre` en este repo y terminó en dos
+decisiones. La primera, **ADR-015**: el registro de sesión es
+`docs/SESSION_LOG.md`, la convención del manual. Competían tres —el manual, el
+skill que lo pedía en la raíz, y los dos portales de compliance con un archivo
+por sesión— y ganó la única con kilometraje: la del manual, que el capítulo
+«Gobierno del contexto» respalda con un proyecto real de 626 sesiones. La de
+compliance resultó estar vacía: sus dos carpetas tienen sólo su `README.md`.
+El defecto no era de `protocolo-cierre`: el mismo documento se nombraba con y
+sin prefijo por toda la colección, y se corrigió también en
+`protocolo-cambios`, su molde del CHG, `version-bump` y el template de
+`AGENTS.md`.
+
+La segunda, **ADR-016**: este handoff, el registro de decisiones y la spec se
+mudaron a `docs/`. Este repo era el único que no seguía el layout que su propio
+producto escribe. En la raíz queda lo que una herramienta busca ahí sin
+negociar; `AI-FIRST.md` entre ellos, porque `src/ai-first-md.ts` lo fija por
+nombre. El contrato absorbió la mudanza sin tocar código.
+
+**El sitio adoptó `docs/ADR.md`** y ya lo tiene alineado en su `dev`. No lo hizo
+por seguirnos: su manual se contradecía solo, porque la tabla de permisos de su
+propio capítulo ya usaba el prefijo y los demás artefactos permanentes lo llevan.
+Confirmó además que el punto B no requería arreglo —las skills pasaron a
+coincidir con lo que el capítulo ya decía— y dejó dos cosas abiertas para
+Charlie: el archivado del registro de sesión pasadas ~50 entradas, que falta en
+la skill y no sobra en el manual, y el número «sesión N» de las entradas, que
+sobra porque obliga a llevar la cuenta y se desincroniza si dos personas cierran
+el mismo día.
+
+**Un dato que valida el `init`:** el repo del sitio tiene su registro de
+decisiones en la raíz y eso no contradice al manual. No tiene carpeta `docs/`
+—su contenido vive bajo el árbol de Astro— y `src/init.ts` sólo escribe en
+`docs/` cuando la carpeta ya existe. Su contrato lo declara ahí y su auditoría
+da 0. La regla condicional está probada contra un repo real que cae del otro
+lado.
+
+**Corregido de paso:** `AGENTS.md` y la nota del contrato decían que los pesos
+están calibrados contra «la landing». Están calibrados contra la portada del
+sitio, que es donde vive el ejemplo del 68; la landing comercial es otro repo y
+no lo publica. La palabra mandaba a buscar al repo equivocado.
+
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de

@@ -45,5 +45,5 @@ enlaza a `prod/skills/<nombre>/SKILL.md`, así que esas rutas no se mueven sin
 avisar.
 
 Por qué `src/puntaje.ts` es superficie de decisión: los pesos 40 / 20 / 8
-están calibrados contra el único ejemplo publicado en la landing. Cambiarlos
-cambia lo que la landing promete.
+están calibrados contra el único ejemplo publicado en la portada del sitio —no
+en la landing comercial, que es otro repo—. Cambiarlos cambia ese número.

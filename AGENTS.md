@@ -19,7 +19,7 @@ src/init.ts                init mínimo: escanea y escribe AI-FIRST.md + ADR.md.
 src/audit.ts               Orquesta las cinco verificaciones y el puntaje.
 src/verificaciones/        Un archivo por check, en el orden de la spec.
 src/ai-first-md.ts         El lector del contrato. Único sitio que interpreta el frontmatter.
-src/puntaje.ts             40·P0 + 20·P1 + 8·P2. Calibrado contra la landing.
+src/puntaje.ts             40·P0 + 20·P1 + 8·P2. Calibrado contra la portada del sitio.
 src/git.ts  src/glob.ts  src/markdown.ts   Lo único que se le pregunta a git, a los patrones y al Markdown.
 test/                      node:test sobre repos git desechables. Sin mocks.
 skills/                    Las 10 skills. Acá es su único hogar desde ADR-006. El sitio enlaza a las de `prod`.
@@ -86,8 +86,11 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
 - Corre en **código puro**: git, sistema de archivos y regex. Sin modelo, sin
   API key, sin red. Es el argumento de venta; no se negocia.
 - Los pesos **40 / 20 / 8** están calibrados contra el único ejemplo publicado
-  en la landing (1 P0 + 1 P1 + 1 P2 = 68). Cambiarlos cambia lo que la landing
-  promete: es ADR y aviso al repo del sitio.
+  en la **portada del sitio** —no en la landing comercial, que es otro repo—:
+  1 P0 + 1 P1 + 1 P2 = 68. El ejemplo está rotulado como hallazgos inventados
+  y con el formato de la 0.1.1, así que lo calibrado es el 68, no el caso.
+  Cambiar los pesos cambia ese número publicado: es ADR y aviso al repo del
+  sitio.
 - Un check que no puede correr se reporta **omitido, nunca aprobado**.
 - Cada regla del check 4 tiene su falso positivo detrás, comentado en el
   código. Una regla nueva entra con su caso real y su prueba.
