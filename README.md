@@ -4,8 +4,8 @@ El material de la metodología [Blueprint AI-First](https://ai-first.falcux.com)
 listo para llevar a un proyecto: 8 templates de documentos, 10 skills ejecutables
 y el detector de entropía documental.
 
-> **Estado: publicado el 2026-09-17.** `npx @falcux/ai-first` ya existe en npm,
-> en `0.1.0`. El alias sin scope `ai-first` se descartó (ADR-011): npm lo
+> **Estado: publicado desde el 2026-09-17.** `npx @falcux/ai-first` está en npm;
+> la última es la `0.1.3`, del 2026-09-18. El alias sin scope `ai-first` se descartó (ADR-011): npm lo
 > bloqueó por similitud con el paquete `ee-first`.
 
 ## Qué hay

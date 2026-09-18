@@ -418,6 +418,35 @@ tocó hoy; los dos primeros son cambio de spec:
 4. *El mensaje del CLI para comandos mapeados* remite al handoff de este repo.
    A quien lo corre desde otro proyecto no le dice nada.
 
+### La `0.1.3` sale a npm (2026-09-18)
+
+Cuarta versión, y la primera que sale con la herramienta configurada en el
+propio repo: el bump lo clasificó `version-bump` desde el tag `v0.1.2` —PATCH:
+un `refactor:` y el arreglo de rutas de ADR-015, que viajaba en el tarball—, la
+entrada de sesión la escribió `protocolo-cierre`, y el tag `v0.1.3` está sobre
+el commit de cierre `a2176c3`, que es también el `prod` publicado. Verificado:
+el shasum del tarball en el registro es idéntico al construido acá
+(`d14c2491…`), `latest` apunta a `0.1.3`, y `npx @falcux/ai-first@0.1.3 --help`
+desde una carpeta vacía responde con salida cero.
+
+**Cómo salió, para la próxima.** La cuenta tiene el 2FA en «auth y escrituras»,
+así que `pnpm publish` desde una consola no interactiva —la del agente— muere
+en `EOTP` antes de subir nada; se intentó dos veces y las dos quedaron ahí.
+Desde la Terminal, npm 11.4 abrió el navegador para autenticar y **publicó por
+la vía web**; el comando terminó después con `409 Cannot publish over
+previously staged version`. Ese 409 no es un fallo: es el CLI chocando con la
+versión que la autenticación web acababa de publicar. **Ante un 409 así, mirar
+`npm view @falcux/ai-first dist-tags` antes de reintentar**: si `latest` ya es
+la versión nueva, terminó bien. La vía web hace innecesario el `--otp`; el
+workflow con trusted publishing (pendiente 4) sigue siendo la salida de fondo.
+No hubo `--dry-run` contra el registro: el tarball se listó con
+`npm pack --dry-run`, que es local.
+
+**El README se quedó en el 17.** Decía publicado «en `0.1.0`» tres versiones
+después, y cuenta templates y skills como estaban antes de ADR-012. Se corrigió
+sólo la versión; el arreglo de fondo es el que ya está en la cola: `CHANGELOG.md`
+y la versión leída de npm, no escrita a mano.
+
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de
