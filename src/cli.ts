@@ -25,8 +25,9 @@ Uso:
 
 init escanea el repo y escribe AI-FIRST.md con lo que encuentra —Zonas Prohibidas
 sugeridas, superficies de decisión, documentos existentes— y un ADR.md vacío.
-No toca nada más y nunca sobreescribe. Las skills y los templates se copian a
-mano por ahora.
+No toca nada más y nunca sobreescribe: lo que ya existe se salta, se reporta
+como saltado y el comando sigue. Las skills y los templates se copian a mano
+por ahora.
 
 Opciones de audit:
   --base <ref>     Compara el rango <ref>...HEAD (CI). Sin ella, compara el árbol
@@ -71,11 +72,12 @@ async function main(argv: string[]): Promise<number> {
   const raiz = resolve(values.raiz ?? process.cwd());
 
   if (comando === 'init') {
-    const { escaneo, escritos } = await iniciar({ raiz });
+    const { escaneo, escritos, saltados } = await iniciar({ raiz });
     const salida = [
       `ai-first init — ${escaneo.proyecto}`,
       '',
       ...escritos.map((e) => `  escrito  ${e}`),
+      ...saltados.map((s) => `  saltado  ${s} (ya existe)`),
       '',
       `  ${escaneo.zonas.length} Zona${escaneo.zonas.length === 1 ? '' : 's'} Prohibida${escaneo.zonas.length === 1 ? '' : 's'} sugerida${escaneo.zonas.length === 1 ? '' : 's'}: ${escaneo.zonas.map((z) => z.ruta).join(', ')}`,
       `  ${escaneo.superficies.length} superficie${escaneo.superficies.length === 1 ? '' : 's'} de decisión: ${escaneo.superficies.join(', ') || '—'}`,

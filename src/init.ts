@@ -8,7 +8,8 @@
 // instalación salte lo que ya existe en vez de renombrar en el origen. Cuando
 // ese `init` instale skills, hereda de acá la misma regla de oro.
 //
-// Regla de oro: nunca sobreescribe. Si AI-FIRST.md existe, se detiene.
+// Regla de oro: nunca sobreescribe. Lo que ya existe se salta y se reporta
+// como tal; saltar no es error (ADR-017 supera ahí a ADR-003).
 
 import { existsSync, readFileSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
@@ -232,30 +233,35 @@ y el viejo queda marcado como superado, con el enlace.
 export interface ResultadoInit {
   escaneo: Escaneo;
   escritos: string[];
+  /** Lo que ya existía y no se tocó, en el mismo orden en que se habría escrito. */
+  saltados: string[];
 }
 
 export async function iniciar(opciones: { raiz: string; hoy?: string }): Promise<ResultadoInit> {
   const { raiz } = opciones;
   if (!esRepoGit(raiz)) throw new ErrorAiFirst(`${raiz} no es un repositorio git.`);
 
-  const rutaAiFirst = join(raiz, NOMBRE_ARCHIVO);
-  if (existsSync(rutaAiFirst)) {
-    throw new ErrorAiFirst(`Ya existe ${NOMBRE_ARCHIVO}. init no sobreescribe: edítalo a mano o bórralo antes.`);
-  }
-
   const hoy = opciones.hoy ?? new Date().toISOString().slice(0, 10);
   const escaneo = escanear(raiz);
   const escritos: string[] = [];
+  const saltados: string[] = [];
 
-  const aiFirst = generarAiFirst(escaneo, hoy);
-  interpretar(aiFirst); // Lo que init escribe tiene que poder leerlo audit. Si no, es un bug de init.
-  await writeFile(rutaAiFirst, aiFirst, 'utf8');
-  escritos.push(NOMBRE_ARCHIVO);
+  const rutaAiFirst = join(raiz, NOMBRE_ARCHIVO);
+  if (existsSync(rutaAiFirst)) {
+    saltados.push(NOMBRE_ARCHIVO);
+  } else {
+    const aiFirst = generarAiFirst(escaneo, hoy);
+    interpretar(aiFirst); // Lo que init escribe tiene que poder leerlo audit. Si no, es un bug de init.
+    await writeFile(rutaAiFirst, aiFirst, 'utf8');
+    escritos.push(NOMBRE_ARCHIVO);
+  }
 
-  if (!escaneo.adrExiste) {
+  if (escaneo.adrExiste) {
+    saltados.push(escaneo.rutaAdr);
+  } else {
     await writeFile(join(raiz, escaneo.rutaAdr), generarAdr(escaneo.proyecto), 'utf8');
     escritos.push(escaneo.rutaAdr);
   }
 
-  return { escaneo, escritos };
+  return { escaneo, escritos, saltados };
 }

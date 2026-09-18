@@ -10,6 +10,47 @@
 
 ---
 
+## 2026-09-18 (sesión 3) — CHG-001: `init` salta lo que existe y sigue
+
+### Resumen
+Primer cambio del repo que pasa entero por `protocolo-cambios`: `init` deja de
+morir cuando `AI-FIRST.md` existe. Lo saltado se reporta y el comando sale con
+0. Es el prerrequisito del `init` completo. Sesión delegada por Charlie desde
+otra sesión de Claude Code, con el CHG como contrato.
+
+### CHG-001 (`src/init.ts`, `src/cli.ts`, `test/init.test.ts`)
+- `ResultadoInit` gana `saltados`; `AI-FIRST.md` existente y el ADR existente
+  van ahí. El error «Ya existe AI-FIRST.md» desaparece.
+- El CLI imprime `escrito <archivo>` / `saltado <archivo> (ya existe)`, y la
+  ayuda deja de prometer el error.
+- La prueba que fijaba el error pasa a comprobar que salta sin cambiar un byte
+  y que el ADR que falta sí se escribe; una prueba nueva cubre el repo con los
+  dos archivos presentes. 60 → 61 pruebas.
+- Verificado a mano sobre un repo desechable: dos corridas seguidas, la segunda
+  con los dos archivos saltados, salida 0 y `AI-FIRST.md` idéntico.
+
+### Cierre del cambio
+- Resumen en `docs/changes/CHANGE_LOG.md`; el CHG salió de `pending/`. Con eso
+  el check 3 vuelve a omitirse, como se esperaba.
+- La spec `docs/specs/init-completo.md` marca el cambio previo como hecho.
+  README y el handoff dicen que `init` salta en vez de detenerse.
+- Sin fila nueva de ADR: ADR-017 ya estaba escrita en `abda74c`.
+
+### Validación
+- typecheck → PASS (lo corre `pnpm test` antes de la suite)
+- lint      → no ejecutado (no hay script)
+- tests     → PASS por exit code, 61/61
+- audit:self → 20 / 100 antes del commit (P1 en `src/cli.ts`: la fila ADR-017
+  está en el commit anterior y el check compara el árbol contra HEAD). Se
+  verifica con `--base v0.1.3` tras el commit, rango que incluye la fila.
+
+### Pendiente para la siguiente sesión
+- [ ] El `init` completo con `/protocolo-features`, ya sin bloqueo: la spec
+      está validada y su cambio previo, hecho.
+- [ ] Los de la sesión 1 siguen en pie: las dos divergencias de
+      `protocolo-cierre`, el CHANGELOG con el componente del sitio, y los
+      cuatro hallazgos del detector.
+
 ## 2026-09-18 (sesión 2) — Sale la 0.1.3, y las skills recién instaladas no se usaron
 
 ### Resumen

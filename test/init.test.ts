@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
-import { ErrorAiFirst, interpretar } from '../src/ai-first-md.js';
+import { interpretar } from '../src/ai-first-md.js';
 import { auditar } from '../src/audit.js';
 import { iniciar } from '../src/init.js';
 import { crearRepo, type Repo } from './ayuda.js';
@@ -36,8 +36,9 @@ test('init escribe AI-FIRST.md con lo que encuentra, y audit lo lee', () =>
   conRepo(async (repo) => {
     proyectoTipico(repo);
 
-    const { escaneo, escritos } = await iniciar({ raiz: repo.raiz, hoy: '2026-09-17' });
+    const { escaneo, escritos, saltados } = await iniciar({ raiz: repo.raiz, hoy: '2026-09-17' });
     assert.deepEqual(escritos, ['AI-FIRST.md', 'docs/ADR.md'], 'hay docs/, así que el ADR va ahí');
+    assert.deepEqual(saltados, []);
 
     const texto = readFileSync(join(repo.raiz, 'AI-FIRST.md'), 'utf8');
     const a = interpretar(texto);
@@ -92,14 +93,29 @@ test('init en un repo vacío escribe un esqueleto válido con .env* como única 
     assert.equal((await auditar({ raiz: repo.raiz })).entropia, 0);
   }));
 
-test('init nunca sobreescribe AI-FIRST.md', () =>
+test('init nunca sobreescribe AI-FIRST.md: lo salta, lo reporta y sigue', () =>
   conRepo(async (repo) => {
-    repo.escribir('AI-FIRST.md', '---\nformato: 1\nproyecto: mio\n---\n');
+    const original = '---\nformato: 1\nproyecto: mio\n---\n';
+    repo.escribir('AI-FIRST.md', original);
     repo.commit('inicio');
 
-    await assert.rejects(iniciar({ raiz: repo.raiz }), (e: unknown) => e instanceof ErrorAiFirst && /no sobreescribe/.test(e.message));
-    assert.equal(readFileSync(join(repo.raiz, 'AI-FIRST.md'), 'utf8'), '---\nformato: 1\nproyecto: mio\n---\n');
-    assert.ok(!existsSync(join(repo.raiz, 'ADR.md')), 'si se detiene, no escribe nada');
+    const { escritos, saltados } = await iniciar({ raiz: repo.raiz });
+    assert.deepEqual(saltados, ['AI-FIRST.md']);
+    assert.deepEqual(escritos, ['ADR.md'], 'saltar no detiene: el ADR que falta sí se escribe');
+    assert.equal(readFileSync(join(repo.raiz, 'AI-FIRST.md'), 'utf8'), original, 'ni un byte distinto');
+    assert.ok(existsSync(join(repo.raiz, 'ADR.md')));
+  }));
+
+test('init con AI-FIRST.md y ADR ya presentes no escribe nada y no es error', () =>
+  conRepo(async (repo) => {
+    repo.escribir('AI-FIRST.md', '---\nformato: 1\nproyecto: mio\n---\n');
+    repo.escribir('docs/ADR.md', '# Mis decisiones\n');
+    repo.commit('inicio');
+
+    const { escritos, saltados } = await iniciar({ raiz: repo.raiz });
+    assert.deepEqual(escritos, []);
+    assert.deepEqual(saltados, ['AI-FIRST.md', 'docs/ADR.md']);
+    assert.equal(readFileSync(join(repo.raiz, 'docs/ADR.md'), 'utf8'), '# Mis decisiones\n');
   }));
 
 test('init respeta un ADR.md que ya existe y lo declara', () =>
@@ -107,8 +123,9 @@ test('init respeta un ADR.md que ya existe y lo declara', () =>
     repo.escribir('docs/ADR.md', '# Mis decisiones\n\n## ADR-001 — Algo\n');
     repo.commit('inicio');
 
-    const { escritos } = await iniciar({ raiz: repo.raiz });
+    const { escritos, saltados } = await iniciar({ raiz: repo.raiz });
     assert.deepEqual(escritos, ['AI-FIRST.md']);
+    assert.deepEqual(saltados, ['docs/ADR.md'], 'el ADR existente se reporta como saltado');
     assert.match(readFileSync(join(repo.raiz, 'docs/ADR.md'), 'utf8'), /^# Mis decisiones/);
     const a = interpretar(readFileSync(join(repo.raiz, 'AI-FIRST.md'), 'utf8'));
     assert.equal(a.artefactos.adr, 'docs/ADR.md');

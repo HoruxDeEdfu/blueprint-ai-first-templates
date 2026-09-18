@@ -8,7 +8,8 @@
 ## Contexto de negocio [OBLIGATORIO]
 
 Hoy `ai-first init` es el mínimo de ADR-003: escanea, escribe `AI-FIRST.md` y
-un `docs/ADR.md` vacío, y se detiene si `AI-FIRST.md` ya existe. Todo lo demás
+un `docs/ADR.md` vacío. Hasta CHG-001 se detenía si `AI-FIRST.md` ya existía;
+desde el 2026-09-18 salta lo que existe y sigue (ADR-017). Todo lo demás
 que un proyecto necesita para correr la metodología —las skills en su sitio,
 la carpeta de cambios, el registro de sesión, el alcance declarado— se hace a
 mano siguiendo `skills/README.md`. El 2026-09-18 este repo se configuró así, a
@@ -149,11 +150,12 @@ archivo: dicen qué escribió la herramienta y qué escribió el humano.
 ## Estado de implementación [CRECE]
 
 ### Implementado
-- Nada todavía. Esta spec es el Paso 1 de `protocolo-features`.
+- El cambio previo, CHG-001 (2026-09-18): `init` salta lo que existe en vez de
+  detenerse, con `saltados` en el resultado y una línea por archivo en el CLI.
+  Resumen en `docs/changes/CHANGE_LOG.md`; la decisión, en ADR-017.
 
 ### Pendiente
-- El cambio previo (`protocolo-cambios`), luego la implementación en la
-  secuencia de las Notas.
+- La implementación del feature en la secuencia de las Notas.
 
 ## Notas de implementación [CRECE]
 

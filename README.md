@@ -38,8 +38,9 @@ node dist/src/cli.js audit --raiz /ruta/a/tu/proyecto
 
 `init` escanea el repo y deja un `AI-FIRST.md` con Zonas Prohibidas sugeridas,
 superficies de decisión y los documentos que ya existen, más un `ADR.md`
-vacío. No toca nada más y nunca sobreescribe. Su formato y el de las cinco
-verificaciones están en [`docs/SPEC-PAQUETE.md`](docs/SPEC-PAQUETE.md).
+vacío. No toca nada más y nunca sobreescribe: lo que ya existe lo reporta como
+saltado y sigue. Su formato y el de las cinco verificaciones están en
+[`docs/SPEC-PAQUETE.md`](docs/SPEC-PAQUETE.md).
 
 | Severidad | Verificación | Cómo lee |
 |---|---|---|

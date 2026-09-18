@@ -21,7 +21,7 @@ nadie los reutilice.
 | Comando | Estado |
 |---|---|
 | `ai-first audit` | Los cinco checks de la spec, el puntaje y los exit codes. Dos modos: árbol de trabajo (hook local) y `--base <ref>` (CI). |
-| `ai-first init` | Mínimo: escanea, sugiere y escribe `AI-FIRST.md` + `docs/ADR.md`. No toca skills ni AGENTS.md. Nunca sobreescribe (ADR-003). |
+| `ai-first init` | Mínimo: escanea, sugiere y escribe `AI-FIRST.md` + `docs/ADR.md`. No toca skills ni AGENTS.md. Nunca sobreescribe (ADR-003); lo que ya existe lo salta, lo reporta y sigue (ADR-017, CHG-001). |
 | `sync`, `adr`, `handoff` | Mapeados abajo, sin escribir. El CLI lo dice con exit 2. |
 
 **Lo que la spec dejó abierto y cómo se resolvió** — si la spec cambia, alinear
@@ -446,6 +446,24 @@ No hubo `--dry-run` contra el registro: el tarball se listó con
 después, y cuenta templates y skills como estaban antes de ADR-012. Se corrigió
 sólo la versión; el arreglo de fondo es el que ya está en la cola: el CHANGELOG
 y la versión leída de npm, no escrita a mano.
+
+### CHG-001: `init` salta lo que existe y sigue (2026-09-18, ADR-017)
+
+El primer cambio del repo que pasa entero por `protocolo-cambios`, y el
+prerrequisito del `init` completo cuya spec está en `docs/specs/init-completo.md`.
+`init` sobre un repo con `AI-FIRST.md` ya no termina con error: el resultado
+trae `saltados` junto a `escritos`, el CLI imprime una línea por archivo
+—«escrito» o «saltado (ya existe)»— y sale con 0. El ADR que ya estaba, que
+antes se saltaba en silencio, también se reporta. Nunca sobreescribir sigue
+entero. Resumen y lecciones en `docs/changes/CHANGE_LOG.md`.
+
+**Lo que dejó ver.** El check 2 compara el árbol de trabajo contra HEAD. La
+fila ADR-017 entró en el commit del CHG y el código en el siguiente, así que
+el `audit:self` previo al commit de código dio P1 en `src/cli.ts` con la
+decisión ya escrita. No es un falso positivo del check sino del orden de los
+commits: se verifica con `--base` sobre un rango que incluya la fila, o la fila
+y el código viajan juntos. El `init` completo no tiene este problema, porque su
+fila ya está.
 
 ### Cómo trabajar acá
 
