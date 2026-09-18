@@ -146,13 +146,29 @@ Tu turno:
 
 ---
 
-## Mostrar la versión en la interfaz
+## Mostrar la versión: en la interfaz y en el README
 
-Si el producto muestra su versión, que la lea del manifiesto en vez de tenerla hardcodeada:
+La versión vive en **un** sitio, el manifiesto, y el tag la refleja. Todo lo
+demás la lee de ahí; nada la copia.
+
+Si el producto muestra su versión, que la lea del manifiesto en vez de tenerla
+hardcodeada:
 
 ```js
 import { version } from './package.json';
 ```
+
+Si el README la muestra, que sea un badge que lee el registro, no un número en
+prosa:
+
+```markdown
+[![npm](https://img.shields.io/npm/v/@scope/paquete)](https://www.npmjs.com/package/@scope/paquete)
+```
+
+Un número escrito a mano en el README es un segundo manifiesto que nadie
+bumpea: se queda en la versión del día que alguien lo escribió, y el lector no
+tiene cómo saberlo. El README dice **estado** —qué está publicado y qué no—;
+qué cambió en cada versión va al `CHANGELOG.md`, que es su documento.
 
 Así el bump se refleja solo, sin un segundo lugar que actualizar y olvidar.
 

@@ -447,6 +447,29 @@ después, y cuenta templates y skills como estaban antes de ADR-012. Se corrigi�
 sólo la versión; el arreglo de fondo es el que ya está en la cola: el CHANGELOG
 y la versión leída de npm, no escrita a mano.
 
+### La `0.2.0` sale a npm (2026-09-18)
+
+Quinta versión y la primera MINOR: el `init` completo (ADR-018). Charlie
+avanzó `prod` a `7baf51b` con `--ff-only`, el tag `v0.2.0` está sobre ese
+commit, y `latest` apunta a `0.2.0`. Verificado bajando el tarball del
+registro y comparándolo con `npm pack` sobre el mismo commit: 49 archivos
+idénticos —`dist/src`, las 10 skills, los 8 templates, el README— salvo
+`package.json`, que `pnpm publish` normaliza (quita `packageManager` y
+reordena `scripts`); por eso el shasum del registro no coincide con el del
+`npm pack` local, y no es señal de nada.
+
+**Lo que salió mal, otra vez.** El README publicado dice «la última es la
+`0.1.3`» y cuenta templates, skills e `init` completo como «en `dev` para la
+0.2.0» cuando viajan en ese mismo tarball. Es la segunda vez en dos días (la
+primera, en la sesión 2). CHG-002 quita el número del README —badge que lee
+npm, tabla por estado— y deja la regla en `skills/version-bump/SKILL.md`. Ese
+README sale con la `0.2.1`, que quedó lista en `dev` con el bump hecho y sin
+publicar; mientras tanto la página de npm lo muestra viejo.
+
+**Pendiente con el sitio:** avisarle de la `0.2.0`, como en cada publish,
+aunque ninguna ruta cambió. Y el workflow de publish (pendiente 4) sigue sin
+existir: esta versión también salió a mano.
+
 ### CHG-001: `init` salta lo que existe y sigue (2026-09-18, ADR-017)
 
 El primer cambio del repo que pasa entero por `protocolo-cambios`, y el

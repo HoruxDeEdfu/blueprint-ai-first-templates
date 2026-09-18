@@ -36,3 +36,29 @@ del ADR entra en un commit y el código en el siguiente, el `audit:self` previo
 al segundo commit da P1 aunque la decisión esté escrita. Se verifica con
 `--base` sobre un rango que incluya los dos, o se meten fila y código en el
 mismo commit.
+
+## CHG-002 — La versión sale del README a mano y entra por badge; `version-bump` lo enseña
+
+- **Fecha:** 2026-09-18 (abierto y cerrado el mismo día)
+- **Tipo:** cambio de requerimiento, flujo completo por contar tres archivos,
+  sin schema ni decisión de ADR
+- **Archivos:** `README.md`, `skills/version-bump/SKILL.md`, `docs/HANDOFF.md`
+
+**Resumen.** El README dejó de escribir el número de versión: la cabecera
+lleva un badge de shields.io que lee npm, y la tabla «Qué hay» clasifica por
+estado —publicado o sin escribir— sin nombrar versiones. La skill
+`version-bump` gana en «Mostrar la versión» la regla de que el README lleva
+badge y no número, y que el detalle de cada versión va al CHANGELOG. El handoff
+registra la salida de la `0.2.0`, que no tenía.
+
+**Por qué.** El número a mano mintió dos veces en dos días: «publicado en
+0.1.0» tres versiones después (sesión 2), y «la última es la 0.1.3» con la
+`0.2.0` ya en npm y todo lo que decía «en `dev`» viajando en ese tarball. Los
+dos repos de compliance no llevan versión en el README; npm la muestra del
+manifiesto; los paquetes conocidos usan badge.
+
+**Lecciones.** Toda copia a mano de un dato que vive en otro sitio se
+desactualiza; la solución no es acordarse, es no copiarlo. Y el shasum del
+tarball publicado con `pnpm publish` no coincide con el de `npm pack` local
+aunque el contenido sea idéntico: pnpm normaliza el `package.json`. Se compara
+desempaquetando, no por shasum.

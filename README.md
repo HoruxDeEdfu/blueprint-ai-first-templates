@@ -1,21 +1,24 @@
 # Falcux AI-First — paquete
 
+[![npm](https://img.shields.io/npm/v/@falcux/ai-first)](https://www.npmjs.com/package/@falcux/ai-first)
+
 El material de la metodología [Blueprint AI-First](https://ai-first.falcux.com),
 listo para llevar a un proyecto: 8 templates de documentos, 10 skills ejecutables
 y el detector de entropía documental.
 
-> **Estado: publicado desde el 2026-09-17.** `npx @falcux/ai-first` está en npm;
-> la última es la `0.1.3`, del 2026-09-18. El alias sin scope `ai-first` se descartó (ADR-011): npm lo
-> bloqueó por similitud con el paquete `ee-first`.
+> **Publicado en npm desde el 2026-09-17** con `npx @falcux/ai-first`; la
+> versión vigente la dice el badge, no esta prosa. El alias sin scope
+> `ai-first` se descartó (ADR-011): npm lo bloqueó por similitud con el paquete
+> `ee-first`.
 
 ## Qué hay
 
 | | Dónde | Estado |
 |---|---|---|
-| 8 templates de documentos (AGENTS.md, PRD, guía de diseño, arquitectura, documentos vivos) | `templates/` | 4 publicados; los 4 de la 0.2.0 en `dev` |
-| 10 skills para agentes de código (Claude Code, Codex, Cursor, OpenCode, Kimi Code) | `skills/` | 8 publicadas; las 2 de la 0.2.0 en `dev` — [cómo instalarlas](skills/README.md) |
-| Detector de entropía (`ai-first audit`) | `src/` | publicado en `0.1.0` |
-| `ai-first init`: escribe `AI-FIRST.md` y el ADR, instala las skills, crea `docs/` y mantiene su bloque en `AGENTS.md` | `src/init.ts` | el mínimo, publicado en `0.1.0`; el completo, en `dev` para la `0.2.0` |
+| 8 templates de documentos (AGENTS.md, PRD, guía de diseño, arquitectura, documentos vivos) | `templates/` | publicados; viajan en el tarball |
+| 10 skills para agentes de código (Claude Code, Codex, Cursor, OpenCode, Kimi Code) | `skills/` | publicadas; `init` las instala — [cómo](skills/README.md) |
+| Detector de entropía (`ai-first audit`) | `src/` | publicado |
+| `ai-first init`: escribe `AI-FIRST.md` y el ADR, instala las skills, crea `docs/` y mantiene su bloque en `AGENTS.md` | `src/init.ts` | publicado |
 | La entrevista de `init` (adaptar cada skill), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
 
 Las skills viven acá y sólo acá desde el 2026-09-17; el sitio enlaza a las

@@ -10,6 +10,48 @@
 
 ---
 
+## 2026-09-18 (sesión 5) — CHG-002: la versión sale del README; se registra la `0.2.0`
+
+### Resumen
+Charlie avanzó `prod` y publicó la `0.2.0` entre la sesión 4 y ésta. Al revisar
+el estado del paquete apareció el README diciendo `0.1.3`, por segunda vez en
+dos días. `criterio` dio el veredicto —un número a mano en el README no es
+buena práctica; el badge sí es convención— y el cambio fue por
+`protocolo-cambios` como CHG-002. Misma sesión que la 4, no limpia: la skill lo
+pide y se anotó al clasificar; el riesgo era bajo por ser prosa.
+
+### CHG-002 (`README.md`, `skills/version-bump/SKILL.md`, `docs/HANDOFF.md`)
+- README: badge de npm bajo el título, cabecera sin número, tabla «Qué hay»
+  por estado. Todo lo que decía «en `dev` para la 0.2.0» ya viajaba en el
+  tarball publicado.
+- `version-bump`, sección «Mostrar la versión»: cubre el README —badge, no
+  número; el detalle de cada versión al CHANGELOG—. No es de las tres skills
+  que asumen el capítulo de gobierno; la ruta no se mueve.
+- Handoff: sección «La `0.2.0` sale a npm». Verificado bajando el tarball del
+  registro: idéntico a `npm pack` sobre `7baf51b` salvo el `package.json`
+  normalizado por pnpm, que es por lo que el shasum no coincide.
+- Resumen en `docs/changes/CHANGE_LOG.md`; el CHG salió de `pending/`. El
+  check 3 estuvo activo mientras el CHG existió y aprobó el alcance.
+
+### Validación
+- typecheck → PASS (lo corre `pnpm test` antes de la suite)
+- lint      → no ejecutado (no hay script)
+- tests     → PASS por exit code, 67/67 (sin cambios en `src/` ni `test/`)
+- audit:self → 0 / 100, con el CHG en `pending/` y después de retirarlo
+
+### Versión
+- 0.2.0 → 0.2.1, PATCH confirmado por Charlie: el README publicado en la
+  `0.2.0` es un defecto ya distribuido, como lo fue el de la `0.1.2`. Tag y
+  publish son suyos.
+
+### Pendiente para la siguiente sesión
+- [ ] Publicar la `0.2.1` desde `prod` y poner el tag; avisar al sitio de la
+      `0.2.0` y de la `0.2.1`, como en cada publish.
+- [ ] Los de la sesión 4 siguen en pie: el workflow de publish (pendiente 4,
+      que habría evitado que esta versión también saliera a mano), el
+      CHANGELOG del paquete, los hallazgos del detector, las divergencias de
+      `protocolo-cierre`, la entrevista de `init` y los hooks.
+
 ## 2026-09-18 (sesión 4) — El `init` completo: el repo se configura con su propio comando
 
 ### Resumen
