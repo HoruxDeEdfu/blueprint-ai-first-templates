@@ -340,6 +340,20 @@ las cuentas de 8 templates, 10 skills y cinco skills que nombran el ADR. Añadi�
 además la mención a la sección «Si un nombre ya está ocupado», que con `prod`
 avanzada ya es cierta. **No queda nada pendiente entre los dos repos.**
 
+### La `0.1.2` sale a arreglar lo que npm todavía sirve (2026-09-18)
+
+`skills/` viaja en el tarball (`files` del `package.json`), así que el README de
+instalación está publicado en npm, y avanzar `prod` no lo toca: mientras la
+versión no cambie no hay publish (ADR-007). Comprobado bajando el paquete:
+`@falcux/ai-first@0.1.1` entrega el `cp -r` viejo, el que sobreescribe la skill
+del proyecto sin avisar. Quien instale desde npm recibe el comando que ADR-014
+retiró; el arreglo sólo existía en los raw links.
+
+Por eso la `0.1.2` no es una decisión de publicar sino el arreglo de un defecto
+ya distribuido, y sale a mano desde `prod` como la `0.1.0` y la `0.1.1`. El
+workflow de publish va detrás, sin atarle el arreglo: es el pendiente 4 de la
+lista de arriba y estrena con la `0.2.0`.
+
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de

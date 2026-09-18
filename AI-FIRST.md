@@ -3,7 +3,7 @@
 formato: 1
 proyecto: falcux-ai-first
 fase: exploracion
-actualizado: 2026-09-17
+actualizado: 2026-09-18
 
 verificacion: pnpm test
 
@@ -39,9 +39,10 @@ artefactos:
 
 Por qué `skills/` dejó de ser Zona Prohibida: lo era porque el sitio la
 sobreescribía con `rsync --delete` a cada publicación, no por importancia.
-Desde el 2026-09-17 (ADR-006) la fuente de verdad de las 8 skills es este repo
-y nada las regenera. Lo que sí sigue: el sitio enlaza a
-`prod/skills/<nombre>/SKILL.md`, así que esas rutas no se mueven sin avisar.
+Desde el 2026-09-17 (ADR-006) la fuente de verdad de las skills —ocho entonces,
+diez desde ADR-010— es este repo y nada las regenera. Lo que sí sigue: el sitio
+enlaza a `prod/skills/<nombre>/SKILL.md`, así que esas rutas no se mueven sin
+avisar.
 
 Por qué `src/puntaje.ts` es superficie de decisión: los pesos 40 / 20 / 8
 están calibrados contra el único ejemplo publicado en la landing. Cambiarlos
