@@ -50,6 +50,14 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
 
 ## Cómo se trabaja acá: con nuestras propias skills
 
+**Este repo es el primer adoptante de su propio paquete.** Todo lo que el
+paquete sepa hacer se usa acá antes que en ningún otro sitio, y cada paso que
+hoy se hace a mano por falta de comando —enlazar skills, crear `docs/changes/`,
+declarar `alcance.spec`— se reemplaza por el comando el día que exista. Si el
+`init` completo no sirve para configurar este repo, no está terminado. Lo que
+se configuró a mano el 2026-09-18 es su lista de aceptación, en
+`docs/SESSION_LOG.md`.
+
 Este repo usa la metodología que publica. Cinco de las diez skills están
 instaladas en `.agents/skills/` como **enlaces simbólicos** a `skills/`, la fuente
 única: `protocolo-features`, `protocolo-cambios`, `protocolo-cierre`,

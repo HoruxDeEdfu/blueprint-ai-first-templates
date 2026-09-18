@@ -67,7 +67,8 @@ enlace. Es la primera entrada de este registro: existe porque esta sesión lo cr
       `alcance.spec`, abrir `docs/SESSION_LOG.md`, añadir la sección de
       equivalencias a `AGENTS.md`, y no tocar nada que ya exista. Arrancar con
       `/protocolo-features`; es el pendiente que `docs/HANDOFF.md` tiene primero
-      después del publish.
+      después del publish. **Su primera corrida real es sobre este repo**: si no
+      lo configura, no está terminado (regla en `AGENTS.md`).
 - [ ] Decidir las dos divergencias de `protocolo-cierre` con el manual
       (archivado y numeración) e implementarlas. Toca una skill protegida:
       aviso al sitio.
