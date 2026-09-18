@@ -4,7 +4,7 @@
 // Por encima de `tolerancia` → P1. Requiere que la spec liste archivos; si no lo
 // hace, el check se reporta omitido.
 //
-// CONVENCIÓN QUE LA SPEC DEJÓ ABIERTA. SPEC-PAQUETE.md §6 pide que la spec
+// CONVENCIÓN QUE LA SPEC DEJÓ ABIERTA. docs/SPEC-PAQUETE.md §6 pide que la spec
 // «liste archivos» pero no dice cómo. Acá se adopta la lectura mínima: una
 // sección cuyo encabezado empiece por «Archivos» o «Alcance», con las rutas
 // entre acentos graves (se admiten globs). Si esa convención cambia, cambia

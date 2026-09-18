@@ -218,7 +218,7 @@ no se ve en el diff: URL activas, marcadores, integraciones, documentación,
 i18n, tests de extremo a extremo.
 
 **Es cambio formal** (skill `protocolo-cambios`), y si la razón puede
-preguntarse en seis meses, fila en el `ADR.md`:
+preguntarse en seis meses, fila en el `docs/ADR.md`:
 
 - Renombrar un recurso, URL o permiso ya en producción
 - Mover algo entre navegación principal y configuración

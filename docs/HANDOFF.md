@@ -21,7 +21,7 @@ nadie los reutilice.
 | Comando | Estado |
 |---|---|
 | `ai-first audit` | Los cinco checks de la spec, el puntaje y los exit codes. Dos modos: árbol de trabajo (hook local) y `--base <ref>` (CI). |
-| `ai-first init` | Mínimo: escanea, sugiere y escribe `AI-FIRST.md` + `ADR.md`. No toca skills ni AGENTS.md. Nunca sobreescribe (ADR-003). |
+| `ai-first init` | Mínimo: escanea, sugiere y escribe `AI-FIRST.md` + `docs/ADR.md`. No toca skills ni AGENTS.md. Nunca sobreescribe (ADR-003). |
 | `sync`, `adr`, `handoff` | Mapeados abajo, sin escribir. El CLI lo dice con exit 2. |
 
 **Lo que la spec dejó abierto y cómo se resolvió** — si la spec cambia, alinear
@@ -39,7 +39,7 @@ esto o el código:
 4. *`artefactos` son documentos que hablan de ESTE repo.* Un spec genérico o un
    handoff que narra otros repos genera un P2 por cada ruta ajena.
 
-**Decisiones tomadas**, con sus alternativas, en `ADR.md`: dónde vive el
+**Decisiones tomadas**, con sus alternativas, en `docs/ADR.md`: dónde vive el
 código (001), el nombre en npm (002, superada en la parte del alias por la
 011), init mínimo antes que completo (003), publicar desde la cuenta de
 usuario `falcux` y no desde una organización (004), el nombre del repo (005),
@@ -235,7 +235,7 @@ llegado. Cada commit pasa `pnpm test` por exit code y `audit:self` en 0.
       antes de la generalización (`feature-development`, `change-management`,
       `session-closure`, `ux-patterns`), no se declaraban en `AI-FIRST.md` de
       ningún proyecto ni los leía el detector, y su contenido había divergido:
-      las skills `protocolo-*` incorporan Zonas Prohibidas y `ADR.md`, que no
+      las skills `protocolo-*` incorporan Zonas Prohibidas y `docs/ADR.md`, que no
       existían el 2026-04-01. Coordinar con el sitio: 8 archivos lo
       referencian, abajo.
 
@@ -423,7 +423,7 @@ arquitectura detectada (ej. Next.js + Supabase simple vs. hexagonal).
 
    Salida con exit codes → sirve igual para hook local y para CI.
 4. ~~**Falta artefacto de estado**~~ → **`AI-FIRST.md` especificado** el 2026-09-16
-   en `SPEC-PAQUETE.md` §5: Markdown con frontmatter YAML, donde el frontmatter lo
+   en `docs/SPEC-PAQUETE.md` §5: Markdown con frontmatter YAML, donde el frontmatter lo
    verifica el detector y el cuerpo lo lee un humano en el diff del PR. Con él
    quedaron definidos los cuatro instrumentos, la frontera con `AGENTS.md`, las
    cinco verificaciones y la fórmula del puntaje. Falta el código.
@@ -463,7 +463,7 @@ De impeccable.style:
 
 No copiar: texto, estructura de docs ni nombres de comandos ajenos.
 
-## Lo decidido el 2026-09-16 — ver `SPEC-PAQUETE.md`
+## Lo decidido el 2026-09-16 — ver `docs/SPEC-PAQUETE.md`
 
 **El hallazgo que disparó la sesión:** los cuatro instrumentos que la landing vende
 —Zonas Prohibidas, tabla ADR, matriz de permisos, entropía documental— **no existen
@@ -503,7 +503,7 @@ Tres decisiones, para no rediscutirlas:
 **Colisión advertida:** en Compliance, docs/ROLES_PERMISSIONS_MATRIX.md (461
 líneas) es la matriz de permisos **del producto**, no la del repositorio. Se resolvió
 por ubicación y no por renombre, para no tocar la landing publicada. Detalle en
-`SPEC-PAQUETE.md` §4.
+`docs/SPEC-PAQUETE.md` §4.
 
 ## Siguiente paso sugerido
 

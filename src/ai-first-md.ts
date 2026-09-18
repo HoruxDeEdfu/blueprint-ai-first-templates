@@ -1,7 +1,7 @@
 // Lectura de `AI-FIRST.md`. El frontmatter es el contrato con el detector; el
 // cuerpo es para humanos y acá no se interpreta.
 //
-// Formato definido en SPEC-PAQUETE.md §5. Un `formato` desconocido detiene al
+// Formato definido en docs/SPEC-PAQUETE.md §5. Un `formato` desconocido detiene al
 // detector con un mensaje: no se interpreta a medias.
 
 import { readFile, writeFile } from 'node:fs/promises';

@@ -54,7 +54,7 @@ Toda pieza marcada **"Nueva local"** justifica por qué no se pudo reusar ni con
 Si alguna fila de esa tabla es una decisión **difícil de revertir** —un paquete
 compartido nuevo, un límite entre capas, una dependencia de producción que entra—,
 no basta con justificarla en el plan: el plan se archiva y la justificación se
-pierde. Va como fila en `ADR.md`, con lo que se descartó. Ver `protocolo-cierre`.
+pierde. Va como fila en `docs/ADR.md`, con lo que se descartó. Ver `protocolo-cierre`.
 
 ### Paso 3 — Leer la documentación de diseño (features con interfaz)
 

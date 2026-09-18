@@ -5,7 +5,7 @@
 > está resuelto, guardado para que ninguna sesión futura lo pague dos veces.
 >
 > **Principio:** Este archivo guarda **cicatrices, no reglas**. Una regla que la
-> AI violaría hoy va al `AGENTS.md`; el porqué de una decisión va al `ADR.md`;
+> AI violaría hoy va al `AGENTS.md`; el porqué de una decisión va al `docs/ADR.md`;
 > acá va el síntoma que engañó, la causa que nadie vio y la solución que sirvió,
 > con fecha, para poder podarlo cuando la librería cambie de versión.
 >
@@ -131,7 +131,7 @@ cuando:
 - el fix quedó automatizado (un script, un hook, un test) y ya nadie puede
   volver a pisar la trampa;
 - una entrada más nueva la supera. En ese caso la nueva dice «supera a la del
-  {fecha}» y la vieja se borra, al revés que en el `ADR.md`, donde la fila
+  {fecha}» y la vieja se borra, al revés que en el `docs/ADR.md`, donde la fila
   vieja se queda.
 
 Revisar la poda al cambiar una versión mayor de cualquier dependencia. Es el
@@ -146,7 +146,7 @@ momento en que más entradas caducan a la vez.
 | Tipo de aprendizaje | Destino |
 |---|---|
 | Invariante arquitectónico **activo**, que la AI violaría hoy | `AGENTS.md`, sección «Qué NO hacer» |
-| **Por qué** se eligió algo y qué se descartó | `ADR.md`, fila nueva |
+| **Por qué** se eligió algo y qué se descartó | `docs/ADR.md`, fila nueva |
 | Cicatriz de stack: fix de una librería, una versión, un entorno | **Este archivo**, una entrada |
 | Regla visual, microinteracción o UX | Guía de diseño, sección «Gotchas» |
 | Decisión de un módulo específico | La spec de ese módulo |

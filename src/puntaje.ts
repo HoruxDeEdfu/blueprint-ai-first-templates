@@ -1,4 +1,4 @@
-// El puntaje de entropía (SPEC-PAQUETE.md §7). Mide entropía, no salud: más
+// El puntaje de entropía (docs/SPEC-PAQUETE.md §7). Mide entropía, no salud: más
 // alto es peor.
 //
 // Los pesos están calibrados contra el único ejemplo publicado en la landing:

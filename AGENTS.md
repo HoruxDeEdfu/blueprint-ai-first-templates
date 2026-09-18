@@ -25,8 +25,10 @@ test/                      node:test sobre repos git desechables. Sin mocks.
 skills/                    Las 10 skills. Acá es su único hogar desde ADR-006. El sitio enlaza a las de `prod`.
 templates/                 Los 8 templates. Acá es su único hogar. El sitio enlaza a los de `prod`.
 .agents/skills/            Las skills de ESTE repo (hoy, `criterio`). `.claude/skills` es un enlace a ella (ADR-008).
-SPEC-PAQUETE.md            El contrato: formato de AI-FIRST.md, los 5 checks, el puntaje.
-ADR.md                     Por qué se decidió cada cosa. Se agrega, no se edita.
+docs/SPEC-PAQUETE.md       El contrato: formato de AI-FIRST.md, los 5 checks, el puntaje.
+docs/ADR.md                Por qué se decidió cada cosa. Se agrega, no se edita.
+docs/HANDOFF.md            Estado, pendientes y los bloqueadores que comparte con el sitio.
+docs/SESSION_LOG.md        La cronología: una entrada por sesión. La escribe `protocolo-cierre`.
 ```
 
 ## Tech stack
@@ -56,7 +58,7 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
   edita acá, y sólo acá.
 - Tres skills asumen el capítulo «Gobierno del contexto» del manual:
   `protocolo-features`, `protocolo-cambios` y `protocolo-cierre` dan por hecho
-  las Zonas Prohibidas y el `ADR.md` que ese capítulo define. Tocar cualquiera
+  las Zonas Prohibidas y el `docs/ADR.md` que ese capítulo define. Tocar cualquiera
   de las tres obliga a **avisar al repo del sitio** para revisar el capítulo; si
   el capítulo cambia, el sitio avisa acá.
 - El sitio enlaza a `prod/skills/<nombre>/SKILL.md` y a `prod/templates/<archivo>`.
@@ -93,7 +95,7 @@ node dist/src/cli.js audit --raiz <repo> [--base <ref>] [--estricto] [--registra
 
 ### Decisiones
 
-- `ADR.md` se **agrega**, no se edita. Una decisión superada gana una fila nueva
+- `docs/ADR.md` se **agrega**, no se edita. Una decisión superada gana una fila nueva
   que la supera; la vieja queda.
 - Las superficies de decisión están en `AI-FIRST.md`. Tocarlas sin fila en el
   ADR da P1 en `audit:self`, y el P1 tiene razón hasta que se demuestre lo
@@ -115,10 +117,10 @@ tildes**; el resto, con ellas.
 
 | Archivo | Qué contiene |
 |---|---|
-| `HANDOFF.md` | Estado, pendientes y los bloqueadores que comparte con el sitio. Léelo al empezar. |
+| `docs/HANDOFF.md` | Estado, pendientes y los bloqueadores que comparte con el sitio. Léelo al empezar. |
 | `docs/SESSION_LOG.md` | La cronología: una entrada por sesión, la más reciente arriba. La escribe `protocolo-cierre`. |
-| `SPEC-PAQUETE.md` | El contrato del detector. Se probó contra código el 2026-09-17; lo que dejó abierto está en `HANDOFF.md`. |
-| `ADR.md` | Las decisiones tomadas y lo que se descartó. |
+| `docs/SPEC-PAQUETE.md` | El contrato del detector. Se probó contra código el 2026-09-17; lo que dejó abierto está en `docs/HANDOFF.md`. |
+| `docs/ADR.md` | Las decisiones tomadas y lo que se descartó. |
 | `AI-FIRST.md` | Lo que gobierna a este repo. Lo lee `audit:self`. |
 | `README.md` | Lo que ve quien llega. Dice qué está publicado en npm y qué no. |
 
@@ -131,7 +133,7 @@ tildes**; el resto, con ellas.
 - **No avances `prod` sin que Charlie lo pida.** Mergear ahí despliega.
 - **No publiques a npm sin que Charlie lo pida.** Ni con `--dry-run` sin
   avisar. El primer publish ya salió (`0.1.0`); los siguientes tienen su lista
-  en `HANDOFF.md`. El scope `@falcux` es de la cuenta de usuario `falcux`
+  en `docs/HANDOFF.md`. El scope `@falcux` es de la cuenta de usuario `falcux`
   (ADR-004); no hay organización que crear.
 - **No cambies los pesos del puntaje** sin ADR y sin avisar al sitio.
 - **No añadas un modelo, una API ni una llamada de red** al detector.

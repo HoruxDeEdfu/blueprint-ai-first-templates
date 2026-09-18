@@ -18,14 +18,14 @@ superficies_de_decision:
   - src/cli.ts
   - src/ai-first-md.ts
   - src/puntaje.ts
-  - SPEC-PAQUETE.md
+  - docs/SPEC-PAQUETE.md
 
-# Sólo documentos que hablan de ESTE repo. SPEC-PAQUETE.md no entra: describe un
+# Sólo documentos que hablan de ESTE repo. docs/SPEC-PAQUETE.md no entra: describe un
 # proyecto genérico y sus rutas de ejemplo no tienen por qué existir acá.
 artefactos:
   agents: AGENTS.md
-  handoff: HANDOFF.md
-  adr: ADR.md
+  handoff: docs/HANDOFF.md
+  adr: docs/ADR.md
   readme: README.md
 ---
 

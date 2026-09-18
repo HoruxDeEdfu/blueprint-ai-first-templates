@@ -690,3 +690,42 @@ el manual define, y numera las entradas («sesión N») donde el manual sólo la
 fecha. El registro de sesión **no** entra en `artefactos` de `AI-FIRST.md`: es
 cronología que sólo crece y que nombra lo ya retirado, y el check 4 lo cobraría
 como un P2 por cada ruta muerta, para siempre.
+
+## ADR-016 — La prosa se muda a `docs/`: el handoff, el registro de decisiones y la spec dejan la raíz
+
+- **Fecha:** 2026-09-18
+- **Estado:** aceptada. Cierra el domicilio del registro de decisiones que
+  ADR-015 dejó abierto.
+
+**Contexto.** La raíz cargaba cuatro documentos de prosa junto a los
+manifiestos. Hasta ayer no había alternativa, porque no existía carpeta `docs/`;
+ADR-015 la creó para el registro de sesión y con ella quedó a la vista que este
+repo era el único que no seguía el layout que su propio producto escribe. Los
+dos templates de contexto ya dicen `docs/ADR.md`, el árbol de
+`templates/CLAUDE_MD_TEMPLATE.md` pone el registro de decisiones bajo `docs/`,
+`src/init.ts` lo escribe ahí en cuanto el proyecto tiene la carpeta, y los dos
+portales de compliance lo hacen así. El paquete predicaba una cosa y practicaba
+otra.
+
+**Decisión.** A `docs/` se mudan el handoff, este registro y la spec del
+detector. En la raíz se queda sólo lo que una herramienta busca ahí sin
+negociar: los manifiestos y los dotfiles, `README.md`, la licencia, `AGENTS.md`,
+`CLAUDE.md` y `AI-FIRST.md` —que `src/ai-first-md.ts` fija por nombre—, más los
+directorios de primer nivel, con `skills/` y `templates/` entre ellos por ser
+superficie publicada. El contrato absorbe el cambio sin tocar código:
+`artefactos` y `superficies_de_decision` declaran las rutas nuevas. En el mismo
+barrido, las 29 menciones sueltas del registro de decisiones en la prosa de las
+skills y los templates pasan a la forma canónica.
+
+**Alternativas.** *Dejarlos en la raíz*: cero movimiento y cero riesgo, pero
+conserva la contradicción entre lo que el paquete enseña y lo que hace, que es
+justamente el argumento de venta. *Mudar también `AI-FIRST.md`*: coherente a la
+vista e imposible de hecho, porque es el contrato que el detector abre por
+nombre en la raíz, igual que el manifiesto de npm.
+
+**Consecuencias.** Ningún enlace publicado se rompe: los 18 del sitio apuntan
+sólo a las dos carpetas del producto, verificado antes de mover. Las filas
+viejas de este registro siguen nombrando los tres documentos sin el prefijo, y
+no se reescriben —el registro se agrega, no se edita—; el check 4 las resuelve
+igual, porque un nombre sin carpeta lo busca en todo el repo. Lo que sí se
+pierde es cualquier enlace externo a esos tres archivos en la raíz.

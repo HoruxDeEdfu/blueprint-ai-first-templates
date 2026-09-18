@@ -30,7 +30,7 @@ description: "Protocolo para modificar features ya implementados: clasificación
 
 **Y una pregunta aparte del flujo:** ¿este cambio es además una decisión
 arquitectónica —difícil de revertir, con alternativas reales que se descartaron—?
-Si lo es, va también como fila en `ADR.md`. No es duplicar: el `CHG-XXX` documenta
+Si lo es, va también como fila en `docs/ADR.md`. No es duplicar: el `CHG-XXX` documenta
 *qué* cambió y cómo revertirlo, y se archiva al cerrarse; el ADR documenta *por qué*
 se eligió esto y sobrevive al cambio. Seis meses después nadie relee un CHG cerrado.
 

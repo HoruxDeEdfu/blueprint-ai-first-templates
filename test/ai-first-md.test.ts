@@ -43,7 +43,7 @@ auditoria:
 # AI-FIRST.md — CRM Compliance
 `;
 
-test('interpreta el ejemplo de SPEC-PAQUETE.md §5', () => {
+test('interpreta el ejemplo de docs/SPEC-PAQUETE.md §5', () => {
   const a = interpretar(EJEMPLO_SPEC);
   assert.equal(a.proyecto, 'crm-compliance');
   assert.equal(a.actualizado, '2026-09-16');

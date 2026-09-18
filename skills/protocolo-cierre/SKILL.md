@@ -85,7 +85,7 @@ Reglas:
 | Documento | Actualizar si… |
 |-----------|---------------|
 | `AGENTS.md` | Cambió una regla arquitectónica activa, un comando o la estructura del repo |
-| `ADR.md` | Se tomó una decisión arquitectónica: difícil de revertir, con alternativas reales descartadas. Fila nueva, nunca editar una vieja |
+| `docs/ADR.md` | Se tomó una decisión arquitectónica: difícil de revertir, con alternativas reales descartadas. Fila nueva, nunca editar una vieja |
 | Guía de diseño | Se crearon patrones visuales nuevos o cambió uno existente |
 | Inventario de componentes | Se creó, modificó, deprecó o renombró un componente compartido (gate obligatorio) |
 | Documento de arquitectura | Se agregó un módulo, cambió un pilar o cambió el stack |
@@ -100,12 +100,12 @@ Si en la sesión apareció un error, un gotcha o una decisión no obvia, tiene q
 | Tipo de aprendizaje | Destino |
 |------|---------|
 | Invariante arquitectónico **activo** | `AGENTS.md`, sección «Qué NO hacer» |
-| **Por qué** se eligió algo, y qué se descartó | `ADR.md`, fila nueva |
+| **Por qué** se eligió algo, y qué se descartó | `docs/ADR.md`, fila nueva |
 | Cicatriz de stack: fix de una librería o versión | `docs/TECH_NOTES.md`, por stack |
 | Regla visual, microinteracción o UX | Guía de diseño, sección «Gotchas» |
 | Decisión de un módulo específico | La spec de ese módulo |
 
-> **`AGENTS.md` y `ADR.md` no compiten: guardan cosas distintas de la misma
+> **`AGENTS.md` y `docs/ADR.md` no compiten: guardan cosas distintas de la misma
 > decisión.** En el primero va la regla en presente —«el dominio no importa de
 > infraestructura»—; en el segundo, por qué esa regla existe y qué se consideró
 > antes. Si la decisión cambia, la regla se reescribe y el ADR **no**: se agrega

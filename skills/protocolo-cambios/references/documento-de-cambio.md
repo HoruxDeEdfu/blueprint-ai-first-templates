@@ -12,7 +12,7 @@
 >
 > **Relación con otros documentos:**
 > - `docs/changes/CHANGE_LOG.md` recibe el **resumen** cuando el cambio se cierra; este archivo se elimina
-> - `ADR.md` recibe una fila si el cambio es, además, una **decisión** difícil de revertir
+> - `docs/ADR.md` recibe una fila si el cambio es, además, una **decisión** difícil de revertir
 > - La spec del módulo se actualiza al cerrar: el cambio ya no es cambio, es el estado
 > - Un **runbook** aparte guarda el paso a paso del despliegue cuando hay migración o datos que tocar
 
@@ -90,7 +90,7 @@ decisión, se copia a la fila del ADR.}
 
 {Responder sí o no. Es decisión si es difícil de revertir, tenía alternativas
 reales y alguien va a preguntar por qué en seis meses. Si es **sí**: fila nueva
-en `ADR.md` en el mismo commit que este documento, con el contexto de §2, la
+en `docs/ADR.md` en el mismo commit que este documento, con el contexto de §2, la
 decisión de §4 y las alternativas de §5. No es duplicar: este documento se
 archiva al cerrar; la fila del ADR sobrevive.}
 
@@ -133,7 +133,7 @@ archiva al cerrar; la fila del ADR sobrevive.}
 - [ ] Guía de diseño — {qué sección} [si cambia algo visual]
 - [ ] Inventario de componentes — {qué entrada} [si toca componentes compartidos]
 - [ ] `AGENTS.md` — {qué regla} [sólo si cambia una regla activa]
-- [ ] `ADR.md` — {fila} [si §6 dijo sí]
+- [ ] `docs/ADR.md` — {fila} [si §6 dijo sí]
 - [ ] `docs/TECH_NOTES.md` — {entrada} [si el cambio dejó una cicatriz]
 
 ## 8. Riesgos y mitigaciones [COMPLETO] [OPCIONAL en cambios sin datos]
@@ -193,7 +193,7 @@ arquitectónica, vuelve a §6.}
 
 - [ ] El estado deseado (§4) se cumple; validaciones de §10 ejecutadas y en verde
 - [ ] «Documentación a actualizar» al día
-- [ ] Fila en `ADR.md` escrita, si §6 dijo sí
+- [ ] Fila en `docs/ADR.md` escrita, si §6 dijo sí
 - [ ] Resumen agregado a `docs/changes/CHANGE_LOG.md`: fecha, tipo, archivos, migración, resumen, lecciones
 - [ ] Log de sesión actualizado con la sesión donde se hizo
 - [ ] **Este archivo eliminado de `pending/`**

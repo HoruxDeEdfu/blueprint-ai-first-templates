@@ -45,7 +45,7 @@ le toca:
 | ¿Con qué código lo construyo? | Tu skill `ux-patterns`, que se escribe a partir de esta guía (ver la última sección) |
 | ¿Qué componentes existen ya? | El inventario de componentes, documento aparte que el detector de entropía verifica |
 | ¿Qué dice cada texto? | Skill `ux-writer` y su glosario |
-| ¿Por qué se eligió esto y no aquello? | `ADR.md`; esta guía enlaza la fila, no repite el argumento |
+| ¿Por qué se eligió esto y no aquello? | `docs/ADR.md`; esta guía enlaza la fila, no repite el argumento |
 | ¿Qué gotcha tiene el stack fuera de lo visual? | Las notas técnicas del proyecto |
 
 Lo que esta guía **no** lleva: el inventario de componentes (crece solo y tiene
@@ -1042,7 +1042,7 @@ Reglas de la skill:
 | Un valor de token | El archivo de tokens; acá, la referencia |
 | Un componente nuevo | El inventario; acá sólo si tiene regla especial |
 | Un gotcha del stack que no es visual | Las notas técnicas |
-| Una decisión con alternativas descartadas (criterio de contraste, tope de peso) | Fila en `ADR.md`; acá el enlace |
+| Una decisión con alternativas descartadas (criterio de contraste, tope de peso) | Fila en `docs/ADR.md`; acá el enlace |
 | Un texto, un glosario | La skill `ux-writer` |
 | Qué cambió y cuándo | Git y los documentos de cambio; acá no hay changelog |
 

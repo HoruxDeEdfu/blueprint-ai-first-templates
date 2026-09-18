@@ -3,7 +3,7 @@
 > Este template define la spec de **un** módulo: la fuente de verdad sobre
 > **cómo se construye**, autocontenida, que la AI carga sólo cuando trabaja en
 > ese módulo. El **qué** y el **para quién** viven en el PRD; el **porqué** de
-> las decisiones, en el `ADR.md`; el mapa entre módulos, en la arquitectura.
+> las decisiones, en el `docs/ADR.md`; el mapa entre módulos, en la arquitectura.
 >
 > **Principio:** Una spec se escribe para que el agente no necesite cargar el
 > PRD completo ni adivinar. Si un implementador con la spec abierta tiene que
@@ -243,7 +243,7 @@ README de la carpeta lleva esto, y nada más:
 | ¿Qué construimos y para quién? | `docs/PRD.md` |
 | ¿Cómo se organiza el sistema y qué módulo hace qué? | `docs/ARQUITECTURA.md` |
 | ¿Cómo se construye **este** módulo? | **La spec**, este documento |
-| ¿Por qué se eligió esto y no aquello? | `ADR.md` |
+| ¿Por qué se eligió esto y no aquello? | `docs/ADR.md` |
 | ¿Qué cambió después de implementado, y por qué? | El CHG mientras está abierto; la spec, cuando cierra |
 
 La spec es el único de los cinco que se lee **completo** antes de escribir

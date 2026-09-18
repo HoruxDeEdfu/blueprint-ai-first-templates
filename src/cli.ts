@@ -2,7 +2,7 @@
 // Punto de entrada de `npx @falcux/ai-first`.
 //
 // Dos comandos hoy: `init` (mínimo) y `audit`. Los otros tres del mapa v1
-// —sync, adr, handoff— están mapeados en HANDOFF.md y no escritos: se anuncian
+// —sync, adr, handoff— están mapeados en docs/HANDOFF.md y no escritos: se anuncian
 // como tales en vez de fingir que corren.
 //
 // Códigos de salida:
@@ -64,7 +64,7 @@ async function main(argv: string[]): Promise<number> {
   }
 
   if (NO_ESCRITOS.has(comando)) {
-    process.stderr.write(`«${comando}» está mapeado pero todavía no existe. Ver HANDOFF.md, Parte B.\n`);
+    process.stderr.write(`«${comando}» está mapeado pero todavía no existe. Ver docs/HANDOFF.md, Parte B.\n`);
     return 2;
   }
 

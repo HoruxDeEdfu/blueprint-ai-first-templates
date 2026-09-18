@@ -364,7 +364,7 @@ continua, donde se quiere el corte.
 ## 8. Qué queda fuera de esta especificación
 
 - **Los cinco comandos.** `init`, `audit`, `sync`, `adr` y `handoff` están mapeados
-  en `HANDOFF.md` §Parte B, no especificados.
+  en `docs/HANDOFF.md` §Parte B, no especificados.
 - **`.ai-first/manifest.json`.** Definido en §2 por su frontera, no en su esquema.
 - **Los adaptadores por herramienta.** Claude Code primero; Cursor y Codex después.
 - ~~**La colisión de nombres de las skills.**~~ **Resuelta el 2026-09-18**

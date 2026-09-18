@@ -2,7 +2,7 @@
 // y un ADR.md vacío—. No toca skills, ni AGENTS.md, ni escribe manifiesto:
 // nada de lo que instala hay que actualizar después.
 //
-// Es el primer paso del `init` completo de HANDOFF.md (entrevista, adaptación
+// Es el primer paso del `init` completo de docs/HANDOFF.md (entrevista, adaptación
 // de skills), al que hoy sólo le falta el esquema del manifiesto: la colisión
 // de nombres de las skills dejó de bloquearlo en ADR-014, que decide que la
 // instalación salte lo que ya existe en vez de renombrar en el origen. Cuando

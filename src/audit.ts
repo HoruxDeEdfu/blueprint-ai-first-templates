@@ -10,7 +10,7 @@ export interface OpcionesAudit {
   raiz: string;
   base?: string;
   estricto?: boolean;
-  /** Escribe `auditoria` en el frontmatter. Sólo a pedido: ver SPEC-PAQUETE.md §5. */
+  /** Escribe `auditoria` en el frontmatter. Sólo a pedido: ver docs/SPEC-PAQUETE.md §5. */
   registrar?: boolean;
   /** Fecha para `auditoria.fecha`; por defecto, hoy en ISO. Inyectable para las pruebas. */
   hoy?: string;

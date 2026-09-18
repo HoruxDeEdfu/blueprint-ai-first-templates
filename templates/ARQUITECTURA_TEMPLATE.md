@@ -6,7 +6,7 @@
 >
 > **Principio:** Este es un **documento de estado**: describe cómo es el sistema
 > hoy, y cuando algo cambia, se sobreescribe. El **porqué** de cada decisión no
-> vive acá sino en el `ADR.md`, que se agrega y nunca se edita. Los dos se
+> vive acá sino en el `docs/ADR.md`, que se agrega y nunca se edita. Los dos se
 > necesitan: sin arquitectura la AI no sabe dónde poner el código; sin ADR
 > nadie sabe por qué está ahí.
 >
@@ -14,7 +14,7 @@
 > - `docs/PRD.md` decide **qué** se construye; este documento decide **cómo**
 > - `AGENTS.md` lleva las **reglas activas** derivadas de esta arquitectura, no la arquitectura
 > - Las specs por módulo detallan **cada módulo**; acá va el mapa entre ellos
-> - `ADR.md` guarda **por qué** se eligió cada cosa y qué se descartó
+> - `docs/ADR.md` guarda **por qué** se eligió cada cosa y qué se descartó
 
 ---
 
@@ -27,7 +27,7 @@
 3. Declararlo en `AI-FIRST.md` bajo `artefactos.arquitectura` para que el
    detector verifique que las rutas que menciona existen
 4. Cada vez que este documento cambie una decisión, escribir la fila
-   correspondiente en `ADR.md` en el mismo commit y apuntarla desde §10
+   correspondiente en `docs/ADR.md` en el mismo commit y apuntarla desde §10
 5. Eliminar las notas del final (`# Notas sobre el template`) cuando el
    documento esté en uso
 
@@ -183,7 +183,7 @@ la spec; acá va lo justo para decidir **en qué módulo** cae un feature.
 ```
 
 Un módulo nuevo entra acá antes de escribirse. Una flecha nueva entre módulos
-existentes es, casi siempre, una decisión: fila en el `ADR.md`.
+existentes es, casi siempre, una decisión: fila en el `docs/ADR.md`.
 
 ---
 
@@ -226,9 +226,9 @@ existentes es, casi siempre, una decisión: fila en el `ADR.md`.
 
 ---
 
-## 10. Decisiones vigentes → `ADR.md` [OBLIGATORIO]
+## 10. Decisiones vigentes → `docs/ADR.md` [OBLIGATORIO]
 
-> Este documento dice **qué** está en vigor; el `ADR.md` dice **por qué** y qué
+> Este documento dice **qué** está en vigor; el `docs/ADR.md` dice **por qué** y qué
 > se descartó. Acá no se justifica nada: se apunta.
 
 | Decisión vigente | Fila del ADR |
@@ -268,7 +268,7 @@ documentos.
 | `docs/GUIA_DISENO.md` | Referencia visual; el frontend la implementa |
 | `docs/COMPONENT_LIBRARY.md` | Inventario de componentes UI compartidos |
 | `docs/TECH_NOTES.md` | Cicatrices técnicas del stack |
-| `ADR.md` | Por qué se decidió cada cosa de §10 |
+| `docs/ADR.md` | Por qué se decidió cada cosa de §10 |
 | `AGENTS.md` | Reglas activas para la AI, derivadas de acá |
 | `{ruta_del_schema}` | Contrato de datos |
 
@@ -310,7 +310,7 @@ algún lado que la AI pueda abrir cuando lo necesite. Ese lado es éste.
 | El schema de datos | El archivo del ORM |
 | Los comandos | El manifiesto del paquete |
 | Reglas que la AI violaría hoy | `AGENTS.md` |
-| Por qué se eligió X y no Y | `ADR.md` |
+| Por qué se eligió X y no Y | `docs/ADR.md` |
 | Un fix de una librería | `docs/TECH_NOTES.md` |
 | Tokens, colores, tipografía | La guía de diseño |
 

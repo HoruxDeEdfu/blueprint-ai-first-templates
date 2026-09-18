@@ -1,4 +1,4 @@
-// Las cinco verificaciones, en el orden de SPEC-PAQUETE.md §6. El orden es
+// Las cinco verificaciones, en el orden de docs/SPEC-PAQUETE.md §6. El orden es
 // también el del reporte.
 
 import { alcanceExcedido } from './alcance-excedido.js';

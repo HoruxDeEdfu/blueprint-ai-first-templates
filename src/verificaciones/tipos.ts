@@ -1,6 +1,6 @@
 // El contrato de una verificación. Tres estados y sólo tres: aprobado,
 // hallazgos u omitido. Un check que no puede correr se reporta omitido, nunca
-// aprobado (SPEC-PAQUETE.md §5, notas de diseño).
+// aprobado (docs/SPEC-PAQUETE.md §5, notas de diseño).
 
 import type { AiFirst } from '../ai-first-md.js';
 

@@ -283,7 +283,7 @@ quita atención a las que sí.
 | ¿Es conocimiento de dominio extenso? | | → skill |
 | ¿Son specs de un módulo? | | → `docs/specs/` |
 | ¿Son reglas de diseño con tokens y valores? | | → `docs/GUIA_DISENO.md` |
-| ¿Es el porqué de una decisión? | | → `ADR.md` |
+| ¿Es el porqué de una decisión? | | → `docs/ADR.md` |
 | ¿Es un gotcha de stack ya resuelto? | | → `docs/TECH_NOTES.md` |
 | ¿Es estado, progreso o historia? | | → `docs/SESSION_LOG.md` |
 
