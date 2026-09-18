@@ -129,8 +129,9 @@ archivo: dicen qué escribió la herramienta y qué escribió el humano.
    `AGENTS.md`: gana las marcas alrededor de la sección «Cómo se trabaja acá»,
    que hoy existe sin ellas. La segunda corrida no cambia nada.
 2. **Sobre un repo vacío** (git init + un commit), `init` deja: `AI-FIRST.md`
-   con `alcance.spec` declarado, `ADR.md` en la raíz —no hay `docs/` antes de
-   correrlo; ver pregunta abierta 1—, `docs/SESSION_LOG.md`,
+   con `alcance.spec` declarado, el ADR en `docs/ADR.md` —no hay `docs/` antes
+   de correrlo, pero `init` la crea en la misma corrida; pregunta abierta 1,
+   decidida—, `docs/SESSION_LOG.md`,
    `docs/changes/CHANGE_LOG.md`, `docs/changes/pending/.gitkeep`,
    `.agents/skills/` con las cinco por defecto copiadas, `.claude/skills`
    enlazado, y un `AGENTS.md` con el bloque y el puntero al template. `audit`
@@ -154,8 +155,26 @@ archivo: dicen qué escribió la herramienta y qué escribió el humano.
   detenerse, con `saltados` en el resultado y una línea por archivo en el CLI.
   Resumen en `docs/changes/CHANGE_LOG.md`; la decisión, en ADR-017.
 
+- El feature entero (2026-09-18, ADR-018): `iniciar` instala skills —copia
+  por defecto, `--enlazar` para enlaces relativos; cinco por defecto,
+  `--skills todas` o una lista—, crea `docs/SESSION_LOG.md`,
+  `docs/changes/CHANGE_LOG.md` y `docs/changes/pending/.gitkeep`, declara
+  `alcance.spec` en el `AI-FIRST.md` que escribe y lo sugiere en el que ya
+  existía, y mantiene el bloque delimitado en `AGENTS.md`. Reporta cada ítem
+  como escrito, saltado o sugerido. Los errores de uso —skill inexistente,
+  marca sin pareja— se detectan antes de escribir nada.
+- Los siete criterios, verificados: los seis primeros con una prueba cada
+  uno sobre repos desechables (61 → 67 pruebas), y el primero además a mano
+  sobre este repo: dos corridas de `init --enlazar`, la primera con sólo
+  `AGENTS.md` en `git status`, la segunda sin cambios.
+- Lo que la implementación añadió a la spec: el `AI-FIRST.md` generado declara
+  `agents: AGENTS.md`, porque `init` acaba de crearlo; el bloque de `AGENTS.md`
+  lleva, por skill instalada, una línea de cuándo se invoca, porque era la
+  información de la sección a mano de este repo que el bloque no podía perder.
+
 ### Pendiente
-- La implementación del feature en la secuencia de las Notas.
+- Nada de esta spec. La entrevista y la reescritura de skills (hueco 2) es
+  otra spec, cuando exista el manifiesto.
 
 ## Notas de implementación [CRECE]
 
@@ -188,8 +207,9 @@ archivo: dicen qué escribió la herramienta y qué escribió el humano.
 
 1. **¿`init` crea `docs/` en un repo que no la tiene?** Si crea
    `docs/SESSION_LOG.md`, la carpeta existe y el ADR debería ir a `docs/ADR.md`
-   por la regla de `init.ts:122`. Propuesta: sí, y el ADR va a `docs/`; el
-   criterio 2 se ajusta. Lo decide Charlie.
+   por la regla que `escanear` ya tenía. Propuesta: sí, y el ADR va a `docs/`;
+   el criterio 2 se ajusta. **Decidido por Charlie el 2026-09-18: sí.** El ADR
+   nuevo va siempre a `docs/ADR.md`; la prueba del repo vacío cambió con él.
 2. **El check 3 sólo lee `docs/changes/pending/`.** Una spec de feature activa,
    como esta, en `docs/specs/`, no la ve. Es el quinto hallazgo del detector;
    va al handoff, no a esta spec.
@@ -203,3 +223,6 @@ archivo: dicen qué escribió la herramienta y qué escribió el humano.
   Claude Code —que tampoco reemplaza, mejora— hecha determinista. Las marcas
   resuelven el manifiesto para ese archivo.
 - 2026-09-18 — Validada por Charlie con las cinco decisiones tal como están.
+- 2026-09-18 — Implementada (ADR-018). Pregunta abierta 1 decidida: el ADR va a
+  `docs/`, que `init` crea; el criterio 2 se ajusta. Estado de implementación
+  al día. Sesión delegada, con la spec como contrato.

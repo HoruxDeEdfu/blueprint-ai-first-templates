@@ -21,7 +21,7 @@ nadie los reutilice.
 | Comando | Estado |
 |---|---|
 | `ai-first audit` | Los cinco checks de la spec, el puntaje y los exit codes. Dos modos: árbol de trabajo (hook local) y `--base <ref>` (CI). |
-| `ai-first init` | Mínimo: escanea, sugiere y escribe `AI-FIRST.md` + `docs/ADR.md`. No toca skills ni AGENTS.md. Nunca sobreescribe (ADR-003); lo que ya existe lo salta, lo reporta y sigue (ADR-017, CHG-001). |
+| `ai-first init` | Completo desde el 2026-09-18 (ADR-018): escribe `AI-FIRST.md` y `docs/ADR.md`, instala las skills en `.agents/skills/` con el enlace `.claude/skills`, crea `docs/SESSION_LOG.md` y `docs/changes/`, y mantiene su bloque con marcas en `AGENTS.md`. Nunca sobreescribe (ADR-003); lo que ya existe lo salta, lo reporta y sigue (ADR-017). Sin escribir: la entrevista que adapta cada skill (hueco 2). |
 | `sync`, `adr`, `handoff` | Mapeados abajo, sin escribir. El CLI lo dice con exit 2. |
 
 **Lo que la spec dejó abierto y cómo se resolvió** — si la spec cambia, alinear
@@ -114,8 +114,8 @@ despliega». Se hizo sin ventana de enlaces rotos: `prod` se creó idéntica a
 `main` en `741e422` y se puso por defecto, el sitio cambió sus 16 raw links de
 la rama vieja a la nueva con las dos vivas, y `main` se borró al confirmar.
 
-Después del publish, por retorno: el `init` completo (entrevista, skills), al
-que desde el 2026-09-18 sólo le falta el esquema de `.ai-first/manifest.json`
+Después del publish, por retorno: el `init` completo, hecho el 2026-09-18
+(ADR-018) sin la entrevista, que sigue esperando el esquema del manifiesto
 —el bloqueador nº2 se cerró con ADR-014—; y los hooks (hueco 5).
 
 ### Lote de actualización de templates y skills (decidido el 2026-09-17)
@@ -465,6 +465,31 @@ commits: se verifica con `--base` sobre un rango que incluya la fila, o la fila
 y el código viajan juntos. El `init` completo no tiene este problema, porque su
 fila ya está.
 
+### El `init` completo (2026-09-18, ADR-018)
+
+Primer feature del repo que pasa entero por `protocolo-features`, con la spec
+`docs/specs/init-completo.md` como contrato y en sesión delegada. `init`
+configura un repo en un comando: `AI-FIRST.md` con `alcance.spec` declarado,
+`docs/ADR.md`, `docs/SESSION_LOG.md`, `docs/changes/CHANGE_LOG.md` y
+`docs/changes/pending/`, las cinco skills sin interfaz en `.agents/skills/`
+(copia; `--enlazar` para enlaces relativos; `--skills todas` o una lista), el
+enlace `.claude/skills` y un bloque delimitado en `AGENTS.md`. Cada ítem sale
+escrito, saltado o sugerido. Probado sobre este repo: `init --enlazar` salta
+los doce ítems y sólo reescribe el interior de las marcas de `AGENTS.md`; la
+segunda corrida no cambia nada. Suite en 67 pruebas.
+
+**Pendiente que comparte con el sitio.** El bloque de instalación de
+`skills/README.md` cambió: el comando es el camino principal y el bucle de bash
+quedó como alternativa manual, plegada. El apéndice del sitio repite ese bloque
+—lo adoptó el 2026-09-18 con un `git clone` delante— y hay que avisarle para
+que ponga el comando primero. Lo manda Charlie desde su sesión.
+
+**Lo que dejó ver.** Un enlace relativo calculado sobre rutas textuales nace
+roto si la raíz vive bajo un enlace (`/var` → `/private/var` en macOS); se
+calcula entre rutas reales. Y el bloque de `AGENTS.md` lista lo que hay en
+disco que sea del paquete, no lo que se pidió: así `--skills` distintas en
+corridas distintas no se borran entre sí.
+
 ### Cómo trabajar acá
 
 `AGENTS.md` tiene las reglas. Las que más duelen si se ignoran: las rutas de
@@ -518,8 +543,12 @@ arquitectura detectada (ej. Next.js + Supabase simple vs. hexagonal).
 
 ## Los 5 huecos a cerrar
 
-1. **Instalación por `git clone` + `cp`** → reemplazar por instalador `npx` interactivo,
-   con adaptadores por herramienta (Claude Code primero; Cursor y Codex después).
+1. ~~**Instalación por `git clone` + `cp`**~~ → **`npx @falcux/ai-first init`
+   instala las skills desde el 2026-09-18** (ADR-018): copia o enlaza a
+   `.agents/skills/`, crea `.claude/skills`, la estructura de `docs/` y el bloque
+   de `AGENTS.md`. Sin entrevista todavía (ese es el hueco 2), y los templates
+   siguen siendo manuales; los adaptadores por herramienta no hicieron falta,
+   porque «.agents/skills/» las sirve a todas (ADR-008).
 2. **Adaptación manual de cada skill** → el comando `init` entrevista el proyecto
    (stack, comandos de verificación, arquitectura, agentes paralelos sí/no) y reescribe
    solo las secciones «Adaptación a tu proyecto». Elimina el warning actual.

@@ -10,6 +10,74 @@
 
 ---
 
+## 2026-09-18 (sesión 4) — El `init` completo: el repo se configura con su propio comando
+
+### Resumen
+`init` pasa de escribir dos archivos a configurar el repo entero: skills,
+estructura de `docs/`, `alcance.spec` y el bloque de `AGENTS.md`. Primer
+feature que pasa entero por `protocolo-features`, con la spec
+`docs/specs/init-completo.md` como contrato. Sesión delegada por Charlie desde
+otra sesión de Claude Code; la pre-implementación ya estaba en la spec.
+
+### El feature (`src/init.ts`, `src/cli.ts`, `test/init.test.ts`)
+- `iniciar` instala skills en `.agents/skills/` desde la carpeta `skills/` del
+  paquete, resuelta con `import.meta.url`: copia por defecto, enlace simbólico
+  relativo con `--enlazar`; las cinco sin interfaz por defecto, `--skills todas`
+  o una lista. Salta entera la que exista. Crea `.claude/skills` sólo si no hay
+  nada en su sitio; un directorio real se reporta y se deja.
+- Crea `docs/SESSION_LOG.md`, `docs/changes/CHANGE_LOG.md` y
+  `docs/changes/pending/.gitkeep` con las cabeceras del manual. Por eso el ADR
+  nuevo va siempre a `docs/ADR.md` (pregunta abierta 1 de la spec, decidida).
+- El `AI-FIRST.md` que escribe declara `alcance.spec` y `agents: AGENTS.md`;
+  en uno que ya existía no toca nada y sugiere la línea, salvo que ya esté.
+- `AGENTS.md`: bloque entre `<!-- ai-first:inicio -->` y `<!-- ai-first:fin -->`
+  con las skills instaladas, cuándo se invoca cada una y la tabla de
+  equivalencias. Crea, añade al final o reemplaza el interior; una sola marca
+  es error antes de escribir nada.
+- Reporte por ítem: escrito, saltado o sugerido. Los errores de uso se
+  detectan antes de tocar disco. 61 → 67 pruebas, una por criterio de la spec.
+- Un bug cazado por la prueba del criterio 3: el enlace relativo calculado
+  sobre rutas textuales nace roto cuando la raíz vive bajo un enlace (`/var`
+  → `/private/var` en macOS). Se calcula entre rutas reales.
+
+### El criterio 1, sobre este repo
+- Gesto humano de una vez: la sección «Cómo se trabaja acá» de `AGENTS.md`
+  ganó las marcas a mano. La prosa propia del repo —primer adoptante, las de
+  UX no aplican, `criterio` es carpeta real, specs en `docs/specs/`, sin base
+  de datos— quedó fuera de las marcas; adentro, lo que el comando genera. Los
+  dos matices que la tabla a mano tenía y el bloque no —el CHG aunque sea
+  flujo corto, el cierre otra vez si hubo más trabajo— fueron al bloque.
+- `node dist/src/cli.js init --enlazar`: doce ítems saltados, `AGENTS.md`
+  escrito, salida 0, `git status` sólo con `AGENTS.md`. Segunda corrida: trece
+  saltados y `git status` sin cambios.
+
+### Docs
+- ADR-018, en el mismo commit que el código (lección de CHG-001): las cinco
+  decisiones validadas en la spec y sus alternativas.
+- `skills/README.md`: el comando es el camino principal; el bucle de bash,
+  alternativa manual plegada. Obliga a avisar al sitio: anotado en el handoff,
+  lo manda Charlie.
+- `README.md`, la ayuda del CLI, la spec (estado y changelog), el índice de
+  specs y el handoff (fila de `init`, hueco 1, sección nueva).
+
+### Validación
+- typecheck → PASS (lo corre `pnpm test` antes de la suite)
+- lint      → no ejecutado (no hay script)
+- tests     → PASS por exit code, 67/67
+- audit:self → 0 / 100 con la fila ADR-018 en el árbol
+
+### Pendiente para la siguiente sesión
+- [ ] Aviso al sitio por el bloque de instalación de `skills/README.md`: su
+      apéndice repite el bucle y ahora el camino principal es el comando.
+- [ ] El workflow de publish (pendiente 4 del handoff), que estrena con la
+      `0.2.0`: es otro feature, no entró acá.
+- [ ] Los de la sesión 1 siguen en pie: las dos divergencias de
+      `protocolo-cierre`, el CHANGELOG con el componente del sitio, y los
+      cuatro hallazgos del detector, más el quinto que la spec anotó (el
+      check 3 no ve una spec activa en `docs/specs/`).
+- [ ] La entrevista de `init` (hueco 2), cuando exista el manifiesto; escribe
+      dentro de las mismas marcas.
+
 ## 2026-09-18 (sesión 3) — CHG-001: `init` salta lo que existe y sigue
 
 ### Resumen

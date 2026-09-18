@@ -58,31 +58,43 @@ declarar `alcance.spec`— se reemplaza por el comando el día que exista. Si el
 se configuró a mano el 2026-09-18 es su lista de aceptación, en
 `docs/SESSION_LOG.md`.
 
-Este repo usa la metodología que publica. Cinco de las diez skills están
-instaladas en `.agents/skills/` como **enlaces simbólicos** a `skills/`, la fuente
-única: `protocolo-features`, `protocolo-cambios`, `protocolo-cierre`,
-`version-bump` y `test-fix`. Las cinco de UX no aplican a un CLI. `criterio` es
-carpeta real porque es de este repo y no se publica. Editar una skill en
-`skills/` es editar la que corres: ese es el punto.
+Las cinco skills sin interfaz están instaladas con `ai-first init --enlazar`:
+enlaces simbólicos en `.agents/skills/` hacia `skills/`, la fuente única, así
+que editar una skill en `skills/` es editar la que corres. Ese es el punto. Las
+cinco de UX no aplican a un CLI. `criterio` es carpeta real porque es de este
+repo y no se publica. El bloque que sigue lo escribe el comando en cada
+corrida; lo de fuera de las marcas es de este repo y se escribe a mano.
 
-Dónde escribe cada una acá, en el vocabulario del manual:
+<!-- ai-first:inicio -->
+### Metodología AI-First
+
+> Este bloque lo mantiene `ai-first init`; edita fuera de él. Cada corrida lo
+> reescribe con lo que encuentra instalado.
+
+Las skills están en `.agents/skills/`, como enlaces simbólicos a `skills/`.
+Claude Code las lee por `.claude/skills`. Se invocan **antes** de tocar nada, no después:
+
+| Skill | Cuándo |
+|---|---|
+| `protocolo-features` | Comando, módulo o feature nuevo, antes de escribir código |
+| `protocolo-cambios` | Algo que ya funciona tiene que cambiar, incluidos los documentos de gobierno; con su CHG aunque sea flujo corto |
+| `test-fix` | Después de implementar, o cuando la suite falla |
+| `protocolo-cierre` | Al cerrar cualquier tramo con commits, y otra vez si después hubo más trabajo |
+| `version-bump` | Después de `protocolo-cierre`, para decidir el número de versión |
+
+Dónde escribe cada una, en el vocabulario del manual:
 
 | El manual dice | Acá es |
 |---|---|
 | Registro de sesión | `docs/SESSION_LOG.md` |
 | Registro de decisiones | `docs/ADR.md` |
 | Cambio en curso / registro de cambios | `docs/changes/pending/` → `docs/changes/CHANGE_LOG.md` |
-| Notas técnicas, guía de diseño, specs por módulo | No existen todavía. Si una skill pide escribir ahí, se crea el archivo en `docs/`, no se inventa otro sitio. |
-| Schema y migraciones | No hay base de datos: ese paso se salta. |
+<!-- ai-first:fin -->
 
-Cuándo se invoca cada una — **antes** de tocar nada, no después:
-
-| Situación | Skill |
-|---|---|
-| Algo que ya funciona tiene que cambiar, incluidos los documentos de gobierno | `protocolo-cambios`, con su CHG mínimo aunque sea flujo corto |
-| Comando, módulo o feature nuevo | `protocolo-features` |
-| Después de implementar, o cuando la suite falla | `test-fix` |
-| Al cerrar cualquier tramo con commits, y otra vez si después hubo más trabajo | `protocolo-cierre` y luego `version-bump` |
+Dos equivalencias que el bloque no trae porque son de este repo: las specs por
+módulo van en `docs/specs/`; notas técnicas y guía de diseño no existen, y si
+una skill pide escribir ahí se crea el archivo en `docs/`, no se inventa otro
+sitio. No hay base de datos, así que el paso de schema y migraciones se salta.
 
 Editar a mano lo que una skill sabe hacer es no usar la herramienta que este
 repo vende. Pasó el 2026-09-18 con las skills recién instaladas: tres commits

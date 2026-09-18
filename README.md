@@ -15,8 +15,8 @@ y el detector de entropía documental.
 | 8 templates de documentos (AGENTS.md, PRD, guía de diseño, arquitectura, documentos vivos) | `templates/` | 4 publicados; los 4 de la 0.2.0 en `dev` |
 | 10 skills para agentes de código (Claude Code, Codex, Cursor, OpenCode, Kimi Code) | `skills/` | 8 publicadas; las 2 de la 0.2.0 en `dev` — [cómo instalarlas](skills/README.md) |
 | Detector de entropía (`ai-first audit`) | `src/` | publicado en `0.1.0` |
-| `ai-first init` mínimo: escanea y escribe `AI-FIRST.md` + `ADR.md` | `src/init.ts` | publicado en `0.1.0` |
-| `init` completo (entrevista, skills), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
+| `ai-first init`: escribe `AI-FIRST.md` y el ADR, instala las skills, crea `docs/` y mantiene su bloque en `AGENTS.md` | `src/init.ts` | el mínimo, publicado en `0.1.0`; el completo, en `dev` para la `0.2.0` |
+| La entrevista de `init` (adaptar cada skill), `sync`, `adr`, `handoff` | — | mapeados en la especificación, sin escribir |
 
 Las skills viven acá y sólo acá desde el 2026-09-17; el sitio enlaza a las
 de `prod`. Antes eran una copia que el repo del sitio sobreescribía. Eran 8;
@@ -32,14 +32,20 @@ con código de salida para servir igual en un hook local y en CI.
 ```bash
 pnpm install
 pnpm run build
-node dist/src/cli.js init  --raiz /ruta/a/tu/proyecto   # escribe AI-FIRST.md y ADR.md
+node dist/src/cli.js init  --raiz /ruta/a/tu/proyecto   # configura el repo entero
 node dist/src/cli.js audit --raiz /ruta/a/tu/proyecto
 ```
 
-`init` escanea el repo y deja un `AI-FIRST.md` con Zonas Prohibidas sugeridas,
-superficies de decisión y los documentos que ya existen, más un `ADR.md`
-vacío. No toca nada más y nunca sobreescribe: lo que ya existe lo reporta como
-saltado y sigue. Su formato y el de las cinco verificaciones están en
+`init` configura el repo para la metodología en un comando: deja un
+`AI-FIRST.md` con Zonas Prohibidas sugeridas, superficies de decisión y los
+documentos que ya existen; un `docs/ADR.md` vacío; el registro de sesión y la
+carpeta de cambios que los protocolos asumen; las cinco skills sin interfaz en
+`.agents/skills/` con el enlace para Claude Code (`--skills todas` para las
+diez, `--enlazar` para enlaces en vez de copias); y un bloque delimitado en
+`AGENTS.md` que dice dónde escribe cada skill. Nunca sobreescribe: lo que ya
+existe lo reporta como saltado y sigue, y fuera de sus marcas en `AGENTS.md` no
+toca nada. Los templates siguen siendo manuales: están en `templates/`. El
+formato de `AI-FIRST.md` y el de las cinco verificaciones están en
 [`docs/SPEC-PAQUETE.md`](docs/SPEC-PAQUETE.md).
 
 | Severidad | Verificación | Cómo lee |

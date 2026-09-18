@@ -1,33 +1,48 @@
 #!/usr/bin/env node
 // Punto de entrada de `npx @falcux/ai-first`.
 //
-// Dos comandos hoy: `init` (mínimo) y `audit`. Los otros tres del mapa v1
+// Dos comandos hoy: `init` y `audit`. Los otros tres del mapa v1
 // —sync, adr, handoff— están mapeados en docs/HANDOFF.md y no escritos: se anuncian
 // como tales en vez de fingir que corren.
 //
 // Códigos de salida:
 //   0  sin hallazgos, o sólo P1/P2 sin `--estricto`
 //   1  algún P0, o P1/P2 con `--estricto`
-//   2  error de uso: no hay AI-FIRST.md, formato desconocido, no es un repo git
+//   2  error de uso: no hay AI-FIRST.md, formato desconocido, no es un repo git,
+//      una flag inválida, una skill que el paquete no trae, un bloque roto en AGENTS.md
 
 import { parseArgs } from 'node:util';
 import { resolve } from 'node:path';
 import { ErrorAiFirst } from './ai-first-md.js';
 import { auditar } from './audit.js';
-import { iniciar } from './init.js';
+import { iniciar, type ItemInstalado } from './init.js';
 import { reporteHumano, reporteJson } from './reporte.js';
 
 const AYUDA = `ai-first — gobierno del contexto para proyectos AI-First
 
 Uso:
-  ai-first init  [--raiz <dir>]
+  ai-first init  [--raiz <dir>] [--enlazar] [--skills <lista>|todas]
   ai-first audit [opciones]
 
-init escanea el repo y escribe AI-FIRST.md con lo que encuentra —Zonas Prohibidas
-sugeridas, superficies de decisión, documentos existentes— y un ADR.md vacío.
-No toca nada más y nunca sobreescribe: lo que ya existe se salta, se reporta
-como saltado y el comando sigue. Las skills y los templates se copian a mano
-por ahora.
+init configura el repo para la metodología y nunca sobreescribe: lo que ya
+existe se salta, se reporta como saltado y el comando sigue. Escribe:
+  - AI-FIRST.md con lo que encuentra —Zonas Prohibidas sugeridas, superficies
+    de decisión, documentos existentes— y docs/ADR.md vacío.
+  - docs/SESSION_LOG.md, docs/changes/CHANGE_LOG.md y docs/changes/pending/.
+  - Las skills del paquete en .agents/skills/, y el enlace .claude/skills.
+  - Un bloque delimitado en AGENTS.md con dónde escribe cada skill. Fuera de
+    las marcas <!-- ai-first:inicio --> y <!-- ai-first:fin --> no toca nada.
+Lo que no puede escribir en un archivo que ya existía lo reporta como
+sugerido. Los templates siguen siendo manuales: están en templates/.
+
+Opciones de init:
+  --enlazar        Instala las skills como enlaces simbólicos relativos a la
+                   carpeta skills/ del paquete, en vez de copiarlas. Para el
+                   repo del paquete y para quien lo vendoriza en un monorepo.
+  --skills <lista> Cuáles instalar, separadas por comas, o «todas». Por defecto,
+                   las cinco sin interfaz: protocolo-features, protocolo-cambios,
+                   protocolo-cierre, version-bump, test-fix.
+  --raiz <dir>     Raíz del repositorio. Por defecto, el directorio actual.
 
 Opciones de audit:
   --base <ref>     Compara el rango <ref>...HEAD (CI). Sin ella, compara el árbol
@@ -43,6 +58,13 @@ Puntaje: entropía = min(100, 40·P0 + 20·P1 + 8·P2). Más alto es peor.
 
 const NO_ESCRITOS = new Set(['sync', 'adr', 'handoff']);
 
+function lineaDeItem(item: ItemInstalado): string {
+  const estado = item.estado.padEnd(8);
+  if (item.estado === 'escrito') return `  ${estado} ${item.ruta}`;
+  if (item.estado === 'saltado') return `  ${estado} ${item.ruta} (${item.razon ?? 'ya existe'})`;
+  return `  ${estado} ${item.ruta} — ${item.razon ?? ''}`;
+}
+
 async function main(argv: string[]): Promise<number> {
   const { values, positionals } = parseArgs({
     args: argv,
@@ -53,6 +75,8 @@ async function main(argv: string[]): Promise<number> {
       registrar: { type: 'boolean', default: false },
       json: { type: 'boolean', default: false },
       raiz: { type: 'string' },
+      enlazar: { type: 'boolean', default: false },
+      skills: { type: 'string' },
       help: { type: 'boolean', short: 'h', default: false },
     },
   });
@@ -72,18 +96,19 @@ async function main(argv: string[]): Promise<number> {
   const raiz = resolve(values.raiz ?? process.cwd());
 
   if (comando === 'init') {
-    const { escaneo, escritos, saltados } = await iniciar({ raiz });
+    const opcionesInit: Parameters<typeof iniciar>[0] = { raiz, enlazar: values.enlazar };
+    if (values.skills !== undefined) opcionesInit.skills = values.skills === 'todas' ? 'todas' : values.skills.split(',');
+    const { escaneo, items } = await iniciar(opcionesInit);
     const salida = [
       `ai-first init — ${escaneo.proyecto}`,
       '',
-      ...escritos.map((e) => `  escrito  ${e}`),
-      ...saltados.map((s) => `  saltado  ${s} (ya existe)`),
+      ...items.map(lineaDeItem),
       '',
       `  ${escaneo.zonas.length} Zona${escaneo.zonas.length === 1 ? '' : 's'} Prohibida${escaneo.zonas.length === 1 ? '' : 's'} sugerida${escaneo.zonas.length === 1 ? '' : 's'}: ${escaneo.zonas.map((z) => z.ruta).join(', ')}`,
       `  ${escaneo.superficies.length} superficie${escaneo.superficies.length === 1 ? '' : 's'} de decisión: ${escaneo.superficies.join(', ') || '—'}`,
       `  ${Object.keys(escaneo.artefactos).length} artefactos declarados`,
       '',
-      'Revisa AI-FIRST.md —sobre todo las razones de cada zona— y luego corre `ai-first audit`.',
+      'Revisa AI-FIRST.md —sobre todo las razones de cada zona— y AGENTS.md, y luego corre `ai-first audit`.',
       '',
     ];
     process.stdout.write(salida.join('\n'));

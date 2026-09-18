@@ -764,3 +764,76 @@ repo ya configurado pierde esa señal; la gana en el reporte, que es más
 legible. Cambia una prueba que fijaba el error. Es el cambio previo al `init`
 completo y va solo, por `protocolo-cambios` (CHG-001), para no mezclar en un
 mismo paso el feature y la modificación de lo que ya existe.
+
+## ADR-018 — El `init` completo: mismo comando, copia por defecto, cinco skills, un bloque con marcas en `AGENTS.md` y `docs/` siempre
+
+- **Fecha:** 2026-09-18
+- **Estado:** aceptada. Completa ADR-003 («init mínimo antes que completo»):
+  el completo se monta encima del mínimo, como ADR-003 dijo que pasaría.
+  Hereda la política de ADR-014 (saltar entera la skill que ya existe) y la de
+  ADR-017 (saltar no es error).
+
+**Contexto.** Configurar un repo para la metodología eran seis pasos a mano
+siguiendo `skills/README.md`, y este repo los hizo así el 2026-09-18. Su regla
+dice que si el `init` completo no configura este repo, no está terminado. La
+spec `docs/specs/init-completo.md`, validada por Charlie, deja fuera la
+entrevista y la reescritura de skills —piden el manifiesto que ADR-003 dejó
+pendiente— y resuelve todo lo demás con una versión que **nunca reescribe**:
+crea lo que falta y reporta lo que ya estaba. Cinco decisiones de diseño
+tenían alternativas reales.
+
+**Decisión.**
+
+1. *El mismo `init`, incremental.* Un solo comando que se corre las veces que
+   haga falta y añade lo que falte: `AI-FIRST.md`, el ADR, las skills, la
+   estructura de `docs/`, el bloque de `AGENTS.md`. Cada ítem sale como
+   escrito, saltado o sugerido. Salida 0; 2 sólo ante error de uso, y los
+   errores de uso —una skill que el paquete no trae, una marca sin pareja— se
+   detectan antes de escribir nada.
+2. *Copia por defecto, `--enlazar` a pedido.* El adoptante recibe archivos
+   suyos; el enlace simbólico relativo es para este repo y para quien
+   vendoriza las skills en un monorepo. La fuente es la carpeta `skills/` del
+   propio paquete, resuelta desde el módulo con `import.meta.url`.
+3. *Cinco skills por defecto*, las que no tienen interfaz: `protocolo-features`,
+   `protocolo-cambios`, `protocolo-cierre`, `version-bump`, `test-fix`.
+   `--skills todas` instala las diez; `--skills a,b,c` elige.
+4. *Un bloque delimitado en `AGENTS.md`*, entre `<!-- ai-first:inicio -->` y
+   `<!-- ai-first:fin -->`, con qué skills quedaron instaladas, cuándo se
+   invoca cada una y la tabla de equivalencias del manual. Tres casos y nada
+   más: sin archivo, lo crea con el bloque y el puntero al template; sin
+   marcas, lo añade al final; con marcas, reemplaza sólo el interior. Fuera de
+   las marcas no toca una letra; con una sola marca no escribe. Es el patrón
+   de `nvm`, `husky` o `direnv` con el `.zshrc`, y la analogía de Charlie: el
+   `/init` de Claude Code tampoco reemplaza el archivo, lo mejora; esto es lo
+   mismo hecho determinista. Las marcas son el manifiesto de ese archivo.
+5. *`docs/` se crea si no existe, y el ADR va adentro.* `init` crea
+   `docs/SESSION_LOG.md`, `docs/changes/CHANGE_LOG.md` y
+   `docs/changes/pending/`, así que la carpeta existe al terminar y el ADR
+   nuevo va siempre a `docs/ADR.md`, donde ADR-016 lo puso en este repo. El
+   `AI-FIRST.md` que escribe declara `alcance.spec` apuntando a la carpeta
+   recién creada, y `agents: AGENTS.md`, porque acaba de crearlo.
+
+**Alternativas.** *Un subcomando aparte* para lo nuevo: dos comandos que hacen
+mitades de lo mismo obligan a explicar cuál corre cuándo, y ADR-017 ya lo
+descartó. *Detectar «estoy en el repo del paquete» y enlazar solo*: es magia
+que falla en silencio en el primer monorepo; una flag se lee. *Instalar las
+diez*: `skills/README.md` dice «no instales las diez el primer día», y cinco de
+ellas no aplican a un proyecto sin interfaz. *Imprimir el bloque para pegarlo a
+mano, o no tocar `AGENTS.md`*: deja el último paso manual, que es justo el que
+la regla de este repo prohíbe; y *reconocer la prosa existente para envolverla*
+es indecidible en código. *Dejar el ADR en la raíz* cuando no había `docs/`:
+contradice lo que el propio `init` acaba de crear un directorio más abajo.
+
+**Consecuencias.** La prueba del repo vacío cambia: el ADR va a `docs/`. El
+bloque de instalación de `skills/README.md` pasa a ser la alternativa manual y
+el comando el camino principal; el apéndice del sitio repite ese bloque, así que
+hay que avisarle. El enlace relativo se calcula entre rutas reales, no
+textuales: en macOS `/var` es un enlace a `/private/var` y la cuenta textual de
+`..` deja el enlace roto; lo cazó la prueba del criterio 3. El bloque de
+`AGENTS.md` lista lo que de verdad hay en `.agents/skills/` que sea del paquete,
+no lo que se pidió instalar: así una corrida con `--skills` distinta no borra
+del bloque lo instalado antes. En este repo, la sección «Cómo se trabaja acá»
+de `AGENTS.md` ganó las marcas a mano, una sola vez: la prosa propia del repo
+quedó fuera y lo genérico adentro. Lo que queda para otra spec es la entrevista
+(hueco 2), que escribirá dentro de las mismas marcas cuando exista el
+manifiesto.

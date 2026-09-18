@@ -1,12 +1,42 @@
 # Paquete de inicio — Skills
 
-Las skills de Blueprint AI-First, listas para copiar a un proyecto nuevo.
+Las skills de Blueprint AI-First, listas para instalar en un proyecto con
+`npx @falcux/ai-first init`.
 
 Un **protocolo** es un documento que explica un procedimiento; una **skill** es ese mismo procedimiento en un formato que la AI carga sola cuando corresponde. Este paquete contiene ambas cosas: los cuatro protocolos de la Parte III convertidos a skills, más seis skills que nacieron en proyectos reales y resultaron ser transferibles.
 
 ## Instalación
 
-Las skills se instalan **una sola vez, en una sola carpeta**, y todas las herramientas las leen desde ahí:
+Las skills se instalan **una sola vez, en una sola carpeta**, y todas las
+herramientas las leen desde ahí. El camino principal es el comando del paquete:
+
+```bash
+# Desde la raíz de tu proyecto
+npx @falcux/ai-first init
+```
+
+`init` copia a `.agents/skills/` las cinco skills sin interfaz —`protocolo-features`,
+`protocolo-cambios`, `protocolo-cierre`, `version-bump`, `test-fix`—, crea el
+enlace `.claude/skills` para Claude Code y deja además lo que los protocolos
+asumen: `AI-FIRST.md`, el registro de decisiones, el de sesión y la carpeta de
+cambios, más un bloque en `AGENTS.md` que dice dónde escribe cada skill. Con
+`--skills todas` instala las diez; con `--skills i18n,ux-writer` eliges. Con
+`--enlazar` deja enlaces simbólicos relativos en vez de copias, para quien
+vendoriza las skills en un monorepo.
+
+**Nada de esto sobreescribe.** Una skill cuya carpeta ya existe se salta
+**entera** y el reporte lo dice; no se fusiona nada dentro: un `cp -r skills/*
+.agents/skills/` habría pisado tu `SKILL.md` y dejado nuestras `references/`
+dentro de tu skill, sin avisar y sin vuelta atrás. El enlace tampoco se crea si
+`.claude/skills` ya es algo —si ya es un directorio real, `ln -s` te habría
+dejado un `.claude/skills/skills` que no lee nadie—. Si te saltó alguna, sigue
+abajo.
+
+<details>
+<summary>La alternativa manual, sin el comando</summary>
+
+Es lo mismo que hace `init`, en bash, para quien clona el repo o no quiere
+correr el paquete:
 
 ```bash
 # Desde la raíz de tu proyecto
@@ -27,13 +57,7 @@ mkdir -p .claude
 [ -e .claude/skills ] || ln -s ../.agents/skills .claude/skills
 ```
 
-**Nada de esto sobreescribe.** El bucle salta la carpeta entera cuando el nombre
-ya existe, en vez de fusionarla: un `cp -r skills/* .agents/skills/` habría
-pisado tu `SKILL.md` y dejado nuestras `references/` dentro de tu skill, sin
-avisar y sin vuelta atrás. El enlace tampoco se crea si `.claude/skills` ya es
-algo —si ya es un directorio real, `ln -s` te habría dejado un
-`.claude/skills/skills` que no lee nadie—. Si el bucle te saltó alguna, sigue
-abajo.
+</details>
 
 Con eso el árbol queda así:
 

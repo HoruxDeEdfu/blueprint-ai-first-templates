@@ -7,4 +7,4 @@ la implementación. Lo que fue decisión difícil de revertir no vive acá: vive
 
 | Spec | Estado |
 |---|---|
-| `init-completo.md` | Validada el 2026-09-18; en implementación |
+| `init-completo.md` | Implementada el 2026-09-18 (ADR-018) |
