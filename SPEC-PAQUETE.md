@@ -367,9 +367,12 @@ continua, donde se quiere el corte.
   en `HANDOFF.md` §Parte B, no especificados.
 - **`.ai-first/manifest.json`.** Definido en §2 por su frontera, no en su esquema.
 - **Los adaptadores por herramienta.** Claude Code primero; Cursor y Codex después.
-- **La colisión de nombres de las skills.** Las 8 se instalan con nombres genéricos
-  (`i18n`, `version-bump`) y chocan en un proyecto que ya tenga uno igual. Es el
-  bloqueador compartido nº2 y una restricción de diseño de `init`.
-- **Las 8 skills**, que siguen sin nombrar los cuatro instrumentos. El capítulo ya
-  los define, pero ninguna skill los invoca todavía: `protocolo-cierre` enruta
-  aprendizajes a cuatro destinos y ADR no es uno de ellos.
+- ~~**La colisión de nombres de las skills.**~~ **Resuelta el 2026-09-18**
+  (ADR-014): los diez nombres se quedan y lo que cambia es que la instalación
+  salta lo que ya existe en vez de sobreescribirlo. El prefijo queda como salida
+  al conflicto, no como nombre por defecto. Deja de ser restricción de diseño
+  de `init`, al que ya sólo le falta el esquema del manifiesto.
+- **Los cuatro instrumentos, en las diez skills.** Van a medias: cinco nombran
+  el ADR y dos las Zonas Prohibidas, incorporadas al generalizarlas. La matriz
+  de permisos no la invoca ninguna, y la entropía documental sólo aparece de
+  pasada en una.

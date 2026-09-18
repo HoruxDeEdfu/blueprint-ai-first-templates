@@ -93,8 +93,9 @@ Charlie:
    compara la versión del `package.json` con la publicada y publica sólo si
    cambió. Queda por verificar si `pnpm publish` ya habla OIDC con npm; si no,
    el workflow empaqueta con `pnpm pack` y publica el tarball con `npm publish`.
-5. **Verificar en una carpeta vacía:** `npx @falcux/ai-first --help` debe dar
-   la ayuda del comando `ai-first`.
+5. ~~**Verificar en una carpeta vacía.**~~ **Hecho el 2026-09-18**:
+   `npx @falcux/ai-first --help` desde una carpeta vacía baja el paquete de npm
+   y da la ayuda del comando `ai-first`, con salida cero. Lo publicado funciona.
 
 **El merge de `dev` a `main` se hizo el 2026-09-17**, avance directo de 12
 commits hasta `b6d3804`, coordinado con el sitio en dos lotes: primero el
@@ -113,9 +114,9 @@ despliega». Se hizo sin ventana de enlaces rotos: `prod` se creó idéntica a
 `main` en `741e422` y se puso por defecto, el sitio cambió sus 16 raw links de
 la rama vieja a la nueva con las dos vivas, y `main` se borró al confirmar.
 
-Después del publish, por retorno: el `init` completo (entrevista, skills),
-que depende del bloqueador nº2; los hooks (hueco 5); y `.ai-first/manifest.json`,
-que tiene frontera pero no esquema.
+Después del publish, por retorno: el `init` completo (entrevista, skills), al
+que desde el 2026-09-18 sólo le falta el esquema de `.ai-first/manifest.json`
+—el bloqueador nº2 se cerró con ADR-014—; y los hooks (hueco 5).
 
 ### Lote de actualización de templates y skills (decidido el 2026-09-17)
 
@@ -270,6 +271,35 @@ un humano lo revisa en el PR.
 
 **Coordinar con el sitio**: la tarjeta del apéndice que ofrecía ese template
 apunta ahora al archivo dentro de la skill, en la misma rama `prod`.
+
+### El bloqueador nº2 se cierra por donde no se esperaba (2026-09-18, ADR-014)
+
+El bloqueador se había enunciado como una colisión de nombres: `i18n`,
+`version-bump` y otras cuatro son nombres de oficio que un proyecto adoptante
+puede tener ya. Al probarlo contra un proyecto con su propia skill de
+internacionalización, el daño resultó no estar en el nombre sino en el comando
+que `skills/README.md` enseñaba. Un `cp -r` de la carpeta entera hacía tres cosas
+en silencio y con salida cero: pisaba el SKILL.md del proyecto, dejaba las
+referencias del paquete mezcladas con las suyas, y anidaba un nivel de más el
+enlace de la carpeta de Claude Code cuando esa carpeta ya existía. Las tres están
+verificadas contra el comando anterior. Contradecía a ADR-003, que ya había
+decidido que `init` nunca sobreescribe.
+
+Los diez nombres se quedan. Lo que cambia es la instalación: copia carpeta por
+carpeta, salta entera la que ya existe y dice cuál saltó; el enlace no se crea si
+hay algo en su sitio. El README gana una sección con las tres salidas ante un
+nombre ocupado —quedarse con la suya, borrarla y reinstalar, o tener las dos con
+el prefijo `ai-first-`—. **El prefijo es la salida al conflicto, no el nombre por
+defecto**, que es lo que evita mover las diez rutas que el sitio enlaza y las
+unas 160 menciones cruzadas entre skills.
+
+**Qué desbloquea.** El `init` completo, que es el mayor retorno del mapa: ya no
+depende de una decisión de nombres, sólo del esquema del manifiesto. Cuando
+instale skills hereda esta política.
+
+**Coordinar con el sitio**: su apéndice de templates repite el bloque de
+instalación desde ADR-008, y ese bloque cambió. Ninguna ruta se movió, así que no
+hay enlaces que arreglar ni nada que retener antes del merge.
 
 ### Cómo trabajar acá
 
@@ -481,11 +511,15 @@ sitio. Su `LICENSE` seguirá diciendo `Copyright (c) 2023 Mintlify` hasta que
 desaparezca, y eso es aceptable porque el repo muere. Con eso, el bloqueador
 queda cerrado.
 
-**2. Nombres de los skills.** Los 8 se instalan con nombres genéricos (`i18n`,
-`version-bump`). En un proyecto que ya tenga un skill `i18n`, colisionan. Es un hallazgo
-del repo de contenido y a la vez una restricción de diseño del `init` (hueco 2).
-Sigue abierto: la mudanza del 2026-09-16 movió las skills de sitio, no les cambió
-el nombre.
+**2. ~~Nombres de los skills.~~ Cerrado el 2026-09-18 (ADR-014).** Se enunció
+como colisión de nombres genéricos (`i18n`, `version-bump`) en un proyecto que ya
+tenga uno igual, y como restricción de diseño del `init` (hueco 2). Al medirlo
+resultó ser otra cosa: el daño no lo causaban los nombres sino el comando de
+instalación, que sobreescribía en silencio. Los diez nombres se quedan, la
+instalación salta lo que ya existe, y el prefijo `ai-first-` queda como salida al
+conflicto. Dejó de ser bloqueador compartido: no mueve ninguna ruta que el sitio
+enlace, así que ya no toca a los dos frentes. Lo único para el sitio es el aviso
+de que el bloque de instalación cambió.
 
 **3. Redirecciones.** Son dos conjuntos que se implementan en el mismo Worker:
    - Las 16 de Mintlify → `/docs/…` (pendiente 4 del sitio).

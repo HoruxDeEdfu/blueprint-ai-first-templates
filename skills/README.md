@@ -11,12 +11,29 @@ Las skills se instalan **una sola vez, en una sola carpeta**, y todas las herram
 ```bash
 # Desde la raíz de tu proyecto
 mkdir -p .agents/skills
-cp -r skills/* .agents/skills/
 
-# Un solo enlace para Claude Code
+# Copia sólo las que tu proyecto no tenga ya
+for origen in skills/*/; do
+  nombre=$(basename "$origen")
+  if [ -e ".agents/skills/$nombre" ]; then
+    echo "saltada: $nombre — ya existe en tu proyecto"
+  else
+    cp -r "$origen" ".agents/skills/$nombre"
+  fi
+done
+
+# Un solo enlace para Claude Code, si no hay nada en su sitio
 mkdir -p .claude
-ln -s ../.agents/skills .claude/skills
+[ -e .claude/skills ] || ln -s ../.agents/skills .claude/skills
 ```
+
+**Nada de esto sobreescribe.** El bucle salta la carpeta entera cuando el nombre
+ya existe, en vez de fusionarla: un `cp -r skills/* .agents/skills/` habría
+pisado tu `SKILL.md` y dejado nuestras `references/` dentro de tu skill, sin
+avisar y sin vuelta atrás. El enlace tampoco se crea si `.claude/skills` ya es
+algo —si ya es un directorio real, `ln -s` te habría dejado un
+`.claude/skills/skills` que no lee nadie—. Si el bucle te saltó alguna, sigue
+abajo.
 
 Con eso el árbol queda así:
 
@@ -42,6 +59,38 @@ El enlace viaja bien en git (se versiona como enlace, no como copia). Si tu equi
 **Lo que sigue siendo por herramienta:** `AGENTS.md` lo leen todas, y `CLAUDE.md` es sólo `@AGENTS.md` (ver `templates/CLAUDE_MD_TEMPLATE.md`). Claude Code invoca una skill con `/nombre`; Codex con `$nombre`; las demás la cargan cuando su descripción coincide con la tarea.
 
 Luego **adapta cada skill a tu proyecto**. Todas traen una sección «Adaptación a tu proyecto» al final que indica exactamente qué cambiar. Una skill copiada sin adaptar es peor que no tenerla: ocupa presupuesto de carga y da instrucciones que no aplican.
+
+## Si un nombre ya está ocupado
+
+Seis de las diez llevan nombres de oficio —`i18n`, `test-fix`, `version-bump`,
+`ux-writer`, `ux-audit`, `information-architecture`— y tu proyecto puede tener ya
+una skill con alguno. El estándar *Agent Skills* no tiene namespacing: el
+directorio es plano y el nombre es la clave. Cada herramienta resuelve el empate
+a su manera —una gana por precedencia y avisa del duplicado, otra las muestra
+las dos en el selector—, así que dos skills homónimas conviven mal en todas.
+
+La instalación ya hizo lo único irreversible: no tocar la tuya. Lo demás lo
+decides tú, y son tres salidas.
+
+| Salida | Cuándo | Qué hacer |
+|---|---|---|
+| **Quedarte con la tuya** | Está adaptada a tu proyecto y la nuestra no agrega nada | Nada: el bucle ya la saltó |
+| **Quedarte con la nuestra** | La tuya era un borrador que ésta reemplaza | Borra la tuya y vuelve a correr el bucle |
+| **Tener las dos** | Cubren cosas distintas y las quieres separadas | Copia la nuestra con el prefijo `ai-first-` |
+
+Para la tercera, sobre `i18n`:
+
+```bash
+cp -r skills/i18n .agents/skills/ai-first-i18n
+```
+
+Y edita el `name:` de su frontmatter para que diga `ai-first-i18n`: el nombre
+tiene que coincidir con la carpeta o la herramienta carga una cosa y la nombra
+de otra.
+
+El prefijo es la salida al conflicto, no el nombre por defecto. Las otras nueve
+skills te siguen nombrando `i18n` en su prosa —es la que más se menciona—, así
+que deja escrita la equivalencia en tu `AGENTS.md` mientras las dos convivan.
 
 ## Contenido
 

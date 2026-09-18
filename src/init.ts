@@ -3,8 +3,10 @@
 // nada de lo que instala hay que actualizar después.
 //
 // Es el primer paso del `init` completo de HANDOFF.md (entrevista, adaptación
-// de skills), que está bloqueado por la colisión de nombres de las skills y por
-// el esquema del manifiesto. Este no depende de ninguna de las dos cosas.
+// de skills), al que hoy sólo le falta el esquema del manifiesto: la colisión
+// de nombres de las skills dejó de bloquearlo en ADR-014, que decide que la
+// instalación salte lo que ya existe en vez de renombrar en el origen. Cuando
+// ese `init` instale skills, hereda de acá la misma regla de oro.
 //
 // Regla de oro: nunca sobreescribe. Si AI-FIRST.md existe, se detiene.
 

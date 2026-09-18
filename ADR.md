@@ -568,3 +568,61 @@ archivo dentro de la skill, en la misma rama `prod`; sigue siendo descargable.
 Quien instale la skill recibe el molde sin pedirlo. La regla queda escrita para
 los moldes que aparezcan después: si nace un documento por evento con una sola
 skill dueña, va adentro de ella.
+
+## ADR-014 — Los nombres de las skills se quedan; lo que cambia es que la instalación no sobreescribe
+
+- **Fecha:** 2026-09-18
+- **Estado:** aceptada. Cierra el bloqueador compartido nº2 de `HANDOFF.md`,
+  reformulándolo, y con él la restricción de diseño que ADR-003 dejaba abierta
+  para el `init` completo.
+
+**Contexto.** El bloqueador nº2 se enunció el 2026-09-16 como «las skills se
+instalan con nombres genéricos —i18n, version-bump— y chocan en un proyecto que
+ya tenga uno igual», y desde entonces figura como restricción de diseño del
+`init` en ADR-003 y en la spec. Al medirlo contra un proyecto de prueba que ya
+tenía su propia skill de internacionalización, el daño no resultó venir del
+nombre sino del comando que el paquete enseñaba a correr. Un
+`cp -r skills/* .agents/skills/` hace tres cosas, las tres en silencio y con
+salida cero: sobreescribe el SKILL.md del proyecto, deja las referencias del
+paquete mezcladas dentro de la carpeta del proyecto, y —si la carpeta de skills
+de Claude Code ya existía como directorio real— anida el enlace simbólico un
+nivel más abajo, donde no lo lee ninguna herramienta. Eso contradice de frente
+lo que ADR-003 ya había decidido para `init` —«nunca sobreescribe», y por eso no
+existe ni va a existir `--forzar`—: el README enseñaba justo lo que el ADR
+prohíbe. La colisión de nombres propiamente dicha es el problema menor. El
+estándar Agent Skills no define namespacing: el directorio es plano y el nombre
+es la clave. Cada herramienta resuelve el empate por su cuenta —una gana por
+precedencia y avisa del duplicado, otra muestra las dos en su selector—, lo que
+es confuso pero no destruye nada.
+
+**Decisión.** Los diez nombres se quedan como están. Lo que cambia es la
+instalación: `skills/README.md` copia carpeta por carpeta y salta entera la que
+ya existe, diciendo cuál saltó, en vez de fusionar; y el enlace de Claude Code
+no se crea si hay algo en su sitio. Ante un nombre ocupado el adoptante tiene
+tres salidas —quedarse con la suya, borrarla y reinstalar, o tener las dos—, y
+sólo para la tercera existe el prefijo `ai-first-<nombre>`, con el `name:` del
+frontmatter editado para que coincida con la carpeta. **El prefijo es la salida
+al conflicto, no el nombre por defecto.** El `init` que instale skills hereda
+esta política: verifica los destinos antes de escribir, no toca nada que ya
+exista y reporta lo que saltó.
+
+**Alternativas.** *Prefijar los diez en el origen*: da un namespace propio y
+elimina la ambigüedad, pero mueve las diez rutas de SKILL.md que el sitio enlaza
+—lo primero que `AGENTS.md` marca como coordinación obligada antes del merge—,
+toca unas 160 menciones cruzadas en las skills y los templates, y le cobra un
+nombre largo al 100 % de los adoptantes para cubrir a los pocos que tengan una
+homónima. Además no arregla el `cp -r`: el día que exista una skill ajena que se
+llame igual que una nuestra ya prefijada, se pisa igual. *Cambiar sólo el
+comando a `cp -rn`*: una línea en vez de un bucle y protege el SKILL.md, pero
+salta archivo por archivo y el conflicto es de skill, así que fusiona las
+carpetas igual y las referencias del paquete terminan dentro de la skill del
+proyecto —el segundo de los tres fallos queda intacto—.
+
+**Consecuencias.** El `init` de skills deja de estar bloqueado por una decisión
+de nombres, que era lo que lo frenaba desde ADR-003; lo que le queda por delante
+es el esquema del manifiesto. No se mueve ninguna ruta, así que no hay nada que
+coordinar con el sitio antes del merge, pero su apéndice de templates repite el
+bloque de instalación desde ADR-008 y hay que avisarle que cambió. La spec
+pierde el ítem de la colisión en su lista de lo que queda fuera. Un proyecto que
+haya instalado con el comando anterior y perdido una skill no la recupera desde
+acá: el daño se hizo al copiar y esto sólo impide que vuelva a pasar.
