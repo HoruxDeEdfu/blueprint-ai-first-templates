@@ -10,6 +10,45 @@
 
 ---
 
+## 2026-09-18 (sesión 2) — Sale la 0.1.3, y las skills recién instaladas no se usaron
+
+### Resumen
+Se publicó la `0.1.3` y se documentó cómo salió. Los tres commits posteriores al
+primer cierre se hicieron a mano, sin invocar ninguna de las skills instaladas
+en la sesión 1. Esta entrada existe para registrarlo y para dejar la regla en
+`AGENTS.md`.
+
+### Publicación
+- `prod` avanzó a `a2176c3` y la `0.1.3` salió a npm por la vía web de npm 11,
+  con el 2FA de la cuenta. El tarball publicado es idéntico al construido acá
+  (shasum `d14c2491…`); `npx @falcux/ai-first@0.1.3 --help` responde desde una
+  carpeta vacía con salida cero.
+- El `409 previously staged version` que siguió no fue un fallo: el CLI chocó
+  con la versión que la autenticación web ya había publicado. La regla —mirar
+  `dist-tags` antes de reintentar— quedó en `docs/HANDOFF.md`.
+
+### Commits hechos fuera de las skills (b4702fb, 9da1985, 7c33437)
+- Registro del publish en el handoff, y corrección del README, que decía
+  «publicado en 0.1.0» tres versiones después.
+- Un P2 llegó al commit `b4702fb`: un archivo inexistente nombrado entre
+  acentos graves en el handoff. Se leyó la última línea de `audit:self` en vez
+  de comprobar el resultado; corregido en `9da1985` con la compuerta puesta.
+- Regla nueva en `AGENTS.md`: este repo es el primer adoptante de su paquete.
+- Ninguno pasó por `protocolo-cambios`, y el tramo no se cerró con
+  `protocolo-cierre` hasta esta entrada. Lo señaló Charlie.
+
+### Validación
+- typecheck → no ejecutado en este tramo (sin cambios en `src/`)
+- lint      → no ejecutado (no hay script)
+- tests     → no ejecutado en este tramo (sin cambios en `src/` ni `test/`)
+- audit:self → 0 / 100 en cada commit, salvo `b4702fb` (8 / 100, corregido en `9da1985`)
+
+### Pendiente para la siguiente sesión
+- [ ] Los de la sesión 1 siguen en pie: el `init` completo con
+      `/protocolo-features`, las dos divergencias de `protocolo-cierre`, el
+      CHANGELOG con el componente del sitio, y los cuatro hallazgos del detector.
+- [ ] Sin bump en este tramo: los tres commits son `docs:`.
+
 ## 2026-09-18 (sesión 1) — El repo empieza a usar su propia metodología
 
 ### Resumen

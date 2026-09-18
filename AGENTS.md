@@ -75,6 +75,19 @@ Dónde escribe cada una acá, en el vocabulario del manual:
 | Notas técnicas, guía de diseño, specs por módulo | No existen todavía. Si una skill pide escribir ahí, se crea el archivo en `docs/`, no se inventa otro sitio. |
 | Schema y migraciones | No hay base de datos: ese paso se salta. |
 
+Cuándo se invoca cada una — **antes** de tocar nada, no después:
+
+| Situación | Skill |
+|---|---|
+| Algo que ya funciona tiene que cambiar, incluidos los documentos de gobierno | `protocolo-cambios`, con su CHG mínimo aunque sea flujo corto |
+| Comando, módulo o feature nuevo | `protocolo-features` |
+| Después de implementar, o cuando la suite falla | `test-fix` |
+| Al cerrar cualquier tramo con commits, y otra vez si después hubo más trabajo | `protocolo-cierre` y luego `version-bump` |
+
+Editar a mano lo que una skill sabe hacer es no usar la herramienta que este
+repo vende. Pasó el 2026-09-18 con las skills recién instaladas: tres commits
+después del cierre, ninguno por el protocolo; ver `docs/SESSION_LOG.md`.
+
 Las versiones publicadas llevan tag `vX.Y.Z` sobre el commit que las publicó;
 `version-bump` arranca desde el último. El tag lo pone Charlie, nunca la skill.
 
