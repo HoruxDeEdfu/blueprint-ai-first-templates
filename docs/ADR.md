@@ -729,3 +729,38 @@ viejas de este registro siguen nombrando los tres documentos sin el prefijo, y
 no se reescriben —el registro se agrega, no se edita—; el check 4 las resuelve
 igual, porque un nombre sin carpeta lo busca en todo el repo. Lo que sí se
 pierde es cualquier enlace externo a esos tres archivos en la raíz.
+
+## ADR-017 — `init` salta lo que ya existe y sigue, en vez de detenerse
+
+- **Fecha:** 2026-09-18
+- **Estado:** aceptada. Supera la parte de ADR-003 que dice «si `AI-FIRST.md`
+  existe, se detiene». El resto de ADR-003 —nunca sobreescribe, no hay
+  `--forzar`— queda entero.
+
+**Contexto.** ADR-003 hizo del `init` mínimo un comando de una sola corrida:
+escribe `AI-FIRST.md` y un ADR vacío, y si el primero ya existe termina con
+error. Tenía sentido cuando `init` sólo escribía esos dos archivos. La spec
+del `init` completo, validada el 2026-09-18 (`docs/specs/init-completo.md`),
+lo convierte en un comando que se corre sobre repos ya configurados para
+añadir lo que falte —skills, la carpeta de cambios, el registro de sesión—, y
+su primer criterio de aceptación es correrlo sobre este mismo repo, que ya
+tiene `AI-FIRST.md`. Con el error en pie, ese criterio es imposible.
+
+**Decisión.** `init` reporta cada archivo en uno de dos estados, escrito o
+saltado, y sale con 0 en ambos casos. `AI-FIRST.md` existente se salta y se
+dice; el ADR ya se saltaba y ahora también se dice. Nada se sobreescribe,
+nunca: la regla de oro de ADR-003 no cambia, cambia sólo que saltar deja de
+ser un error. `src/cli.ts` deja de prometer el error en su ayuda.
+
+**Alternativas.** *Una flag para continuar*: conserva el error por defecto,
+pero el caso «ya tengo `AI-FIRST.md`» pasa a ser el normal, no la excepción,
+en cuanto `init` instale skills; una flag para el caso normal es una flag mal
+puesta. *Un subcomando aparte para lo nuevo*: ADR-003 ya decidió que el
+completo se monta encima del mínimo, y dos comandos que hacen mitades de lo
+mismo obligan a explicar cuál corre cuándo.
+
+**Consecuencias.** Quien corriera `init` esperando el error para detectar un
+repo ya configurado pierde esa señal; la gana en el reporte, que es más
+legible. Cambia una prueba que fijaba el error. Es el cambio previo al `init`
+completo y va solo, por `protocolo-cambios` (CHG-001), para no mezclar en un
+mismo paso el feature y la modificación de lo que ya existe.
